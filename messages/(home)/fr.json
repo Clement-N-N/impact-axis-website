@@ -1,0 +1,8 @@
+{
+  "hero": {
+    "headline": "Pour commencer, modifiez le fichier page.tsx.",
+    "subheadline": "Vous cherchez un point de départ ou plus d'instructions ? Rendez-vous sur les <templates>Modèles</templates> ou le centre d'<learning>Apprentissage</learning>.",
+    "ctaPrimary": "Déployer maintenant",
+    "ctaSecondary": "Documentation"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "links": {
+    "home": "Accueil",
+    "about": "À propos de nous",
+    "whatWeDo": "Ce que nous faisons",
+    "workWithUs": "Travailler avec nous",
+    "blog": "Blog",
+    "impact": "Impact"
+  },
+  "megaMenu": {
+    "items": {
+      "partners": "Partenaires et institutions",
+      "funders": "Bailleurs de fonds et fondations",
+      "ecosystem": "Bâtisseurs d'écosystème",
+      "talented": "Collaborateurs talentueux"
+    },
+    "tagline": "Donner aux jeunes Africains les compétences, le jugement et la confiance dont les employeurs ont réellement besoin."
+  },
+  "cta": "Nous contacter"
+}

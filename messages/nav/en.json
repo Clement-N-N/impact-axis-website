@@ -1,0 +1,20 @@
+{
+  "links": {
+    "home": "Home",
+    "about": "About Us",
+    "whatWeDo": "What We Do",
+    "workWithUs": "Work With Us",
+    "blog": "Blog",
+    "impact": "Impact"
+  },
+  "megaMenu": {
+    "items": {
+      "partners": "Partners & Institutions",
+      "funders": "Funders & Foundations",
+      "ecosystem": "Ecosystem Builders",
+      "talented": "Talented Collaborators"
+    },
+    "tagline": "Give young Africans the skills, judgment, and confidence employers actually need."
+  },
+  "cta": "Get in touch"
+}

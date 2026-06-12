@@ -3,24 +3,76 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Brand gradients */
+  --gradient-peach: linear-gradient(90deg, #fab1a0 0%, #f7886e 100%);
+  --gradient-yellow: linear-gradient(90deg, #ffeaa7 0%, #ffde75 100%);
+  --gradient-blue: linear-gradient(90deg, #74b9ff 0%, #42a0ff 100%);
+  --gradient-icon-yellow: linear-gradient(90deg, #f4c600 0%, #ffde75 100%);
+
+  /* Responsive header height */
+  --header-height: 50px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-height: 60px;
+  }
+}
+
+@media (min-width: 1536px) {
+  :root {
+    --header-height: 70px;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: "PP Neue Montreal", ui-sans-serif, system-ui, sans-serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+  /* Brand colors */
+  --color-black: #2b2b2b;
+  --color-white: #ffffff;
+  --color-border: #d9d9d9;
+  --color-impact-yellow: #f4c600;
+  --color-impact-blue: #101b62;
+  --color-impact-gray: #737373;
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Icon colors */
+  --color-icon-blue: #0078D7;
+  --color-icon-green: #10893E;
+  --color-icon-peach: #EF6950;
+  --color-icon-purple: #744DA9;
+
+  /* Fluid type scale: pure vw, sized so each step hits its reference px value at a 1440px viewport */
+  --text-xs: 0.8125vw;
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.973vw;
+  --text-sm--line-height: 1.5;
+  --text-base: 1.25vw;
+  --text-base--line-height: 1.6;
+  --text-lg: 1.3125vw;
+  --text-lg--line-height: 1.6;
+  --text-xl: 1.5vw;
+  --text-xl--line-height: 1.5;
+  --text-2xl: 1.875vw;
+  --text-2xl--line-height: 1.4;
+  --text-3xl: 2.375vw;
+  --text-3xl--line-height: 1.3;
+  --text-4xl: 3vw;
+  --text-4xl--line-height: 1.2;
+  --text-5xl: 4vw;
+  --text-5xl--line-height: 1.1;
+  --text-6xl: 5.5vw;
+  --text-6xl--line-height: 1.05;
+
+  /* Fluid section spacing */
+  --spacing-section: clamp(3rem, 2rem + 5vw, 6rem);
+  --spacing-section-lg: clamp(4rem, 2.5rem + 7.5vw, 10rem);
+
+  /* Layout */
+  --spacing-container: 24px;
+  --spacing-gutter: 16px;
+  --spacing-header: var(--header-height);
 }
