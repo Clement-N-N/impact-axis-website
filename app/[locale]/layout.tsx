@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing, type Locale } from "@/i18n/routing";
 import { Navbar } from "@/components/layout/Navbar";
+import { MobileNav } from "@/components/layout/MobileNav";
 import "../globals.css";
 import "@/styles/_fonts.scss";
 import "@/styles/_base.scss";
@@ -39,6 +40,7 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Navbar />
+          <MobileNav />
           <main>{children}</main>
           {process.env.NODE_ENV === "development" && (
             <>

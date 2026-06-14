@@ -13,7 +13,6 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Logo } from "./Logo";
 import { MegaMenu } from "./MegaMenu";
 import { MegaMenuBackdrop } from "./MegaMenuBackdrop";
-import { MobileNav } from "./MobileNav";
 
 const MEGA_MENU_ID = "work-with-us-menu";
 
@@ -33,8 +32,8 @@ const navLinkStyles = cva(
 const logoColStyles = cva("", {
   variants: {
     locale: {
-      en: "col-span-5 2xl:col-span-6",
-      fr: "col-span-4 2xl:col-span-5",
+      en: "lg:col-span-4 xxl:col-span-5 2xl:col-span-6",
+      fr: "lg:col-span-3 xxl:col-span-4 2xl:col-span-5",
     },
   },
   defaultVariants: { locale: "en" },
@@ -45,8 +44,8 @@ const navColStyles = cva(
   {
     variants: {
       locale: {
-        en: "col-span-7 2xl:col-span-6",
-        fr: "col-span-8 2xl:col-span-7",
+        en: "lg:col-span-8 xxl:col-span-7 2xl:col-span-6",
+        fr: "lg:col-span-9 xxl:col-span-8 2xl:col-span-7",
       },
     },
     defaultVariants: { locale: "en" },
@@ -118,13 +117,12 @@ export function Navbar() {
   const headerRef = useRef<HTMLElement>(null);
   const linkRefs = useRef<Record<string, HTMLElement | null>>({});
 
-  const isDimmed = (key: string) => hoveredLink !== null && hoveredLink !== key;
-
   useEffect(() => {
     Object.entries(linkRefs.current).forEach(([key, el]) => {
       if (!el) return;
+      const isDimmed = hoveredLink !== null && hoveredLink !== key;
       gsap.to(el, {
-        opacity: isDimmed(key) ? 0.4 : 1,
+        opacity: isDimmed ? 0.4 : 1,
         duration: 0.4,
         ease: "power2.out",
       });
@@ -158,11 +156,15 @@ export function Navbar() {
         if (!isMegaMenuOpen) return;
         const toggleEl = linkRefs.current[MEGA_MENU_ID];
         if (toggleEl && toggleEl.contains(e.target as Node)) return;
+        const menuEl = document.getElementById(MEGA_MENU_ID);
+        if (menuEl && menuEl.contains(e.target as Node)) return;
         setIsMegaMenuOpen(false);
       }}
-      className="border-border sticky top-0 z-50 border-b bg-white"
+      className="border-border sticky top-0 z-50 hidden border-b bg-white lg:block"
     >
+      {/* Desktop nav  */}
       <Container className="gap-gutter h-header z-50 grid grid-cols-12 items-center">
+ 
         <div
           className={clsx(
             logoColStyles({ locale: locale === "fr" ? "fr" : "en" }),
@@ -243,11 +245,8 @@ export function Navbar() {
               {t("cta")}
             </Link>
           </div>
-
-          <MobileNav />
         </div>
       </Container>
-
       <MegaMenu id={MEGA_MENU_ID} isOpen={isMegaMenuOpen} />
       <MegaMenuBackdrop
         isOpen={isMegaMenuOpen}

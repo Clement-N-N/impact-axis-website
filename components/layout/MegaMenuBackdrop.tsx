@@ -18,7 +18,7 @@ export function MegaMenuBackdrop({
       animate={{ opacity: isOpen ? 1 : 0 }}
       transition={{ duration: 0.2 }}
       className={clsx(
-        "fixed inset-x-0 top-header bottom-0 z-40 bg-black/50 backdrop-blur-md",
+        "fixed inset-x-0 top-header bottom-0 z-40 bg-black/50 backdrop-blur-[3px]",
         isOpen ? "pointer-events-auto" : "pointer-events-none"
       )}
     />

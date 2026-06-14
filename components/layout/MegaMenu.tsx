@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { useTranslations, useLocale } from "next-intl";
 import {
+  ArrowRightIcon,
   FacebookLogoIcon,
   InstagramLogoIcon,
   LinkedinLogoIcon,
@@ -53,8 +54,8 @@ const ITEMS = [
 const imageColSpanStyles = cva("", {
   variants: {
     locale: {
-      en: "col-span-5 2xl:col-span-6",
-      fr: "col-span-4 2xl:col-span-5",
+      en: "lg:col-span-4 xxl:col-span-5 2xl:col-span-6",
+      fr: "lg:col-span-3 xxl:col-span-4 2xl:col-span-5",
     },
   },
   defaultVariants: { locale: "en" },
@@ -63,8 +64,8 @@ const imageColSpanStyles = cva("", {
 const itemsColSpanStyles = cva("", {
   variants: {
     locale: {
-      en: "col-span-7 2xl:col-span-6",
-      fr: "col-span-8 2xl:col-span-7",
+      en: "lg:col-span-8 xxl:col-span-7 2xl:col-span-6",
+      fr: "lg:col-span-9 xxl:col-span-8 2xl:col-span-7",
     },
   },
   defaultVariants: { locale: "en" },
@@ -73,8 +74,8 @@ const itemsColSpanStyles = cva("", {
 const imageWidthStyles = cva("h-full object-cover", {
   variants: {
     locale: {
-      en: "lg:w-[calc(40%-calc(var(--spacing-gutter)/2))]",
-      fr: "lg:w-[calc(50%-calc(var(--spacing-gutter)/2))]",
+      en: "lg:w-[calc(50%-calc(var(--spacing-gutter)/2))] xxl:w-[calc(39.7%-calc(var(--spacing-gutter)/2))] 2xl:w-[calc(33%-calc(var(--spacing-gutter)/2))] lg:h-[250px] xxl:h-[275px] 2xl:h-[350px]",
+      fr: "lg:w-[calc(67.5%-calc(var(--spacing-gutter)/2))] xxl:w-[calc(50%-calc(var(--spacing-gutter)/2))] 2xl:w-[calc(40%-calc(var(--spacing-gutter)/2))]",
     },
   },
   defaultVariants: { locale: "en" },
@@ -102,8 +103,15 @@ export function MegaMenu({ id, isOpen }: { id: string; isOpen: boolean }) {
   const t = useTranslations("nav");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [hoveredSocial, setHoveredSocial] = useState<number | null>(null);
+  const [itemsReady, setItemsReady] = useState(false);
+  const [footerReady, setFooterReady] = useState(false);
   const itemRefs = useRef<(HTMLElement | null)[]>([]);
   const socialRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const imageScaleRef = useRef<HTMLImageElement>(null);
+  const socialsRef = useRef<HTMLDivElement>(null);
+  const taglineRef = useRef<HTMLParagraphElement>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
   const locale = useLocale();
 
   useEffect(() => {
@@ -111,7 +119,7 @@ export function MegaMenu({ id, isOpen }: { id: string; isOpen: boolean }) {
       if (!el) return;
       const isDimmed = hoveredIndex !== null && hoveredIndex !== index;
       gsap.to(el, {
-        opacity: isDimmed ? 0.6 : 1,
+        opacity: isDimmed ? 0.4 : 1,
         duration: 0.4,
         ease: "power2.out",
       });
@@ -130,6 +138,72 @@ export function MegaMenu({ id, isOpen }: { id: string; isOpen: boolean }) {
     });
   }, [hoveredSocial]);
 
+  useEffect(() => {
+    const items = itemRefs.current.filter((el): el is HTMLElement => !!el);
+    const targets = [
+      imageRef.current,
+      ...items,
+      socialsRef.current,
+      taglineRef.current,
+    ].filter((el): el is HTMLElement => !!el);
+
+    gsap.set(targets, { opacity: 0, y: 12 });
+    gsap.set(imageScaleRef.current, { scale: 1.15 });
+
+    tlRef.current = gsap
+      .timeline({ paused: true })
+      .to(imageRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: "power3.out",
+      }, 0.1)
+      .to(imageScaleRef.current, {
+        scale: 1,
+        duration: 0.3,
+        ease: "power3.out",
+      }, 0.25)
+      .to(items, {
+        opacity: 1,
+        y: 0,
+        duration: 0.4,
+        ease: "power3.out",
+        stagger: {
+          each: 0.07,
+          onComplete: () => setItemsReady(true),
+        },
+      }, 0.18)
+      .to([socialsRef.current, taglineRef.current], {
+        opacity: 1,
+        y: 0,
+        duration: 0.4,
+        ease: "power3.out",
+        stagger: {
+          each: 0.06,
+          onComplete: () => setFooterReady(true),
+        },
+      }, "+=0.05");
+
+    return () => {
+      tlRef.current?.kill();
+    };
+  }, []);
+
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
+    setItemsReady(false);
+    setFooterReady(false);
+  }
+
+  useEffect(() => {
+    if (isOpen) {
+      tlRef.current?.timeScale(1).play(0);
+    } else {
+      tlRef.current?.timeScale(2.5).reverse();
+    }
+  }, [isOpen]);
+
   return (
     <motion.div
       id={id}
@@ -141,8 +215,9 @@ export function MegaMenu({ id, isOpen }: { id: string; isOpen: boolean }) {
       className="absolute inset-x-0 top-full z-50 overflow-hidden border-t border-border bg-white"
     >
       <Container className="grid grid-cols-1 gap-gutter py-6 lg:grid-cols-12">
-        <div className={clsx(imageColSpanStyles({ locale: locale === "fr" ? "fr" : "en" }), "h-[275px]")}>
+        <div ref={imageRef} className={clsx(imageColSpanStyles({ locale: locale === "fr" ? "fr" : "en" }), "overflow-hidden")}>
           <Image
+            ref={imageScaleRef}
             src="/images/girls-1.jpg"
             alt={locale === "fr" ? "Image du menu" : "Menu image"}
             className={imageWidthStyles({ locale: locale === "fr" ? "fr" : "en" })}
@@ -152,10 +227,15 @@ export function MegaMenu({ id, isOpen }: { id: string; isOpen: boolean }) {
           />
         </div>
 
-        <ul className={clsx(itemsColSpanStyles({ locale: locale === "fr" ? "fr" : "en" }), "flex flex-col justify-center gap-6")}>
+        <ul
+          className={clsx(
+            itemsColSpanStyles({ locale: locale === "fr" ? "fr" : "en" }),
+            "flex flex-col justify-center gap-6",
+            !itemsReady && "pointer-events-none"
+          )}
+        >
           {ITEMS.map(({ key, Icon, accent, href }, index) => {
             const isHovered = hoveredIndex === index;
-            const isDimmed = hoveredIndex !== null && !isHovered;
             return (
               <li key={key}>
                 <Link
@@ -163,32 +243,55 @@ export function MegaMenu({ id, isOpen }: { id: string; isOpen: boolean }) {
                   ref={(el) => {
                     itemRefs.current[index] = el;
                   }}
-                  className="flex items-center gap-4"
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
+                  className="flex w-fit items-center gap-4"
+                  onMouseEnter={(e) => {
+                    setHoveredIndex(index);
+                    gsap.to(e.currentTarget.querySelector("[data-icon]"), {
+                      scale: 1.08,
+                      duration: 0.3,
+                      ease: "power2.out",
+                    });
+                    gsap.to(e.currentTarget.querySelector("[data-arrow]"), {
+                      opacity: 1,
+                      x: 0,
+                      duration: 0.3,
+                      ease: "power2.out",
+                    });
+                  }}
+                  onMouseLeave={(e) => {
+                    setHoveredIndex(null);
+                    gsap.to(e.currentTarget.querySelector("[data-icon]"), {
+                      scale: 1,
+                      duration: 0.3,
+                      ease: "power2.out",
+                    });
+                    gsap.to(e.currentTarget.querySelector("[data-arrow]"), {
+                      opacity: 0,
+                      x: -8,
+                      duration: 0.3,
+                      ease: "power2.out",
+                    });
+                  }}
                 >
                   <Icon
+                    data-icon
                     className={clsx(
                       "h-[32px] w-[32px] shrink-0 transition-colors",
-                      isHovered
-                        ? accent
-                        : isDimmed
-                          ? "text-impact-gray"
-                          : "text-black"
+                      isHovered ? accent : "text-black"
                     )}
                   />
                   <span
                     className={clsx(
-                      "text-lg transition-colors",
-                      isHovered
-                        ? "font-medium text-black"
-                        : isDimmed
-                          ? "text-impact-gray"
-                          : "text-black"
+                      "text-xl transition-colors text-black",
                     )}
                   >
                     {t(`megaMenu.items.${key}`)}
                   </span>
+                  <ArrowRightIcon
+                    data-arrow
+                    weight="bold"
+                    className={clsx("h-4 w-4 -translate-x-2 opacity-0", accent)}
+                  />
                 </Link>
               </li>
             );
@@ -196,8 +299,13 @@ export function MegaMenu({ id, isOpen }: { id: string; isOpen: boolean }) {
         </ul>
       </Container>
       <div className="">
-        <Container className="border-t border-border grid grid-cols-1 items-center gap-gutter py-[12px] lg:grid-cols-12">
-          <div className={clsx(imageColSpanStyles({ locale: locale === "fr" ? "fr" : "en" }), "flex items-center gap-4 text-black")}>
+        <Container
+          className={clsx(
+            "border-t border-border grid grid-cols-1 items-center gap-gutter py-[12px] lg:grid-cols-12",
+            !footerReady && "pointer-events-none"
+          )}
+        >
+          <div ref={socialsRef} className={clsx(imageColSpanStyles({ locale: locale === "fr" ? "fr" : "en" }), "flex items-center gap-4 text-black")}>
             {SOCIALS.map(({ Icon, label, hoverColor }, index) => (
               <a
                 key={label}
@@ -214,7 +322,7 @@ export function MegaMenu({ id, isOpen }: { id: string; isOpen: boolean }) {
               </a>
             ))}
           </div>
-          <p className={clsx(itemsColSpanStyles({ locale: locale === "fr" ? "fr" : "en" }), "text-xs text-black")}>
+          <p ref={taglineRef} className={clsx(itemsColSpanStyles({ locale: locale === "fr" ? "fr" : "en" }), "text-xs text-black")}>
             <span className={footerTextStyles({ locale: locale === "fr" ? "fr" : "en" })}>{t("megaMenu.tagline")}</span>
           </p>
         </Container>

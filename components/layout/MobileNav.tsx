@@ -1,18 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
 import clsx from "clsx";
-import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
 import { CaretDown } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import {
   EcosystemIcon,
   FundersIcon,
   PartnersIcon,
   TalentedIcon,
 } from "@/components/icons";
+import { Container } from "./Container";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Logo } from "./Logo";
 
@@ -39,16 +39,146 @@ const MEGA_ITEMS = [
   },
 ] as const;
 
+const navLinkStyles = clsx(
+  "block py-3 transition-colors",
+);
+
 export function MobileNav() {
   const t = useTranslations("nav");
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isWorkOpen, setIsWorkOpen] = useState(false);
+
+  const bar1Ref = useRef<HTMLSpanElement>(null);
+  const bar2Ref = useRef<HTMLSpanElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const linkRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const submenuRef = useRef<HTMLUListElement>(null);
+  const submenuItemRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const ctaRef = useRef<HTMLAnchorElement>(null);
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+  const NAV_LINKS = [
+    { href: "/", label: t("links.home") },
+    { href: "/about", label: t("links.about") },
+    { href: "/what-we-do", label: t("links.whatWeDo") },
+    { href: "/blog", label: t("links.blog") },
+    { href: "/impact", label: t("links.impact") },
+  ] as const;
+
+  function close() {
+    setIsOpen(false);
+    setIsWorkOpen(false);
+  }
+
+  // Morphing hamburger <-> X
+  useEffect(() => {
+    gsap.to(bar1Ref.current, {
+      rotate: isOpen ? 45 : 0,
+      y: isOpen ? 2 : -3,
+      duration: 0.3,
+      ease: "power3.inOut",
+    });
+    gsap.to(bar2Ref.current, {
+      rotate: isOpen ? -45 : 0,
+      y: isOpen ? -2 : 3,
+      duration: 0.3,
+      ease: "power3.inOut",
+    });
+  }, [isOpen]);
+
+  // Panel open/close + staggered link reveal
+  useEffect(() => {
+    if (isOpen) {
+      gsap.set(panelRef.current, { pointerEvents: "auto" });
+      gsap.to(panelRef.current, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.4,
+        ease: "power3.out",
+      });
+      gsap.fromTo(
+        linkRefs.current,
+        { opacity: 0, y: 12 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.35,
+          ease: "power3.out",
+          stagger: 0.05,
+          delay: 0.1,
+        },
+      );
+      gsap.fromTo(
+        ctaRef.current,
+        { opacity: 0, y: 12 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.35,
+          ease: "power3.out",
+          delay: 0.1 + linkRefs.current.length * 0.05,
+        },
+      );
+    } else {
+      gsap.to(panelRef.current, {
+        autoAlpha: 0,
+        y: -16,
+        duration: 0.3,
+        ease: "power3.inOut",
+        onComplete: () => {
+          gsap.set(panelRef.current, { pointerEvents: "none" });
+        },
+      });
+    }
+  }, [isOpen]);
+
+  // "Work With Us" accordion height
+  useEffect(() => {
+    if (!submenuRef.current) return;
+
+    if (isWorkOpen) {
+      gsap.to(submenuRef.current, {
+        height: submenuRef.current.scrollHeight,
+        duration: 0.35,
+        ease: "power3.inOut",
+      });
+      gsap.fromTo(
+        submenuItemRefs.current,
+        { opacity: 0, y: 8 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.3,
+          ease: "power3.out",
+          stagger: 0.04,
+          delay: 0.1,
+        },
+      );
+    } else {
+      gsap.to(submenuRef.current, {
+        height: 0,
+        duration: 0.35,
+        ease: "power3.inOut",
+      });
+      gsap.set(submenuItemRefs.current, { opacity: 0, y: 8 });
+    }
+  }, [isWorkOpen]);
+
+  useEffect(() => {
+    gsap.set(panelRef.current, { autoAlpha: 0, y: -16, pointerEvents: "none" });
+    gsap.set(submenuRef.current, { height: 0 });
+    gsap.set(submenuItemRefs.current, { opacity: 0, y: 8 });
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
 
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") setIsOpen(false);
+      if (e.key === "Escape") close();
     }
 
     document.addEventListener("keydown", handleKeyDown);
@@ -59,124 +189,145 @@ export function MobileNav() {
     };
   }, [isOpen]);
 
-  function close() {
-    setIsOpen(false);
-    setIsWorkOpen(false);
+  function press(ref: React.RefObject<HTMLElement | null>) {
+    gsap.to(ref.current, { scale: 0.96, duration: 0.1, ease: "power2.out" });
+  }
+
+  function release(ref: React.RefObject<HTMLElement | null>) {
+    gsap.to(ref.current, { scale: 1, duration: 0.15, ease: "power2.out" });
   }
 
   return (
-    <div className="xl:hidden">
-      <button
-        type="button"
-        onClick={() => setIsOpen(true)}
-        aria-label="Open menu"
-        className="flex h-10 w-10 items-center justify-center text-black"
+    <header className="border-border sticky top-0 z-[100] border-b bg-white lg:hidden">
+      <Container className="flex h-header items-center justify-between">
+        <Logo />
+        <button
+          ref={toggleRef}
+          type="button"
+          onClick={() => setIsOpen((v) => !v)}
+          onPointerDown={() => press(toggleRef)}
+          onPointerUp={() => release(toggleRef)}
+          onPointerLeave={() => release(toggleRef)}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isOpen}
+          className="relative flex h-10 w-10 items-center justify-center"
+        >
+          <span
+            ref={bar1Ref}
+            className="absolute h-0.5 w-6 rounded-full bg-black"
+          />
+          <span
+            ref={bar2Ref}
+            className="absolute h-0.5 w-6 rounded-full bg-black"
+          />
+        </button>
+      </Container>
+
+      <div
+        ref={panelRef}
+        className="fixed inset-x-0 top-[var(--header-height)] z-[90] overflow-y-auto bg-white"
+        style={{ height: "calc(100vh - var(--header-height))" }}
       >
-        <Menu className="h-6 w-6" />
-      </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[100] flex flex-col bg-white"
-          >
-            <div className="flex h-20 items-center justify-between px-6 md:px-12">
-              <Logo />
-              <button
-                type="button"
-                onClick={close}
-                aria-label="Close menu"
-                className="flex h-10 w-10 items-center justify-center text-black"
-              >
-                <X className="h-6 w-6" />
-              </button>
-            </div>
-
-            <nav className="flex flex-1 flex-col overflow-y-auto px-6 py-4 md:px-12">
-              <ul className="flex flex-col gap-1 text-2xl font-medium text-black">
-                <li>
-                  <Link href="/" onClick={close} className="block py-3">
-                    {t("links.home")}
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/about" onClick={close} className="block py-3">
-                    {t("links.about")}
-                  </Link>
-                </li>
-                <li>
+        <Container className="flex h-full flex-col py-4">
+          <nav className="flex flex-1 flex-col overflow-y-auto">
+            <ul className="flex flex-col gap-1 text-2xl font-medium text-black">
+              {NAV_LINKS.slice(0, 3).map(({ href, label }, index) => (
+                <li
+                  key={href}
+                  ref={(el) => {
+                    linkRefs.current[index] = el;
+                  }}
+                >
                   <Link
-                    href="/what-we-do"
+                    href={href}
                     onClick={close}
-                    className="block py-3"
-                  >
-                    {t("links.whatWeDo")}
-                  </Link>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => setIsWorkOpen((v) => !v)}
-                    aria-expanded={isWorkOpen}
-                    className="flex w-full items-center justify-between py-3"
-                  >
-                    <span>{t("links.workWithUs")}</span>
-                    <CaretDown
-                      weight="fill"
-                      className={clsx(
-                        "h-5 w-5 transition-transform",
-                        isWorkOpen && "rotate-180"
-                      )}
-                    />
-                  </button>
-                  <AnimatePresence initial={false}>
-                    {isWorkOpen && (
-                      <motion.ul
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden"
-                      >
-                        {MEGA_ITEMS.map(({ key, Icon, href }) => (
-                          <li key={key}>
-                            <Link
-                              href={href}
-                              onClick={close}
-                              className="flex items-center gap-4 py-3 pl-1 text-base font-normal text-black"
-                            >
-                              <Icon className="h-6 w-6" />
-                              {t(`megaMenu.items.${key}`)}
-                            </Link>
-                          </li>
-                        ))}
-                      </motion.ul>
+                    className={clsx(
+                      navLinkStyles,
+                      isActive(href) ? "text-impact-blue" : "text-black",
                     )}
-                  </AnimatePresence>
-                </li>
-                <li>
-                  <Link href="/blog" onClick={close} className="block py-3">
-                    {t("links.blog")}
+                  >
+                    {label}
                   </Link>
                 </li>
-              </ul>
-            </nav>
-
-            <div className="flex items-center justify-between border-t border-border px-6 py-6 md:px-12">
-              <LanguageSwitcher />
-              <Link
-                href="/work-with-us"
-                onClick={close}
-                className="rounded-full bg-impact-blue px-6 py-3 text-sm font-medium text-white"
+              ))}
+              <li
+                ref={(el) => {
+                  linkRefs.current[3] = el;
+                }}
               >
-                {t("cta")}
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+                <button
+                  type="button"
+                  onClick={() => setIsWorkOpen((v) => !v)}
+                  aria-expanded={isWorkOpen}
+                  className="flex w-full items-center justify-between py-3"
+                >
+                  <span>{t("links.workWithUs")}</span>
+                  <CaretDown
+                    weight="fill"
+                    className={clsx(
+                      "h-5 w-5 transition-transform duration-300",
+                      isWorkOpen && "rotate-180",
+                    )}
+                  />
+                </button>
+                <ul ref={submenuRef} className="overflow-hidden">
+                  {MEGA_ITEMS.map(({ key, Icon, href }, index) => (
+                    <li
+                      key={key}
+                      ref={(el) => {
+                        submenuItemRefs.current[index] = el;
+                      }}
+                    >
+                      <Link
+                        href={href}
+                        onClick={close}
+                        className="flex items-center gap-4 py-3 pl-1 text-base font-normal text-black"
+                      >
+                        <Icon className="h-6 w-6" />
+                        {t(`megaMenu.items.${key}`)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              {NAV_LINKS.slice(3).map(({ href, label }, index) => (
+                <li
+                  key={href}
+                  ref={(el) => {
+                    linkRefs.current[4 + index] = el;
+                  }}
+                >
+                  <Link
+                    href={href}
+                    onClick={close}
+                    className={clsx(
+                      navLinkStyles,
+                      isActive(href) ? "text-impact-blue" : "text-black",
+                    )}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="flex items-center justify-between border-t border-border py-6">
+            <LanguageSwitcher />
+            <Link
+              ref={ctaRef}
+              href="/work-with-us"
+              onClick={close}
+              onPointerDown={() => press(ctaRef)}
+              onPointerUp={() => release(ctaRef)}
+              onPointerLeave={() => release(ctaRef)}
+              className="rounded-full bg-impact-blue px-6 py-3 text-sm font-medium text-white"
+            >
+              {t("cta")}
+            </Link>
+          </div>
+        </Container>
+      </div>
+    </header>
   );
 }

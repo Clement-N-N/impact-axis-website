@@ -1,4 +1,6 @@
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
+import { HomeHero } from "@/components/sections/home-hero";
+import type { Locale } from "@/i18n/routing";
 
 export default async function Home({
   params,
@@ -8,11 +10,5 @@ export default async function Home({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t = await getTranslations("home");
-
-  return (
-    <div className="flex flex-1 flex-col items-center justify-center py-32">
-      <h1 className="text-3xl font-semibold">Home</h1>
-    </div>
-  );
+  return <HomeHero locale={locale as Locale} />;
 }
