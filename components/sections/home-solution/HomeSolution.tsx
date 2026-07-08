@@ -48,7 +48,12 @@ export function HomeSolution({ locale }: { locale: Locale }) {
         </div>
 
         <div className="relative col-span-4 aspect-[4/5] md:col-span-8 lg:col-span-4 lg:col-start-9 lg:row-start-2">
-          <Image src={data.image} alt="" fill className="object-cover" />
+          <Image
+            src={data.image}
+            alt="TODO: describe what this image shows"
+            fill
+            className="object-cover"
+          />
         </div>
       </Container>
     </section>
