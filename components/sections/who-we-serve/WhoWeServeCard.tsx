@@ -16,7 +16,7 @@ export function WhoWeServeCard({
   return (
     <div
       className={clsx(
-        "group relative col-span-4 flex flex-col justify-between overflow-hidden bg-[#F5F5F5] p-8 transition-colors duration-300 hover:bg-impact-yellow/10 md:col-span-8 lg:col-span-3 lg:aspect-[2/3]",
+        "js-who-we-serve-card group relative col-span-4 flex flex-col justify-between overflow-hidden bg-[#F5F5F5] p-8 transition-colors duration-300 hover:bg-impact-yellow/10 md:col-span-8 lg:col-span-3 lg:aspect-[2/3]",
         className,
       )}
     >
