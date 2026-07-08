@@ -1,7 +1,7 @@
 import type { HeroConfig } from "@/components/sections/home-hero/types";
 
 export const heroConfig: HeroConfig = {
-  activeHero: "fullbleed-overlay",
+  activeHero: "collage-description",
   heroes: {
     "promo-card": {
       type: "promo-card",
@@ -40,8 +40,8 @@ export const heroConfig: HeroConfig = {
       backgroundImages: ["/images/girls-2.jpg", "/images/alumni-1.jpg", "/images/team-1.jpg"],
       eyebrow: { en: "Welcome", fr: "Bienvenue" },
       headline: {
-        en: "We build the systems that unlock Africa's boundless potential",
-        fr: "Nous construisons les systèmes qui libèrent le potentiel illimité de l'Afrique",
+        en: "We build the systems that unlock Africa's potential",
+        fr: "Nous construisons les systèmes qui libèrent le potentiel de l'Afrique",
       },
       headlineEmphasis: {
         en: "one young person at a time.",
@@ -86,10 +86,10 @@ export const heroConfig: HeroConfig = {
       headlineSegments: {
         en: [
           { text: "We build the " },
-          { chip: "icon-static", icons: ["ecosystem"], color: "icon-peach", width: "8vw", height: "4vw" },
+          { chip: "icon-static", icons: ["partners", "funders", "ecosystem", "talented"], color: "icon-peach", width: "8vw", height: "4vw" },
           { text: " systems that " },
           { text: "unlock", emphasis: true },
-          { chip: "icon", icons: ["funders"], color: "icon-green", width: "4vw", height: "4vw" },
+          { chip: "icon", icons: ["ecosystem", "talented", "partners", "funders"], color: "icon-green", width: "4vw", height: "4vw" },
           { text: " Africa's boundless " },
           {
             chip: "image",
@@ -102,10 +102,10 @@ export const heroConfig: HeroConfig = {
         ],
         fr: [
           { text: "Nous construisons les " },
-          { chip: "icon-static", icons: ["ecosystem"], color: "icon-peach", width: "8vw", height: "4vw" },
+          { chip: "icon-static", icons: ["partners", "funders", "ecosystem", "talented"], color: "icon-peach", width: "8vw", height: "4vw" },
           { text: " systèmes qui " },
           { text: "libèrent", emphasis: true },
-          { chip: "icon", icons: ["funders"], color: "icon-green", width: "4vw", height: "4vw" },
+          { chip: "icon", icons: ["ecosystem", "talented", "partners", "funders"], color: "icon-green", width: "4vw", height: "4vw" },
           { text: " le " },
           { text: "potentiel illimité", emphasis: true },
           { text: " " },

@@ -1,8 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { CONTAINER_PADDING_CLASSES } from "@/components/layout/Container";
 
-const CONTAINER_PADDING = "px-container";
+// Mirrors the breakpoints every hero section already uses to switch from a
+// single stacked column to its 12-col grid at `lg`: 4 cols below `md`, 8 from
+// `md` to `lg`, 12 from `lg` up.
+function getColumnVisibility(index: number) {
+  if (index < 4) return "block";
+  if (index < 8) return "hidden md:block";
+  return "hidden lg:block";
+}
 
 function DesignGridOverlayInner() {
   const [isVisible, setIsVisible] = useState(false);
@@ -44,10 +52,10 @@ function DesignGridOverlayInner() {
       </button>
       {isVisible && (
         <div
-          className={`pointer-events-none fixed inset-0 z-[9998] flex gap-gutter ${CONTAINER_PADDING} bg-red-500/5`}
+          className={`pointer-events-none fixed inset-0 z-[9998] grid grid-cols-4 gap-gutter md:grid-cols-8 lg:grid-cols-12 ${CONTAINER_PADDING_CLASSES} bg-red-500/5`}
         >
           {Array.from({ length: 12 }).map((_, i) => (
-            <div key={i} className="h-full w-full bg-[#ff0000]/20" />
+            <div key={i} className={`h-full w-full bg-[#ff0000]/20 ${getColumnVisibility(i)}`} />
           ))}
         </div>
       )}

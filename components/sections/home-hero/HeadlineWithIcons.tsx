@@ -2,23 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 import Image from "next/image";
 import clsx from "clsx";
-import {
-  EcosystemIcon,
-  FundersIcon,
-  PartnersIcon,
-  TalentedIcon,
-} from "@/components/icons";
+import { ICON_MORPH_CYCLE, ICON_MORPH_PATHS, type HeadlineIconName } from "./icon-morph-paths";
 
-const ICONS = {
-  partners: PartnersIcon,
-  funders: FundersIcon,
-  ecosystem: EcosystemIcon,
-  talented: TalentedIcon,
-} as const;
+export type { HeadlineIconName };
 
-export type HeadlineIconName = keyof typeof ICONS;
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(MorphSVGPlugin);
+}
 
 export type ChipColor =
   | "impact-yellow"
@@ -51,6 +44,27 @@ export type HeadlineSegment =
 const DEFAULT_CHIP_SIZE = "1.3em";
 const IMAGE_INTERVAL_MS = 3000;
 
+const ICON_HOLD_DURATION = 1.6;
+const ICON_MORPH_DURATION = 1.0;
+
+function useIconMorphCycle(pathRef: React.RefObject<SVGPathElement | null>, startIndex: number) {
+  useEffect(() => {
+    const tl = gsap.timeline({ repeat: -1 });
+    for (let step = 0; step < ICON_MORPH_CYCLE.length; step++) {
+      const target = ICON_MORPH_CYCLE[(startIndex + step + 1) % ICON_MORPH_CYCLE.length];
+      tl.to(pathRef.current, {
+        morphSVG: { shape: ICON_MORPH_PATHS[target], map: "complexity", type: "rotational" },
+        duration: ICON_MORPH_DURATION,
+        ease: "power2.inOut",
+      }, `+=${ICON_HOLD_DURATION}`);
+    }
+
+    return () => {
+      tl.kill();
+    };
+  }, [pathRef, startIndex]);
+}
+
 function IconChip({
   icons,
   color,
@@ -63,7 +77,8 @@ function IconChip({
   height?: string;
 }) {
   const chipRef = useRef<HTMLSpanElement>(null);
-  const iconRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const pathRef = useRef<SVGPathElement>(null);
+  const startIndex = ICON_MORPH_CYCLE.indexOf(icons[0]);
 
   useEffect(() => {
     const morph = gsap.to(chipRef.current, {
@@ -75,24 +90,12 @@ function IconChip({
       ease: "sine.inOut",
     });
 
-    let cycle: gsap.core.Timeline | undefined;
-    if (icons.length > 1) {
-      gsap.set(iconRefs.current.slice(1), { opacity: 0, scale: 0.6 });
-      cycle = gsap.timeline({ repeat: -1 });
-      iconRefs.current.forEach((_, index) => {
-        const next = iconRefs.current[(index + 1) % icons.length];
-        const current = iconRefs.current[index];
-        cycle!
-          .to(current, { opacity: 0, scale: 0.6, duration: 0.4, ease: "power2.inOut" }, `+=1`)
-          .to(next, { opacity: 1, scale: 1, duration: 0.4, ease: "power2.inOut" }, "<");
-      });
-    }
-
     return () => {
       morph.kill();
-      cycle?.kill();
     };
-  }, [icons]);
+  }, []);
+
+  useIconMorphCycle(pathRef, startIndex);
 
   return (
     <span
@@ -103,20 +106,9 @@ function IconChip({
       )}
       style={{ width, height }}
     >
-      {icons.map((name, index) => {
-        const Icon = ICONS[name];
-        return (
-          <span
-            key={name}
-            ref={(el) => {
-              iconRefs.current[index] = el;
-            }}
-            className="absolute inset-0 flex items-center justify-center p-[22%]"
-          >
-            <Icon className="h-full w-full" />
-          </span>
-        );
-      })}
+      <svg viewBox="0 0 32 32" className="h-full w-full p-[22%]" fill="currentColor" aria-hidden="true">
+        <path ref={pathRef} d={ICON_MORPH_PATHS[ICON_MORPH_CYCLE[startIndex]]} />
+      </svg>
     </span>
   );
 }
@@ -132,41 +124,10 @@ function StaticIconChip({
   width?: string;
   height?: string;
 }) {
-  const wrapperRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const iconRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const pathRef = useRef<SVGPathElement>(null);
+  const startIndex = ICON_MORPH_CYCLE.indexOf(icons[0]);
 
-  useEffect(() => {
-    const wiggles = iconRefs.current.map((el) =>
-      el
-        ? gsap.to(el, {
-            rotate: 15,
-            scale: 1.12,
-            duration: 1.8,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-          })
-        : undefined,
-    );
-
-    let cycle: gsap.core.Timeline | undefined;
-    if (icons.length > 1) {
-      gsap.set(wrapperRefs.current.slice(1), { opacity: 0, scale: 0.6 });
-      cycle = gsap.timeline({ repeat: -1 });
-      wrapperRefs.current.forEach((_, index) => {
-        const next = wrapperRefs.current[(index + 1) % icons.length];
-        const current = wrapperRefs.current[index];
-        cycle!
-          .to(current, { opacity: 0, scale: 0.6, duration: 0.4, ease: "power2.inOut" }, `+=1`)
-          .to(next, { opacity: 1, scale: 1, duration: 0.4, ease: "power2.inOut" }, "<");
-      });
-    }
-
-    return () => {
-      wiggles.forEach((wiggle) => wiggle?.kill());
-      cycle?.kill();
-    };
-  }, [icons]);
+  useIconMorphCycle(pathRef, startIndex);
 
   return (
     <span
@@ -176,27 +137,9 @@ function StaticIconChip({
       )}
       style={{ width, height }}
     >
-      {icons.map((name, index) => {
-        const Icon = ICONS[name];
-        return (
-          <span
-            key={name}
-            ref={(el) => {
-              wrapperRefs.current[index] = el;
-            }}
-            className="absolute inset-0 flex items-center justify-center p-[16%]"
-          >
-            <span
-              ref={(el) => {
-                iconRefs.current[index] = el;
-              }}
-              className="inline-block h-full w-full"
-            >
-              <Icon className="h-full w-full" />
-            </span>
-          </span>
-        );
-      })}
+      <svg viewBox="0 0 32 32" className="h-full w-full p-[16%]" fill="currentColor" aria-hidden="true">
+        <path ref={pathRef} d={ICON_MORPH_PATHS[ICON_MORPH_CYCLE[startIndex]]} />
+      </svg>
     </span>
   );
 }
