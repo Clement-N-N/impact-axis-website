@@ -20,7 +20,7 @@ export function WhoWeServeCard({
         className,
       )}
     >
-      <span className="text-2xl font-medium text-black">
+      <span className="text-[clamp(1.25rem,1.875vw,1.75rem)] font-medium text-black">
         {getLocalizedText(card.label, locale)}
       </span>
 
