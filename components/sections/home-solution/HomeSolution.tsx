@@ -34,9 +34,11 @@ export function HomeSolution({ locale }: { locale: Locale }) {
 
     const ctx = gsap.context(() => {
       // Note: Button is deliberately excluded from these targets (section-animations skill).
-      const fadeTargets = [paragraphsRef.current, imageRef.current].filter(
-        (el): el is HTMLElement => !!el,
-      );
+      // Each paragraph reveals individually (staggered), not as one block.
+      const paragraphItems = paragraphsRef.current
+        ? gsap.utils.toArray<HTMLElement>(paragraphsRef.current.children)
+        : [];
+      const imageTarget = imageRef.current ? [imageRef.current] : [];
 
       if (!headlineRef.current) return;
 
@@ -47,13 +49,15 @@ export function HomeSolution({ locale }: { locale: Locale }) {
         onSplit(self) {
           if (prefersReducedMotion) {
             gsap.set(eyebrowRef.current, { opacity: 1, y: 0 });
-            gsap.set(fadeTargets, { opacity: 1, y: 0 });
+            gsap.set(paragraphItems, { opacity: 1, y: 0 });
+            gsap.set(imageTarget, { opacity: 1, y: 0 });
             gsap.set(self.lines, { yPercent: 0 });
             return;
           }
 
           gsap.set(eyebrowRef.current, { opacity: 0, y: 20 });
-          gsap.set(fadeTargets, { opacity: 0, y: 20 });
+          gsap.set(paragraphItems, { opacity: 0, y: 20 });
+          gsap.set(imageTarget, { opacity: 0, y: 20 });
           gsap.set(self.lines, { yPercent: 100 });
 
           const tl = gsap.timeline({
@@ -70,10 +74,17 @@ export function HomeSolution({ locale }: { locale: Locale }) {
               { yPercent: 0, duration: 0.6, ease: "power4.out", stagger: 0.12 },
               "-=0.3",
             )
+            .to(paragraphItems, {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power3.out",
+              stagger: 0.18,
+            })
             .to(
-              fadeTargets,
-              { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.08 },
-              "-=0.2",
+              imageTarget,
+              { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+              "-=0.3",
             );
 
           // Returning the timeline lets SplitText kill/redo it cleanly if

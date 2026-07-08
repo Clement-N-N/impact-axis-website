@@ -29,9 +29,10 @@ export function WhyWeExist({ locale }: { locale: Locale }) {
     let split: SplitText | undefined;
 
     const ctx = gsap.context(() => {
-      const fadeTargets = [eyebrowRef.current, paragraphsRef.current].filter(
-        (el): el is HTMLElement => !!el,
-      );
+      // Each paragraph reveals individually (staggered), not as one block.
+      const paragraphItems = paragraphsRef.current
+        ? gsap.utils.toArray<HTMLElement>(paragraphsRef.current.children)
+        : [];
 
       if (!headlineRef.current) return;
 
@@ -47,12 +48,14 @@ export function WhyWeExist({ locale }: { locale: Locale }) {
         autoSplit: true,
         onSplit(self) {
           if (prefersReducedMotion) {
-            gsap.set(fadeTargets, { opacity: 1, y: 0 });
+            gsap.set(eyebrowRef.current, { opacity: 1, y: 0 });
+            gsap.set(paragraphItems, { opacity: 1, y: 0 });
             gsap.set(self.lines, { yPercent: 0 });
             return;
           }
 
-          gsap.set(fadeTargets, { opacity: 0, y: 20 });
+          gsap.set(eyebrowRef.current, { opacity: 0, y: 20 });
+          gsap.set(paragraphItems, { opacity: 0, y: 20 });
           gsap.set(self.lines, { yPercent: 100 });
 
           const tl = gsap.timeline({
@@ -69,11 +72,13 @@ export function WhyWeExist({ locale }: { locale: Locale }) {
               { yPercent: 0, duration: 0.6, ease: "power4.out", stagger: 0.12 },
               "-=0.3",
             )
-            .to(
-              paragraphsRef.current,
-              { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
-              "-=0.2",
-            );
+            .to(paragraphItems, {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power3.out",
+              stagger: 0.18,
+            });
 
           // Returning the timeline lets SplitText kill/redo it cleanly if
           // autoSplit re-runs on a breakpoint change.
