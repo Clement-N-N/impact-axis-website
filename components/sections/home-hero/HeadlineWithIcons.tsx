@@ -78,7 +78,7 @@ function IconChip({
 }) {
   const chipRef = useRef<HTMLSpanElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
-  const startIndex = ICON_MORPH_CYCLE.indexOf(icons[0]);
+  const startIndex = Math.max(ICON_MORPH_CYCLE.indexOf(icons[0]), 0);
 
   useEffect(() => {
     const morph = gsap.to(chipRef.current, {
@@ -125,7 +125,7 @@ function StaticIconChip({
   height?: string;
 }) {
   const pathRef = useRef<SVGPathElement>(null);
-  const startIndex = ICON_MORPH_CYCLE.indexOf(icons[0]);
+  const startIndex = Math.max(ICON_MORPH_CYCLE.indexOf(icons[0]), 0);
 
   useIconMorphCycle(pathRef, startIndex);
 
