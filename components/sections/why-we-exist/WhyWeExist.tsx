@@ -3,13 +3,14 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 import { Container } from "@/components/layout/Container";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import { whyWeExistContent } from "./data";
 
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, SplitText);
 }
 
 export function WhyWeExist({ locale }: { locale: Locale }) {
@@ -25,33 +26,66 @@ export function WhyWeExist({ locale }: { locale: Locale }) {
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
+    let split: SplitText | undefined;
+
     const ctx = gsap.context(() => {
-      const targets = [eyebrowRef.current, headlineRef.current, paragraphsRef.current].filter(
+      const fadeTargets = [eyebrowRef.current, paragraphsRef.current].filter(
         (el): el is HTMLElement => !!el,
       );
 
-      if (prefersReducedMotion) {
-        gsap.set(targets, { opacity: 1, y: 0 });
-        return;
-      }
+      if (!headlineRef.current) return;
 
-      gsap.set(targets, { opacity: 0, y: 20 });
+      // Lines are revealed one after another (masked slide-up), matching the
+      // Lenis/darkroom.engineering title treatment. `mask: "lines"` wraps
+      // each line in its own overflow-hidden container automatically, and
+      // SplitText preserves the full headline for screen readers via an
+      // aria-label on the original element while the per-line spans are
+      // aria-hidden.
+      split = SplitText.create(headlineRef.current, {
+        type: "lines",
+        mask: "lines",
+        autoSplit: true,
+        onSplit(self) {
+          if (prefersReducedMotion) {
+            gsap.set(fadeTargets, { opacity: 1, y: 0 });
+            gsap.set(self.lines, { yPercent: 0 });
+            return;
+          }
 
-      gsap.to(targets, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        ease: "power3.out",
-        stagger: 0.08,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          once: true,
+          gsap.set(fadeTargets, { opacity: 0, y: 20 });
+          gsap.set(self.lines, { yPercent: 100 });
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 80%",
+              once: true,
+            },
+          });
+
+          tl.to(eyebrowRef.current, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" })
+            .to(
+              self.lines,
+              { yPercent: 0, duration: 0.6, ease: "power4.out", stagger: 0.12 },
+              "-=0.3",
+            )
+            .to(
+              paragraphsRef.current,
+              { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+              "-=0.2",
+            );
+
+          // Returning the timeline lets SplitText kill/redo it cleanly if
+          // autoSplit re-runs on a breakpoint change.
+          return tl;
         },
       });
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      split?.revert();
+    };
   }, []);
 
   return (
