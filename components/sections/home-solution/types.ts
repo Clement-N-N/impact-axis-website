@@ -6,4 +6,5 @@ export type HomeSolutionContent = {
   button: HeroButton;
   paragraphs: [LocalizedText, LocalizedText, LocalizedText];
   image: string;
+  imageAlt: LocalizedText;
 };
