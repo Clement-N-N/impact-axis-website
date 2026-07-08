@@ -1,6 +1,6 @@
 ---
 name: section-animations
-description: Add subtle, purposeful micro-animation to a specific page section in this app — scroll-triggered reveals, staggered content entrances, gentle parallax — using the house motion style (grounded in Emil Kowalski's Animations on the Web principles and this codebase's own existing GSAP/Framer Motion conventions). Trigger whenever asked to "animate this section", "add motion to X", "make X feel more alive", "add a scroll reveal", or "this section feels static". Never applies to buttons — that's explicitly out of scope. Deliberately restrained: subtle over spectacular, purposeful over decorative, and always paired with prefers-reduced-motion handling, matching how this app's best-animated component (the mega menu) already does it.
+description: Add subtle, purposeful micro-animation to a specific page section in this app — scroll-triggered reveals, staggered content entrances, gentle parallax, and masked line-stagger title reveals — using the house motion style (grounded in Emil Kowalski's Animations on the Web principles, the Lenis/darkroom.engineering title-reveal reference, and this codebase's own existing GSAP/Framer Motion conventions). Trigger whenever asked to "animate this section", "add motion to X", "make X feel more alive", "add a scroll reveal", "animate the title/headline", or "this section feels static". Never applies to buttons — that's explicitly out of scope. Deliberately restrained: subtle over spectacular, purposeful over decorative, and always paired with prefers-reduced-motion handling, matching how this app's best-animated component (the mega menu) already does it.
 ---
 
 # Section animations
@@ -22,6 +22,15 @@ animations should feel natural, be fast, have a clear purpose, stay
 performant, and respect people who've asked for less motion. A page covered
 in animation is worse than a page with none — the goal is a handful of
 well-placed moments, not motion everywhere.
+
+**Titles (`h1`/`h2` section headlines) get their own house-standard
+treatment: a masked line-stagger reveal**, modeled directly on the title
+animation used on the Lenis/darkroom.engineering site — each line slides up
+from fully hidden (no fade, pure clip reveal) one after another, rather than
+the plain fade-up used for everything else. See "Title reveal: masked line
+stagger" in `references/scroll-reveal-recipe.md` for the full recipe. This
+is now the default for any headline this skill touches — not a one-off
+choice for a single section.
 
 **Buttons are explicitly out of scope for this skill.** Don't add hover
 scale, press effects, or entrance animation to `components/ui/Button.tsx` or
@@ -51,7 +60,11 @@ skill in this repo also flags — don't repeat that gap here).
   follow a `Container` grid with an eyebrow, a headline, one or more
   paragraphs, and sometimes an image (`WhyWeExist.tsx`, `HomeSolution.tsx`
   are both this shape). These groups are your stagger units — animate them
-  as a small sequence, not every word or every line individually.
+  as a small sequence, not every word individually.
+- Does the section have an `h1`/`h2` title? If so, it gets the masked
+  line-stagger reveal (Step 2), not the plain fade-up. Everything else in
+  the section (eyebrow, paragraphs, image, cards) still uses the fade-up,
+  sequenced in the same timeline as the title.
 - What animates immediately before/after it on the page? A section shouldn't
   introduce a jarringly different motion feel than its neighbors. If the
   section above it uses a 0.4s power3.out fade-up, don't give the next one a
@@ -70,12 +83,26 @@ introduce it for a single component; match the existing manual
 before/after examples against the real `WhyWeExist` and `HomeSolution`
 sections.
 
-In short: content groups start at `opacity: 0, y: 16-24` and animate to
-`opacity: 1, y: 0` over 400-600ms with `power3.out` easing once the section
-scrolls into view (`ScrollTrigger` with `start: "top 80%"`, fired once, not
-`scrub`), with a small stagger (0.06-0.1s) between groups if there's more
-than one. This is the same shape as `MegaMenu.tsx`'s open animation, just
-triggered by scroll position instead of a click.
+**Titles get a different, more specific treatment than everything else.**
+Every `h1`/`h2` headline in an animated section uses the masked line-stagger
+reveal (see "Title reveal: masked line stagger" in the recipe doc) — the
+house standard modeled on the Lenis/darkroom.engineering site: each line
+slides up from fully hidden (`yPercent: 100 → 0`, no opacity change) inside
+an auto-generated overflow-hidden mask, one line after another. This uses
+GSAP's `SplitText` plugin (`type: "lines", mask: "lines", autoSplit: true`)
+— free and bundled with `gsap@3.15+`, which this app already has installed,
+so this is not a new dependency (GSAP's bonus plugins, including SplitText,
+became free for everyone after the Webflow acquisition — verify the
+installed `gsap` version is 3.13+ before relying on this if it's ever
+downgraded). Everything else (eyebrow, paragraphs, images, cards) keeps the
+plain fade-up described below, sequenced in the same timeline as the title.
+
+For non-title content groups: they start at `opacity: 0, y: 16-24` and
+animate to `opacity: 1, y: 0` over 400-600ms with `power3.out` easing once
+the section scrolls into view (`ScrollTrigger` with `start: "top 80%"`,
+fired once, not `scrub`), with a small stagger (0.06-0.1s) between groups if
+there's more than one. This is the same shape as `MegaMenu.tsx`'s open
+animation, just triggered by scroll position instead of a click.
 
 For a section that's mostly a single large image (nothing to stagger),
 a subtle scale-in (`scale: 1.05 → 1`, same duration/easing) or the existing
@@ -92,8 +119,10 @@ the orchestrated multi-step content reveal inside it. Follow that split:
 
 - **Framer Motion**: a simple, React-state-driven transition (something
   toggling based on a prop/state value — mount/unmount, boolean show/hide).
-- **GSAP + ScrollTrigger**: anything scroll-triggered, multi-step, or
-  involving a stagger sequence — which is most of what this skill does.
+- **GSAP + ScrollTrigger (+ SplitText for titles)**: anything scroll-
+  triggered, multi-step, or involving a stagger sequence — which is most of
+  what this skill does, including the masked line-stagger title reveal.
+  SplitText is part of the same GSAP install, not a separate tool.
 
 Don't introduce a third animation approach (CSS `@keyframes`, a new library)
 for something either existing tool already handles well.
@@ -104,9 +133,11 @@ For each section: what you animated and why it earns the motion (tie it back
 to a purpose — first-view reveal, guiding attention to a headline, adding
 depth to an image — not "because it looked static"); the exact
 duration/easing/stagger values used and that they match the house style;
-confirmation that `prefers-reduced-motion` is handled; and confirmation that
-no button inside the section was touched. Run `npx prettier --write <file>`
-on anything you touch.
+confirmation of which reveal each element got (masked line-stagger for the
+title vs. plain fade-up for everything else); confirmation that
+`prefers-reduced-motion` is handled; and confirmation that no button inside
+the section was touched. Run `npx prettier --write <file>` on anything you
+touch.
 
 ## Step 5 — Lenis (only if asked)
 
@@ -134,9 +165,12 @@ anything.
   layout properties elsewhere).
 - Don't add a new animation dependency (a library beyond GSAP/Framer Motion,
   or Lenis) without it being an explicit, confirmed decision — see Step 5.
+  `SplitText` is exempt from this since it ships inside the already-installed
+  `gsap` package, not a new package.
 - Don't stagger at a granularity that makes scrolling feel slow — animate
-  content groups (headline, paragraph block, image), not individual words,
-  letters, or lines, unless a specific hero moment calls for it and you've
-  flagged that choice.
+  content groups (headline, paragraph block, image), not individual words
+  or characters. Line-level stagger is the one accepted exception, and only
+  for titles via the masked line-stagger recipe — don't extend word/char
+  splitting to body copy or other content groups.
 - Don't touch components you weren't asked about, even ones that would
   clearly benefit — mention them in your report instead.

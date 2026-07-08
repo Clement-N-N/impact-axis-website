@@ -25,4 +25,8 @@ export const homeSolutionContent: HomeSolutionContent = {
     },
   ],
   image: "/images/IMG_7064.jpg",
+  imageAlt: {
+    en: "TODO: describe what this image shows",
+    fr: "TODO : décrire ce que montre cette image",
+  },
 };
