@@ -40,7 +40,7 @@ export function CollageDescriptionHero({
             <h1 className="text-5xl font-medium text-white w-[95%] lg:col-span-6">
               {getLocalizedText(data.headline, locale)}
             </h1>
-            <p className="border-l-2 border-white/25 pl-3 text-base text-white/80 lg:col-span-3 lg:col-start-3">
+            <p className="border-l-2 border-white/25 pl-3 text-base text-white lg:col-span-3 lg:col-start-3">
               {getLocalizedText(data.description, locale)}
             </p>
             <Button
