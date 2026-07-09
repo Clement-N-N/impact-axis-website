@@ -212,7 +212,7 @@ export function MegaMenu({ id, isOpen }: { id: string; isOpen: boolean }) {
       initial={{ height: 0 }}
       animate={{ height: isOpen ? "auto" : 0 }}
       transition={{ duration: 0.25, ease: "easeInOut" }}
-      className="absolute inset-x-0 top-full z-50 overflow-hidden border-t border-border bg-white"
+      className="absolute inset-x-0 top-full z-2000 overflow-hidden border-t border-border bg-white"
     >
       <Container className="grid grid-cols-1 gap-gutter py-6 lg:grid-cols-12">
         <div ref={imageRef} className={clsx(imageColSpanStyles({ locale: locale === "fr" ? "fr" : "en" }), "overflow-hidden")}>

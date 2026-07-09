@@ -46,7 +46,13 @@ export function ExampleSection() {
     ).matches;
 
     const ctx = gsap.context(() => {
-      const targets = [eyebrowRef.current, paragraphsRef.current].filter(
+      // If the section has more than one paragraph, animate each paragraph
+      // individually (see "Multiple paragraphs" below) instead of treating
+      // the wrapper as a single fade target.
+      const paragraphItems = paragraphsRef.current
+        ? gsap.utils.toArray<HTMLElement>(paragraphsRef.current.children)
+        : [];
+      const targets = [eyebrowRef.current, ...paragraphItems].filter(
         (el): el is HTMLElement => !!el,
       );
 
@@ -101,6 +107,49 @@ Key details:
   `references/prefers-reduced-motion.md` for why this exact shape (skip the
   animation, don't skip the content) is the right approach.
 
+## Multiple paragraphs: stagger each one, not the block
+
+If a content group is a wrapper `<div>` around two or more `<p>` tags
+(`WhyWeExist.tsx` has 2, `HomeSolution.tsx` has 3), **don't treat the
+wrapper as one fade target.** Query its children with
+`gsap.utils.toArray(wrapperRef.current.children)` and animate that array
+directly, so each paragraph reveals as its own beat rather than the whole
+block appearing at once.
+
+Use a **slower stagger for paragraphs than the general 0.08s group
+stagger** — `0.18s` is the house value. At 0.08s, three paragraphs finish
+staggering in under a quarter second and read as one simultaneous block
+regardless of the per-child split; 0.18s is slow enough that each paragraph
+is visibly a distinct step without dragging out the whole reveal. Duration
+and ease stay the same as the rest of the fade-up (`0.5s`, `power3.out`) —
+only the stagger interval changes.
+
+```tsx
+const paragraphItems = paragraphsRef.current
+  ? gsap.utils.toArray<HTMLElement>(paragraphsRef.current.children)
+  : [];
+
+// ...inside the same gsap.context, after the title reveal in the timeline:
+tl.to(paragraphItems, {
+  opacity: 1,
+  y: 0,
+  duration: 0.5,
+  ease: "power3.out",
+  stagger: 0.18,
+});
+```
+
+If the section also has an image or other single element after the
+paragraphs (e.g. `HomeSolution.tsx`), add it as its own `.to()` step
+overlapping the tail of the paragraph stagger (`"-=0.3"` position) rather
+than folding it into the same staggered array — an image isn't part of the
+paragraph rhythm and reads better as a distinct next beat. Note: an
+element's fade-up *entrance* and a separate continuous scroll-scrubbed
+parallax on its inner content (the same `scrub: true` pattern
+`ParallaxImage.tsx` uses) are independent and can be layered on the same
+element without conflict — the entrance plays once, the parallax runs for
+as long as the section is in the viewport.
+
 ## Title reveal: masked line stagger (house standard for h1/h2)
 
 Titles don't use the plain fade-up above. They use a **masked line-stagger
@@ -144,9 +193,11 @@ export function ExampleSection() {
     let split: SplitText | undefined;
 
     const ctx = gsap.context(() => {
-      const fadeTargets = [eyebrowRef.current, paragraphsRef.current].filter(
-        (el): el is HTMLElement => !!el,
-      );
+      // Per "Multiple paragraphs" above: each <p> is its own stagger target,
+      // not the wrapping div.
+      const paragraphItems = paragraphsRef.current
+        ? gsap.utils.toArray<HTMLElement>(paragraphsRef.current.children)
+        : [];
 
       if (!headlineRef.current) return;
 
@@ -156,12 +207,14 @@ export function ExampleSection() {
         autoSplit: true,
         onSplit(self) {
           if (prefersReducedMotion) {
-            gsap.set(fadeTargets, { opacity: 1, y: 0 });
+            gsap.set(eyebrowRef.current, { opacity: 1, y: 0 });
+            gsap.set(paragraphItems, { opacity: 1, y: 0 });
             gsap.set(self.lines, { yPercent: 0 });
             return;
           }
 
-          gsap.set(fadeTargets, { opacity: 0, y: 20 });
+          gsap.set(eyebrowRef.current, { opacity: 0, y: 20 });
+          gsap.set(paragraphItems, { opacity: 0, y: 20 });
           gsap.set(self.lines, { yPercent: 100 });
 
           const tl = gsap.timeline({
@@ -178,11 +231,13 @@ export function ExampleSection() {
               { yPercent: 0, duration: 0.6, ease: "power4.out", stagger: 0.12 },
               "-=0.3",
             )
-            .to(
-              paragraphsRef.current,
-              { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
-              "-=0.2",
-            );
+            .to(paragraphItems, {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power3.out",
+              stagger: 0.18,
+            });
 
           // Returning the timeline lets SplitText kill/redo it cleanly if
           // autoSplit re-runs after a responsive re-wrap.
@@ -239,26 +294,29 @@ Key details:
   not instead of it.
 - Only use this recipe for the section's actual `h1`/`h2` title. Don't
   apply line-splitting to eyebrows (single short line — no visual benefit)
-  or paragraphs (Step 2's "Never" list already rules out that granularity
-  of stagger for body copy).
+  or paragraphs — paragraphs get their own, separate treatment (per-`<p>`
+  stagger, not per-line), see "Multiple paragraphs" above.
 
 ## Applying it to this app's actual static sections
 
-**`components/sections/why-we-exist/WhyWeExist.tsx`** — eyebrow `span` and
-paragraph `div` use the plain fade-up; the `h2` headline uses the masked
-line-stagger recipe above. All three are sequenced in one
-`gsap.timeline()`: eyebrow fades in, the headline's lines stagger up
-overlapping the tail of that fade, then the paragraph block fades in
-overlapping the tail of the headline.
+**`components/sections/why-we-exist/WhyWeExist.tsx`** — eyebrow `span` uses
+the plain fade-up; the `h2` headline uses the masked line-stagger recipe;
+its 2 paragraphs each reveal individually per "Multiple paragraphs" above
+(`0.18s` stagger). All sequenced in one `gsap.timeline()`: eyebrow fades in,
+the headline's lines stagger up overlapping the tail of that fade, then the
+two paragraphs stagger in one after another.
 
 **`components/sections/home-solution/HomeSolution.tsx`** — same shape, plus
 an image in its own grid cell and a `<Button>` in the headline column. The
-`h2` headline gets the masked line-stagger; eyebrow, paragraphs, and image
-share the plain fade-up (image can stagger alongside the paragraphs, or use
-a slightly slower scale-in from `scale: 1.05` if you want it to read
-distinctly from the text). **Do not** add the `<Button>` to the animated
-targets — leave it exactly as it renders today, per SKILL.md's explicit
-exclusion.
+`h2` headline gets the masked line-stagger; eyebrow fades in first; its 3
+paragraphs each reveal individually (`0.18s` stagger, per "Multiple
+paragraphs" above); the image fades in last, overlapping the tail of the
+paragraph stagger. The image also carries its own independent, continuous
+scroll-scrubbed parallax on its inner content (matching
+`ParallaxImage.tsx`'s `scrub: true` pattern) — that's a separate effect
+layered underneath the one-time fade-up entrance, not part of this skill's
+reveal timeline. **Do not** add the `<Button>` to the animated targets —
+leave it exactly as it renders today, per SKILL.md's explicit exclusion.
 
 For a hero variant's static text block (headline + CTA row, e.g.
 `CollageDarkHero.tsx`), the same title recipe works on page load rather than

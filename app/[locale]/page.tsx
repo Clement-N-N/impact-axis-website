@@ -4,6 +4,8 @@ import { WhyWeExist } from "@/components/sections/why-we-exist";
 import { ParallaxImage } from "@/components/sections/parallax-image";
 import { HomeSolution } from "@/components/sections/home-solution";
 import { WhoWeServe } from "@/components/sections/who-we-serve";
+import { WhatWeBuild } from "@/components/sections/what-we-build";
+import { OurImpact } from "@/components/sections/our-impact";
 import type { Locale } from "@/i18n/routing";
 
 export default async function Home({
@@ -22,6 +24,8 @@ export default async function Home({
       <HomeSolution locale={locale as Locale} />
       <ParallaxImage src="/images/pattern-1.png" heightClass="h-[35vh]" padded={false} />
       <WhoWeServe locale={locale as Locale} />
+      <WhatWeBuild locale={locale as Locale} />
+      <OurImpact locale={locale as Locale} />
     </>
   );
 }

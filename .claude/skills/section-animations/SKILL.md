@@ -60,7 +60,10 @@ skill in this repo also flags — don't repeat that gap here).
   follow a `Container` grid with an eyebrow, a headline, one or more
   paragraphs, and sometimes an image (`WhyWeExist.tsx`, `HomeSolution.tsx`
   are both this shape). These groups are your stagger units — animate them
-  as a small sequence, not every word individually.
+  as a small sequence, not every word individually. If a group is two or
+  more `<p>` tags, each paragraph gets its own stagger step (see "Multiple
+  paragraphs" in the recipe doc) rather than the whole block fading in at
+  once.
 - Does the section have an `h1`/`h2` title? If so, it gets the masked
   line-stagger reveal (Step 2), not the plain fade-up. Everything else in
   the section (eyebrow, paragraphs, image, cards) still uses the fade-up,
@@ -100,9 +103,18 @@ plain fade-up described below, sequenced in the same timeline as the title.
 For non-title content groups: they start at `opacity: 0, y: 16-24` and
 animate to `opacity: 1, y: 0` over 400-600ms with `power3.out` easing once
 the section scrolls into view (`ScrollTrigger` with `start: "top 80%"`,
-fired once, not `scrub`), with a small stagger (0.06-0.1s) between groups if
-there's more than one. This is the same shape as `MegaMenu.tsx`'s open
-animation, just triggered by scroll position instead of a click.
+fired once, not `scrub`), with a small stagger (0.06-0.1s) between distinct
+groups (eyebrow, paragraph block, image) if there's more than one. This is
+the same shape as `MegaMenu.tsx`'s open animation, just triggered by scroll
+position instead of a click.
+
+**When a group is itself multiple paragraphs, stagger each paragraph
+individually at a slower interval than the group stagger** — `0.18s`, not
+0.08s. See "Multiple paragraphs: stagger each one, not the block" in
+`references/scroll-reveal-recipe.md`. At the 0.08s group-level pace,
+several paragraphs finish staggering in well under a quarter second and
+read as one simultaneous block regardless of the per-child split — too
+fast to register as a stagger at all.
 
 For a section that's mostly a single large image (nothing to stagger),
 a subtle scale-in (`scale: 1.05 → 1`, same duration/easing) or the existing
@@ -168,9 +180,11 @@ anything.
   `SplitText` is exempt from this since it ships inside the already-installed
   `gsap` package, not a new package.
 - Don't stagger at a granularity that makes scrolling feel slow — animate
-  content groups (headline, paragraph block, image), not individual words
-  or characters. Line-level stagger is the one accepted exception, and only
-  for titles via the masked line-stagger recipe — don't extend word/char
-  splitting to body copy or other content groups.
+  content groups (headline, paragraphs, image), not individual words or
+  characters. Line-level stagger is accepted for titles via the masked
+  line-stagger recipe; paragraph-level stagger (one step per `<p>`, `0.18s`
+  apart) is accepted for multi-paragraph groups. Don't extend word/char
+  splitting to body copy, and don't split a single paragraph's own text
+  into smaller staggered pieces.
 - Don't touch components you weren't asked about, even ones that would
   clearly benefit — mention them in your report instead.

@@ -1,6 +1,6 @@
 ---
 name: responsive-components
-description: Make a specific Next.js/Tailwind component or page section in this app responsive across its four breakpoints (mobile, tablet, desktop/base, extra-large), using the 4/8/12-column grid shown by DesignGridOverlay and the fluid vw-based type scale in app/globals.css. Trigger whenever asked to "make X responsive", "fix X on mobile/tablet", "add breakpoints to X", "this section breaks on smaller screens", or when reviewing a component that only has lg: styling and stacks as grid-cols-1 below it. Deliberately conservative: skips components built on GSAP timelines, SVG morphing, or hand-tuned absolute-position art direction (collages, slideshows) and reports them for manual review instead of guessing and risking a broken desktop layout. Always checks whether font sizes and spacing still read correctly at mobile widths, since this app's type scale is tuned for a 1440px viewport and does not automatically stay legible below it.
+description: Make a specific Next.js/Tailwind component or page section in this app responsive across its four breakpoints (mobile, tablet, desktop/base, extra-large), using the 4/8/12-column grid shown by DesignGridOverlay, the fluid vw-based type scale in app/globals.css, and correct vertical sizing (image aspect ratios, vh/dvh heights) at mobile widths. Trigger whenever asked to "make X responsive", "fix X on mobile/tablet", "add breakpoints to X", "this section breaks on smaller screens", "images/sections are too tall on mobile", or when reviewing a component that only has lg: styling and stacks as grid-cols-1 below it. Deliberately conservative: skips components built on GSAP timelines, SVG morphing, or hand-tuned absolute-position art direction (collages, slideshows) and reports them for manual review instead of guessing and risking a broken desktop layout. Always checks whether font sizes, spacing, and vertical heights/aspect ratios still make sense at mobile widths, since this app's type scale and several image containers are tuned for a 1440px viewport and don't automatically adapt below it.
 ---
 
 # Making components responsive
@@ -43,6 +43,12 @@ Also check:
 - Whether it already has partial responsive treatment. Existing `md:`/`lg:`
   classes are almost always intentional — extend them, don't replace them
   wholesale.
+- Whether any image, video, or section wrapper has a fixed `aspect-[...]`,
+  `h-[Nvh]`, or `h-[Npx]` value applied at every breakpoint. These don't
+  cause the kind of overflow bug a missing grid breakpoint does, but they
+  can make a component take up a wildly different — usually excessive —
+  share of the screen on mobile. See "Fixing vertical space" (Step 4) and
+  `references/vertical-space-and-images.md`.
 
 ## Step 2 — Triage: safe to fix vs. hand back
 
@@ -102,7 +108,39 @@ When converting a span from the 12-column desktop grid down to 8 (tablet) or
   than hardcoding new padding or gap values — they already scale correctly
   per breakpoint.
 
-## Step 4 — Fixing typography and spacing
+## Step 4 — Fixing vertical space: heights, aspect ratios, and vh units
+
+This is a separate axis from the horizontal grid work in Step 3, and it's
+just as often missing. Read `references/vertical-space-and-images.md` for
+the full reasoning and the concrete examples already in this codebase
+(`HomeSolution.tsx`'s and `WhatWeBuildCarousel.tsx`'s fixed `aspect-[4/5]`,
+`ParallaxImage.tsx`'s fixed `h-[55vh]`/`h-[35vh]`, `WhatWeBuildOverlay.tsx`'s
+fixed `h-[400px]`). The short version:
+
+1. A fixed `aspect-[...]` on an image gives it the same shape at every
+   breakpoint. At desktop that image usually sits beside other content, so
+   its height is naturally bounded; on mobile everything stacks into one
+   column, so that same aspect ratio can turn the image into a much taller
+   block than it needs to be, stacked on top of (not beside) the rest of
+   the section's content. Give it a shorter/wider ratio at mobile and let
+   it grow at `lg` (`aspect-[4/3] lg:aspect-[4/5]`), the same way spans get
+   reassigned per breakpoint in Step 3.
+2. A fixed `h-[Nvh]` height (as `ParallaxImage.tsx` uses) means something
+   different on a phone's tall, narrow viewport than on a wide desktop one.
+   Consider a breakpoint-varied value (`h-[35vh] lg:h-[55vh]`) rather than
+   one number everywhere — but if the value looks like a deliberate
+   art-direction choice, flag it instead of guessing at a replacement.
+3. A full-viewport height (`calc(100vh - ...)`) should generally use
+   `100dvh` instead of `100vh` so mobile browser chrome (address bar
+   show/hide) doesn't cause content to be cut off or need extra scroll to
+   reveal. This is different from #2 above — only applies to genuinely
+   full-viewport elements, not art-directed fractional heights.
+4. Full-bleed background images that just fill their parent's
+   content-driven height (`fill` + `object-cover`, no `aspect-[...]`/
+   `h-[Nvh]` on the image or its wrapper) are already fine — don't flag or
+   change these.
+
+## Step 5 — Fixing typography and spacing
 
 This is the part most likely to get skipped by accident, and the user
 explicitly cares about it: **font sizes and spacing must still make sense on
@@ -136,7 +174,7 @@ before/after examples. The short version:
    headlines can go smaller proportionally but should still hold a sane
    floor, generally not under ~1.5rem).
 
-## Step 5 — Report back
+## Step 6 — Report back
 
 After each run, summarize per component:
 
@@ -147,6 +185,9 @@ After each run, summarize per component:
 - **Judgment calls**: any span/size you picked because there was no clean
   snap (see Step 3) — flag these even in components you otherwise fixed
   fully.
+- **Vertical space**: any fixed `aspect-[...]`, `h-[Nvh]`, or `h-[Npx]`
+  found (Step 4) — the breakpoint-varied fix you applied, or a flag if it
+  looked like a deliberate art-direction choice.
 - **Manual QA reminder**: tell the user to toggle the grid overlay (Alt+G in
   dev) at each breakpoint to visually confirm columns line up, since this
   skill can't render the page itself.

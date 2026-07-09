@@ -24,6 +24,7 @@ export function HomeSolution({ locale }: { locale: Locale }) {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const paragraphsRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+  const imageParallaxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -92,6 +93,23 @@ export function HomeSolution({ locale }: { locale: Locale }) {
           return tl;
         },
       });
+
+      if (!prefersReducedMotion) {
+        gsap.fromTo(
+          imageParallaxRef.current,
+          { yPercent: -15 },
+          {
+            yPercent: 15,
+            ease: "none",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          },
+        );
+      }
     }, sectionRef);
 
     return () => {
@@ -146,14 +164,16 @@ export function HomeSolution({ locale }: { locale: Locale }) {
 
         <div
           ref={imageRef}
-          className="relative col-span-4 aspect-[4/5] md:col-span-8 lg:col-span-4 lg:col-start-9 lg:row-start-2"
+          className="relative col-span-4 aspect-[4/5] overflow-hidden md:col-span-8 lg:col-span-4 lg:col-start-9 lg:row-start-2"
         >
-          <Image
-            src={data.image}
-            alt={getLocalizedText(data.imageAlt, locale)}
-            fill
-            className="object-cover"
-          />
+          <div ref={imageParallaxRef} className="absolute inset-x-0 -top-[15%] -bottom-[15%]">
+            <Image
+              src={data.image}
+              alt={getLocalizedText(data.imageAlt, locale)}
+              fill
+              className="object-cover"
+            />
+          </div>
         </div>
       </Container>
     </section>

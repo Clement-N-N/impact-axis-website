@@ -24,7 +24,7 @@ export const homeSolutionContent: HomeSolutionContent = {
       fr: "En privilégiant les compétences durables et l'expérience appliquée plutôt que les seuls diplômes, nous raccourcissons la transition entre l'éducation et l'emploi et permettons aux jeunes talents d'accéder à des opportunités significatives avec clarté et compétence.",
     },
   ],
-  image: "/images/IMG_7064.jpg",
+  image: "/images/alumni-1.jpg",
   imageAlt: {
     en: "TODO: describe what this image shows",
     fr: "TODO : décrire ce que montre cette image",
