@@ -79,3 +79,15 @@ export type HeroVariantProps<T extends HeroContent> = {
   data: T;
   locale: Locale;
 };
+
+export const HERO_VARIANT_IDS: readonly HeroVariantId[] = [
+  "promo-card",
+  "overlay-welcome",
+  "collage-dark",
+  "collage-description",
+  "fullbleed-overlay",
+];
+
+export function isHeroVariantId(value: unknown): value is HeroVariantId {
+  return typeof value === "string" && (HERO_VARIANT_IDS as readonly string[]).includes(value);
+}

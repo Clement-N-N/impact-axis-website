@@ -1,0 +1,25 @@
+{
+  "subscribe": {
+    "title": "Rejoignez le mouvement",
+    "subtitle": "Abonnez-vous à notre newsletter et tentez de faire partie de quelque chose d'extraordinaire.",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "emailPlaceholder": "johndoe@email.com",
+    "button": "S'abonner"
+  },
+  "columns": {
+    "learnMore": "En savoir plus",
+    "workWithUs": "Travailler avec nous"
+  },
+  "copyright": "Copyright © {startYear}-{endYear} Impact. Tous droits réservés.",
+  "address": "Rond-point Express, Biyem-Assi, Yaoundé, Cameroun,",
+  "emailLabel": "E-mail :",
+  "email": "info@impact-axis.org",
+  "telLabel": "Tél :",
+  "tel": "+237 680816656",
+  "legal": {
+    "termsOfUse": "Conditions d'utilisation",
+    "privacyPolicy": "Politique de confidentialité",
+    "donorPrivacyPolicy": "Politique de confidentialité des donateurs"
+  }
+}

@@ -6,6 +6,10 @@ import { HomeSolution } from "@/components/sections/home-solution";
 import { WhoWeServe } from "@/components/sections/who-we-serve";
 import { WhatWeBuild } from "@/components/sections/what-we-build";
 import { OurImpact } from "@/components/sections/our-impact";
+import { HomeTestimonials } from "@/components/sections/home-testimonials";
+import { HomeBlog } from "@/components/sections/home-blog";
+import { HomeFaq } from "@/components/sections/home-faq";
+import { BottomCta } from "@/components/sections/bottom-cta";
 import type { Locale } from "@/i18n/routing";
 
 export default async function Home({
@@ -26,6 +30,10 @@ export default async function Home({
       <WhoWeServe locale={locale as Locale} />
       <WhatWeBuild locale={locale as Locale} />
       <OurImpact locale={locale as Locale} />
+      <HomeTestimonials locale={locale as Locale} />
+      <HomeBlog locale={locale as Locale} />
+      <HomeFaq locale={locale as Locale} />
+      <BottomCta locale={locale as Locale} />
     </>
   );
 }

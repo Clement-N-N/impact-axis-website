@@ -6,9 +6,11 @@ import { programsTranslations } from "./programs";
 import { blogTranslations } from "./blog";
 import { impactTranslations } from "./impact";
 import { navTranslations } from "./nav";
+import { footerTranslations } from "./footer";
 
 const messages = {
   nav: navTranslations.en,
+  footer: footerTranslations.en,
   home: homeTranslations.en,
   about: aboutTranslations.en,
   whatWeDo: whatWeDoTranslations.en,

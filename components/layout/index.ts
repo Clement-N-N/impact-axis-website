@@ -1,4 +1,5 @@
 export { Container } from "./Container";
+export { Footer } from "./Footer";
 export { LanguageSwitcher } from "./LanguageSwitcher";
 export { Logo } from "./Logo";
 export { MegaMenu } from "./MegaMenu";

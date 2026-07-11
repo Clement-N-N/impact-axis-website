@@ -17,6 +17,11 @@
 /.next/
 /out/
 
+# sanity studio
+/studio/node_modules
+/studio/.sanity
+/studio/dist
+
 # production
 /build
 
@@ -32,6 +37,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env*.example
 
 # vercel
 .vercel

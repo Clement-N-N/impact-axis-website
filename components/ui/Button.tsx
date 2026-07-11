@@ -10,6 +10,7 @@ const buttonStyles = cva(
         primary: "bg-impact-yellow text-black py-1 pr-6",
         dark: "bg-black text-white py-1 pr-6",
         text: "text-black underline-offset-4 hover:underline px-6 py-1",
+        white: "bg-white text-impact-blue py-1 pr-6",
       },
     },
     defaultVariants: { variant: "primary" },

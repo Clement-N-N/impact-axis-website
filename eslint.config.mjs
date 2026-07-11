@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Sanity Studio is a separate Vite-based app with its own package.json/lint
+    // setup — Next.js-specific rules (react-hooks/refs, next/image, etc.) don't
+    // apply to it.
+    "studio/**",
   ]),
 ]);
 

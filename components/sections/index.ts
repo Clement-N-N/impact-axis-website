@@ -5,3 +5,7 @@ export { HomeSolution } from "./home-solution";
 export { WhoWeServe } from "./who-we-serve";
 export { WhatWeBuild } from "./what-we-build";
 export { OurImpact } from "./our-impact";
+export { HomeTestimonials } from "./home-testimonials";
+export { HomeBlog } from "./home-blog";
+export { HomeFaq } from "./home-faq";
+export { BottomCta } from "./bottom-cta";
