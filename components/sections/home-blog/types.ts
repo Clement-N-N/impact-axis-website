@@ -4,7 +4,7 @@ export type BlogPost = {
   image: string;
   title: LocalizedText;
   excerpt: LocalizedText;
-  date: string;
+  date: LocalizedText;
   href: string;
 };
 

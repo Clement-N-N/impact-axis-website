@@ -18,7 +18,8 @@ export const homeBlogContent: HomeBlogContent = {
         en: "Are you a young Cameroonian ready to take charge of your future? The Goodwill Fellowship 2026 offers a unique chance to develop leadership skills, gain practical experience, and connect with a community of changemakers.",
         fr: "Êtes-vous un jeune Camerounais prêt à prendre en main votre avenir ? La bourse Goodwill 2026 offre une occasion unique de développer des compétences en leadership, d'acquérir une expérience pratique et de rejoindre une communauté d'acteurs du changement.",
       },
-      date: "Jun 13, 2026",
+      // TODO: fr date is a draft translation — flag for native/fluent French review.
+      date: { en: "Jun 13, 2026", fr: "13 juin 2026" },
       href: "#",
     },
     {
@@ -31,7 +32,8 @@ export const homeBlogContent: HomeBlogContent = {
         en: "Today, as we celebrate International Women's Day, we reflect on the young women shaping the future of their communities through leadership, innovation, and resilience.",
         fr: "Aujourd'hui, alors que nous célébrons la Journée internationale des femmes, nous rendons hommage aux jeunes femmes qui façonnent l'avenir de leurs communautés par le leadership, l'innovation et la résilience.",
       },
-      date: "Mar 9, 2025",
+      // TODO: fr date is a draft translation — flag for native/fluent French review.
+      date: { en: "Mar 9, 2025", fr: "9 mars 2025" },
       href: "#",
     },
     {
@@ -44,7 +46,8 @@ export const homeBlogContent: HomeBlogContent = {
         en: "Did you know that nearly three-quarters of young graduates struggle to find work that matches their skills? Here's how one fellow changed that story for his community.",
         fr: "Saviez-vous que près des trois quarts des jeunes diplômés peinent à trouver un emploi correspondant à leurs compétences ? Voici comment un boursier a changé cette réalité pour sa communauté.",
       },
-      date: "Jun 9, 2024",
+      // TODO: fr date is a draft translation — flag for native/fluent French review.
+      date: { en: "Jun 9, 2024", fr: "9 juin 2024" },
       href: "#",
     },
   ],

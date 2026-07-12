@@ -38,12 +38,22 @@ export function CarouselImageSwitcher({
 
     const incoming = layers[activeIndex];
     zIndexRef.current += 1;
-    gsap.set(incoming, { clipPath: HIDDEN_CLIP, zIndex: zIndexRef.current });
-    gsap.to(incoming, {
-      clipPath: VISIBLE_CLIP,
-      duration: TRANSITION_SECONDS,
-      ease: "power2.inOut",
-    });
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion) {
+      // Cut straight to the new image instead of animating the clip-path wipe.
+      gsap.set(incoming, { clipPath: VISIBLE_CLIP, zIndex: zIndexRef.current });
+    } else {
+      gsap.set(incoming, { clipPath: HIDDEN_CLIP, zIndex: zIndexRef.current });
+      gsap.to(incoming, {
+        clipPath: VISIBLE_CLIP,
+        duration: TRANSITION_SECONDS,
+        ease: "power2.inOut",
+      });
+    }
 
     prevIndexRef.current = activeIndex;
   }, [activeIndex]);

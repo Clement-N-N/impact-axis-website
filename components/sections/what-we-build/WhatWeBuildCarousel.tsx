@@ -1,14 +1,20 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { AnimatePresence, motion } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import { whatWeBuildContent } from "./data";
 import { CarouselImageSwitcher } from "./CarouselImageSwitcher";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 // Matches HeroBackgroundSlideshow's own hold duration, for consistency.
 const SLIDE_DURATION_SECONDS = 6;
@@ -40,21 +46,57 @@ export function WhatWeBuildCarousel({ locale }: { locale: Locale }) {
 
   const activeSlide = slides[activeIndex];
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const imageWrapperRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // Entrance reveal for the section itself (image + panel) on first scroll
+  // into view. This is separate from the AnimatePresence crossfade below,
+  // which handles individual slide-to-slide content swaps.
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+
+    const ctx = gsap.context(() => {
+      gsap.set([imageWrapperRef.current, panelRef.current], { opacity: 0, y: 20 });
+      gsap.to([imageWrapperRef.current, panelRef.current], {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: "power3.out",
+        stagger: 0.08,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          once: true,
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="w-full bg-white py-section">
+    <section ref={sectionRef} className="w-full bg-white py-section">
       <Container className="grid grid-cols-4 gap-gutter md:grid-cols-8 lg:grid-cols-12">
-        <div className="relative col-span-4 aspect-[4/5] overflow-hidden md:col-span-8 lg:col-span-4">
+        <div
+          ref={imageWrapperRef}
+          className="relative col-span-4 aspect-[4/3] overflow-hidden md:col-span-8 lg:col-span-4 lg:aspect-[4/5]"
+        >
           <CarouselImageSwitcher images={slides.map((slide) => slide.image)} activeIndex={activeIndex} />
         </div>
 
-        <div className="col-span-4 flex flex-col justify-between gap-10 md:col-span-8 lg:col-span-6 lg:col-start-7 h-full">
+        <div
+          ref={panelRef}
+          className="col-span-4 flex flex-col justify-between gap-10 md:col-span-8 lg:col-span-6 lg:col-start-7 h-full"
+        >
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
-              initial={{ opacity: 0, y: 12 }}
+              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
+              transition={{ duration: prefersReducedMotion ? 0.15 : 0.4, ease: "easeOut" }}
               className="grid grid-cols-1 gap-6 lg:grid-cols-6"
             >
               <h3 className="text-[clamp(1.5rem,2.375vw,2rem)] font-medium text-black lg:col-span-6">
@@ -82,6 +124,7 @@ export function WhatWeBuildCarousel({ locale }: { locale: Locale }) {
                   <button
                     type="button"
                     onClick={() => setActiveIndex(index)}
+                    aria-current={isActive ? "true" : undefined}
                     className="relative w-full border-b border-black/10 py-3 text-left text-[clamp(0.875rem,1.125vw,1rem)] text-black"
                   >
                     {getLocalizedText(slide.legendLabel, locale)}

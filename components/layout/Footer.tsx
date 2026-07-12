@@ -1,7 +1,11 @@
 "use client";
 
+import { useEffect, useId, useRef } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 import {
   FacebookLogoIcon,
   InstagramLogoIcon,
@@ -11,6 +15,10 @@ import {
 } from "@phosphor-icons/react";
 import { Link } from "@/i18n/navigation";
 import { Container } from "./Container";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+}
 
 const inputStyles = "bg-white/10 px-4 py-3 text-white placeholder:text-white/50";
 
@@ -26,6 +34,7 @@ export function Footer() {
   const t = useTranslations("footer");
   const tNav = useTranslations("nav");
   const currentYear = new Date().getFullYear();
+  const formIdPrefix = useId();
 
   const learnMoreLinks = [
     { href: "/", label: tNav("links.home") },
@@ -48,14 +57,88 @@ export function Footer() {
     { href: "#", label: t("legal.donorPrivacyPolicy") },
   ];
 
+  const footerRef = useRef<HTMLElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const subscribeParagraphRef = useRef<HTMLParagraphElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const copyrightRef = useRef<HTMLParagraphElement>(null);
+  const linksGridRef = useRef<HTMLDivElement>(null);
+  const addressRef = useRef<HTMLDivElement>(null);
+  const socialsRef = useRef<HTMLDivElement>(null);
+  const legalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    let split: SplitText | undefined;
+
+    const ctx = gsap.context(() => {
+      const fadeTargets = [
+        subscribeParagraphRef.current,
+        formRef.current,
+        copyrightRef.current,
+        linksGridRef.current,
+        addressRef.current,
+        socialsRef.current,
+        legalRef.current,
+      ];
+
+      if (!headlineRef.current) return;
+
+      split = SplitText.create(headlineRef.current, {
+        type: "lines",
+        mask: "lines",
+        autoSplit: true,
+        onSplit(self) {
+          if (prefersReducedMotion) {
+            gsap.set(fadeTargets, { opacity: 1, y: 0 });
+            gsap.set(self.lines, { yPercent: 0 });
+            return;
+          }
+
+          gsap.set(fadeTargets, { opacity: 0, y: 20 });
+          gsap.set(self.lines, { yPercent: 100 });
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: footerRef.current,
+              start: "top 80%",
+              once: true,
+            },
+          });
+
+          tl.to(self.lines, { yPercent: 0, duration: 0.6, ease: "power4.out", stagger: 0.12 }).to(
+            fadeTargets,
+            { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.08 },
+            "-=0.3",
+          );
+
+          return tl;
+        },
+      });
+    }, footerRef);
+
+    return () => {
+      ctx.revert();
+      split?.revert();
+    };
+  }, []);
+
   return (
-    <footer className="w-full bg-[#141416] pt-16">
+    <footer ref={footerRef} className="w-full bg-[#141416] pt-16">
       <Container className="grid grid-cols-4 gap-gutter md:grid-cols-8 lg:grid-cols-12">
         <div className="col-span-4 flex flex-col justify-between gap-10 md:col-span-8 lg:col-span-6 lg:h-full">
-          <div className="flex flex-col gap-6 w-[500px]">
-            <h2 className="text-2xl font-medium text-white">{t("subscribe.title")}</h2>
-            <p className="text-white/70">{t("subscribe.subtitle")}</p>
+          <div className="flex w-full max-w-[500px] flex-col gap-6">
+            <h2 ref={headlineRef} className="text-2xl font-medium text-white">
+              {t("subscribe.title")}
+            </h2>
+            <p ref={subscribeParagraphRef} className="text-white/70">
+              {t("subscribe.subtitle")}
+            </p>
             <form
+              ref={formRef}
               onSubmit={(e) => {
                 e.preventDefault();
                 // TODO: wire up to a real newsletter subscription service.
@@ -63,18 +146,34 @@ export function Footer() {
               className="flex flex-col gap-3"
             >
               <div className="grid grid-cols-2 gap-3">
-                <input
-                  name="firstName"
-                  placeholder={t("subscribe.firstName")}
-                  className={inputStyles}
-                />
-                <input
-                  name="lastName"
-                  placeholder={t("subscribe.lastName")}
-                  className={inputStyles}
-                />
+                <div>
+                  <label htmlFor={`${formIdPrefix}-firstName`} className="sr-only">
+                    {t("subscribe.firstName")}
+                  </label>
+                  <input
+                    id={`${formIdPrefix}-firstName`}
+                    name="firstName"
+                    placeholder={t("subscribe.firstName")}
+                    className={`${inputStyles} w-full`}
+                  />
+                </div>
+                <div>
+                  <label htmlFor={`${formIdPrefix}-lastName`} className="sr-only">
+                    {t("subscribe.lastName")}
+                  </label>
+                  <input
+                    id={`${formIdPrefix}-lastName`}
+                    name="lastName"
+                    placeholder={t("subscribe.lastName")}
+                    className={`${inputStyles} w-full`}
+                  />
+                </div>
               </div>
+              <label htmlFor={`${formIdPrefix}-email`} className="sr-only">
+                {t("subscribe.emailPlaceholder")}
+              </label>
               <input
+                id={`${formIdPrefix}-email`}
                 type="email"
                 name="email"
                 placeholder={t("subscribe.emailPlaceholder")}
@@ -88,14 +187,14 @@ export function Footer() {
               </button>
             </form>
           </div>
-          <p className="text-sm text-white/50">
+          <p ref={copyrightRef} className="text-sm text-white/50">
             {t("copyright", { startYear: 2022, endYear: currentYear })}
           </p>
         </div>
 
         <div className="col-span-4 flex flex-col justify-between gap-10 md:col-span-8 lg:col-span-6 lg:h-full">
           <div className="flex flex-col gap-10">
-            <div className="grid grid-cols-2 gap-6">
+            <div ref={linksGridRef} className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <div className="flex flex-col gap-4">
                 <h3 className="font-medium text-white">{t("columns.learnMore")}</h3>
                 {learnMoreLinks.map((link) => (
@@ -116,7 +215,7 @@ export function Footer() {
 
             <div className="border-t border-white/15" />
 
-            <div className="flex flex-col gap-3 text-white/70">
+            <div ref={addressRef} className="flex flex-col gap-3 text-white/70">
               <p>{t("address")}</p>
               <p>
                 <span className="font-medium text-white">{t("emailLabel")}</span>{" "}
@@ -128,7 +227,7 @@ export function Footer() {
               </p>
             </div>
 
-            <div className="flex gap-3">
+            <div ref={socialsRef} className="flex gap-3">
               {SOCIALS.map(({ Icon, label }) => (
                 <a
                   key={label}
@@ -142,7 +241,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="flex gap-4 text-sm text-white/70">
+          <div ref={legalRef} className="flex gap-4 text-sm text-white/70">
             {legalLinks.map((link, index) => (
               <Link
                 key={link.href + link.label}
