@@ -143,7 +143,7 @@ export function HomeSolution({ locale }: { locale: Locale }) {
           </h2>
           <Button
             href={data.button.href}
-            variant="primary"
+            variant="primary-flush"
             icon={<ArrowRightIcon weight="bold" className="h-5 w-5" />}
           >
             {getLocalizedText(data.button.label, locale)}

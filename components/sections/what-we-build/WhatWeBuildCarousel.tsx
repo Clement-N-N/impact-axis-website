@@ -107,7 +107,7 @@ export function WhatWeBuildCarousel({ locale }: { locale: Locale }) {
               </p>
               <Button
                 href={activeSlide.button.href}
-                variant="primary"
+                variant="primary-flush"
                 icon={<ArrowRightIcon weight="bold" className="h-5 w-5" />}
                 className="w-fit lg:col-span-6"
               >

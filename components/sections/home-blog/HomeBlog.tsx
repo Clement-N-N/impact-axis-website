@@ -75,7 +75,7 @@ export function HomeBlog({ locale }: { locale: Locale }) {
 
         <div
           ref={secondaryColRef}
-          className="col-span-4 flex flex-col justify-between gap-8 md:col-span-8 lg:col-span-5 lg:row-start-2 lg:pl-10"
+          className="col-span-4 flex flex-col justify-between gap-8 md:col-span-8 lg:col-span-5 lg:row-start-2 lg:pl-5"
         >
           <BlogCard
             post={data.posts[1]}

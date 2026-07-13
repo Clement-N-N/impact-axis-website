@@ -30,6 +30,13 @@ as an explanation of the *pattern*, not a frozen source of truth. Also skim
 4 cols below `md`, 8 from `md` to `lg`, 12 from `lg` up) before touching
 anything.
 
+Also check whether `references/decisions-log.md` exists in this skill's
+folder and read it before starting — it holds judgment calls from past runs
+of this skill on this specific codebase (things reviewed and deliberately
+left alone, edge cases that don't fit the main instructions cleanly) that
+are worth knowing before re-deriving the same call from scratch. See the
+last step below for how to add to it.
+
 ## Step 1 — Read the target completely
 
 Read the whole component file, not just the JSX that looks layout-related.
@@ -117,6 +124,15 @@ the full reasoning and the concrete examples already in this codebase
 `ParallaxImage.tsx`'s fixed `h-[55vh]`/`h-[35vh]`, `WhatWeBuildOverlay.tsx`'s
 fixed `h-[400px]`). The short version:
 
+0. Before assuming a fixed value needs fixing, check whether it actually
+   *is* the mobile-compounding problem this step is about — see "How to
+   tell it's not actually a problem" in `references/vertical-space-and-images.md`.
+   Several fixed heights/ratios in this app (`ImpactCard.tsx`'s `h-[200px]`,
+   `TestimonialCard.tsx`'s `aspect-[4/5]`) were reviewed and correctly left
+   alone because the element's width doesn't actually balloon between
+   breakpoints for that specific layout — forcing a breakpoint-varied fix
+   onto something that isn't compounding just adds unnecessary classes.
+
 1. A fixed `aspect-[...]` on an image gives it the same shape at every
    breakpoint. At desktop that image usually sits beside other content, so
    its height is naturally bounded; on mobile everything stacks into one
@@ -195,6 +211,19 @@ After each run, summarize per component:
 If `prettier-plugin-tailwindcss` is set up (it is, per `package.json`), run
 `npx prettier --write <file>` on anything you touch so class ordering matches
 the rest of the codebase.
+
+## Step 7 — Log new judgment calls for next time
+
+If you made any judgment call, hit any ambiguity, or found any new pattern
+in this run that isn't already covered by this skill or its reference docs,
+append a short dated entry to `references/decisions-log.md` (create the
+file if it doesn't exist). Keep entries terse — the situation, what you
+decided and why, and which file(s) it applied to. This is how the skill
+gets sharper and more tailored to this specific project over repeated use.
+If the same kind of entry shows up three or more times, that's a signal it
+should graduate from the log into the main skill instructions — mention
+this in your report if you spot it.
+
 
 ## Never
 

@@ -10,5 +10,6 @@ export type ImpactMetric = {
 export type OurImpactContent = {
   eyebrow: LocalizedText;
   paragraph: LocalizedText;
+  reportCta: LocalizedText;
   metrics: [ImpactMetric, ImpactMetric, ImpactMetric, ImpactMetric, ImpactMetric, ImpactMetric];
 };

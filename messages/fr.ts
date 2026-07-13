@@ -7,6 +7,8 @@ import { blogTranslations } from "./blog";
 import { impactTranslations } from "./impact";
 import { navTranslations } from "./nav";
 import { footerTranslations } from "./footer";
+import { termsOfUseTranslations } from "./terms-of-use";
+import { privacyPolicyTranslations } from "./privacy-policy";
 
 const messages = {
   nav: navTranslations.fr,
@@ -18,6 +20,8 @@ const messages = {
   programs: programsTranslations.fr,
   blog: blogTranslations.fr,
   impact: impactTranslations.fr,
+  termsOfUse: termsOfUseTranslations.fr,
+  privacyPolicy: privacyPolicyTranslations.fr,
 };
 
 export default messages;

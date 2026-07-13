@@ -98,7 +98,7 @@ export function PromoCardHero({
               </Button>
               <Button
                 href={data.card.learnMoreButton.href}
-                variant="text"
+                variant="outline"
                 className="self-center"
               >
                 {getLocalizedText(data.card.learnMoreButton.label, locale)}

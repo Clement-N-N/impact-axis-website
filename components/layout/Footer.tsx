@@ -52,9 +52,9 @@ export function Footer() {
   ];
 
   const legalLinks = [
-    { href: "#", label: t("legal.termsOfUse") },
-    { href: "#", label: t("legal.privacyPolicy") },
-    { href: "#", label: t("legal.donorPrivacyPolicy") },
+    { href: "/terms-of-use", label: t("legal.termsOfUse") },
+    { href: "/privacy-policy", label: t("legal.privacyPolicy") },
+    // { href: "#", label: t("legal.donorPrivacyPolicy") },
   ];
 
   const footerRef = useRef<HTMLElement>(null);

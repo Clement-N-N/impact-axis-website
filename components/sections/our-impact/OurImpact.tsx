@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { Container } from "@/components/layout/Container";
+import { Button } from "@/components/ui/Button";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import { ourImpactContent } from "./data";
@@ -102,6 +104,14 @@ export function OurImpact({ locale }: { locale: Locale }) {
               <h2 ref={headlineRef} className="text-[clamp(1.125rem,2vw,1.7rem)] font-medium leading-[1.3] text-black">
                 {getLocalizedText(data.paragraph, locale)}
               </h2>
+              <Button
+                href="#"
+                variant="outline"
+                icon={<ArrowRightIcon weight="bold" className="h-5 w-5" />}
+                className="mt-10"
+              >
+                {getLocalizedText(data.reportCta, locale)}
+              </Button>
             </div>
           </div>
         </div>

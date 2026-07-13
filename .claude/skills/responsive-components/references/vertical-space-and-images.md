@@ -104,6 +104,45 @@ height its parent naturally ends up with (already fine, nothing to do)?
 `HeroBackgroundSlideshow.tsx`-style crossfades are the second kind — leave
 them alone.
 
+## How to tell it's not actually a problem
+
+Not every fixed `aspect-[...]`/`h-[Nvh]`/`h-[Npx]` you find is the
+mobile-compounding bug described above — several reviewed in this codebase
+were correctly left alone. The test: **compare the element's own rendered
+width at mobile against its rendered width at desktop.** The bug only
+happens when mobile width is *larger* than the bounded desktop width (a
+side-by-side layout collapsing into a full-width single column). If the
+element's width stays roughly the same or gets *smaller* on mobile, a fixed
+aspect ratio or height isn't compounding — it's scaling down correctly
+along with everything else.
+
+Two confirmed examples of "reviewed, not a problem, left alone":
+
+- `ImpactCard.tsx`'s fixed `h-[200px]` image. Its column sits inside a
+  `grid-cols-1 md:grid-cols-2` card grid that's itself full mobile width at
+  `grid-cols-1` — the card is *narrower* on mobile than its desktop grid
+  cell in absolute pixels in this particular layout, not wider, so the
+  fixed height doesn't balloon.
+- `TestimonialCard.tsx`'s `aspect-[4/5]` image at `w-2/5`. The card lives
+  inside a horizontally-scrolling carousel where each card is always
+  roughly the same percentage width (`w-[92%]` of its track) regardless of
+  breakpoint — there's no side-by-side desktop layout that collapses into a
+  full-width mobile stack here, so the ratio's absolute size stays roughly
+  proportional across breakpoints.
+
+Contrast this with a confirmed real instance of the bug:
+`WhatWeBuildOverlay.tsx`'s `h-[400px]` section — at desktop it's a fraction
+of a wide viewport; at mobile it's the *same* 400px against a much narrower
+viewport, so it reads as "most of the screen" rather than "a photo strip."
+That's the shape to look for: same or larger absolute size on the narrower
+viewport, not a size that shrinks along with everything else.
+
+When in doubt, do the same rough pixel math this skill already uses for
+typography ("check both ends"): estimate the element's rendered width at
+your smallest and largest target breakpoints, and only apply the
+breakpoint-varied fix if the height/ratio's absolute size at mobile is
+comparable to or larger than its size at desktop.
+
 ## Report back
 
 Add a line to Step 6's report for any vertical-space finding, same

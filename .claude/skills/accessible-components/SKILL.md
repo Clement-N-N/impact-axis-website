@@ -40,6 +40,11 @@ elsewhere). Also note:
   `@radix-ui/react-visually-hidden`) — if you need visually-hidden text,
   use a plain `sr-only`-style utility class consistent with Tailwind's
   built-in `sr-only`.
+- Also check whether `references/decisions-log.md` exists in this skill's
+  folder and read it before starting — it holds judgment calls from past
+  runs of this skill on this specific codebase that are worth knowing
+  before re-deriving the same call from scratch. See Step 4 for how to add
+  to it.
 
 ## Step 1 — Read the target completely
 
@@ -80,6 +85,27 @@ Read the whole component, plus:
   handler for Enter/Space — or, more simply, just become a real `<button>`.
   Prefer the native element; it's less code and fewer edge cases than
   reimplementing button semantics.
+- **A distinct, easy-to-miss variant of the above: text styled to *look*
+  interactive (cursor-pointer, a hover underline/scale effect) that has no
+  handler or link behind it at all** — not a div-with-onClick needing ARIA,
+  but a dead affordance that does nothing when clicked. This is a real bug,
+  not just an accessibility nicety: sighted mouse users get a false promise
+  from the hover state, and there's no accessible name/role to fix because
+  there's no interactive element to begin with. Found in `BlogCard.tsx`,
+  where the post title `<h3>` had `cursor-pointer` and a hover-underline
+  span but no `href`/`onClick` at all — the separate "Read more" button was
+  the only real link. Fix by wrapping the styled text in the actual
+  `Link`/`<a>` it was visually promising, not by adding
+  `role`/`tabIndex`/`onKeyDown` to fake it.
+- **Forms**: any `<input>` with only a `placeholder` and no `<label>` is a
+  common, mechanical, and very findable gap — placeholder text disappears on
+  input and isn't a reliable persistent label for assistive tech or
+  autofill. Pair every input with a `<label htmlFor="...">` (visually
+  hidden via `sr-only` if the design doesn't want a visible label) tied to a
+  matching `id`. Found in `Footer.tsx`'s newsletter form (`firstName`,
+  `lastName`, `email` inputs, placeholder-only) — actively check for this
+  whenever a component contains a `<form>`, don't rely on happening to
+  notice it.
 - Toggles (menus, accordions, tabs) need `aria-expanded` reflecting real
   state, and `aria-controls` pointing at the region they reveal — the
   existing mega menu and mobile nav already model this correctly, copy the
@@ -130,7 +156,19 @@ size/weight that qualifies for the lower "large text" threshold).
   collage/art-directed layouts) — if it's too risky to reflow, it's too risky
   to restructure for accessibility without the same human review
 
-## Step 4 — Report back
+## Step 4 — Log new judgment calls for next time
+
+If you made any judgment call, hit any ambiguity, or found any new pattern
+in this run that isn't already covered by this skill or its reference docs,
+append a short dated entry to `references/decisions-log.md` (create the
+file if it doesn't exist). Keep entries terse — the situation, what you
+decided and why, and which file(s) it applied to. This is how the skill
+gets sharper and more tailored to this specific project over repeated use.
+If the same kind of entry shows up three or more times, that's a signal it
+should graduate from the log into the main skill instructions — mention
+this in your report if you spot it.
+
+## Step 5 — Report back
 
 For each component: what you fixed and why it's a safe, mechanical change;
 what you flagged and what specifically a human needs to decide or write;

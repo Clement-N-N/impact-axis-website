@@ -19,6 +19,11 @@ breaking its layout — exactly what this skill needs to avoid.
 
 ## Step 0 — Learn the two content systems and the layout convention
 
+Also check whether `references/decisions-log.md` exists in this skill's
+folder and read it before starting — it holds judgment calls from past runs
+of this skill on this specific codebase that are worth knowing before
+re-deriving the same call from scratch. See Step 4 for how to add to it.
+
 Read `references/content-patterns.md` before touching anything. In short:
 
 1. **`next-intl` message namespaces** (`messages/<namespace>/{en,fr}.json`
@@ -80,6 +85,15 @@ rather than hardcoding one language's proportions and hoping the other fits.
   animating a chip sized to fit specific words, or timing a reveal based on
   line count)? Longer French text can change wrapping and measurements —
   read `references/layout-and-animation-safety.md` before touching these.
+- Look specifically at the text/labels sitting *immediately next to* an
+  already-translated field, not just the field's own value — a hardcoded
+  label or prefix beside a `LocalizedText` value is easy to miss because the
+  value right next to it already looks localized. Two real examples: a
+  `BlogPost.date` field that was a plain hardcoded English string even
+  though `title`/`excerpt` on the same object were already `LocalizedText`;
+  and a "Last updated: " label hardcoded in JSX immediately before an
+  already-translated `lastUpdated` date value on the legal pages. Check
+  every sibling string around a translated value, not just the value.
 
 ## Step 2 — Do the work
 
@@ -155,7 +169,19 @@ reasons in French.
   actually rendering the content in question before editing — don't assume
   a same-named message namespace is the live source.
 
-## Step 4 — Report back
+## Step 4 — Log new judgment calls for next time
+
+If you made any judgment call, hit any ambiguity, or found any new pattern
+in this run that isn't already covered by this skill or its reference docs,
+append a short dated entry to `references/decisions-log.md` (create the
+file if it doesn't exist). Keep entries terse — the situation, what you
+decided and why, and which file(s) it applied to. This is how the skill
+gets sharper and more tailored to this specific project over repeated use.
+If the same kind of entry shows up three or more times, that's a signal it
+should graduate from the log into the main skill instructions — mention
+this in your report if you spot it.
+
+## Step 5 — Report back
 
 For each component: which pattern you used and why it matched the existing
 convention; every string you translated, with the French flagged as a draft

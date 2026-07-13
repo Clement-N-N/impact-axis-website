@@ -150,13 +150,19 @@ parallax on its inner content (the same `scrub: true` pattern
 element without conflict — the entrance plays once, the parallax runs for
 as long as the section is in the viewport.
 
-## Title reveal: masked line stagger (house standard for h1/h2)
+## Heading reveal: masked line stagger (house standard for every level, h1–h6)
 
-Titles don't use the plain fade-up above. They use a **masked line-stagger
-reveal**, modeled directly on the title animation on the Lenis/
-darkroom.engineering site (lenis.dev): each line of the headline slides up
-from fully hidden — no opacity change, a pure clip/slide — one after
-another, inside an overflow-hidden mask generated automatically per line.
+Headings don't use the plain fade-up above, regardless of level — an h1,
+h2, h3 CTA sub-heading, card title, or footer column header all get the
+same treatment. They use a **masked line-stagger reveal**, modeled directly
+on the title animation on the Lenis/darkroom.engineering site (lenis.dev):
+each line of the heading slides up from fully hidden — no opacity change, a
+pure clip/slide — one after another, inside an overflow-hidden mask
+generated automatically per line.
+
+Two situations are exceptions to "every heading gets this" — see "Headings
+that need a judgment call" at the end of this section before assuming a
+heading you're looking at should get the full recipe below.
 
 This uses GSAP's `SplitText` plugin. As of `gsap@3.13`, all of GSAP's
 former "Club GreenSock" bonus plugins — including `SplitText`,
@@ -292,10 +298,43 @@ Key details:
 - `split.revert()` in the cleanup function restores the original DOM
   (removing the line-wrapping spans) — always pair it with `ctx.revert()`,
   not instead of it.
-- Only use this recipe for the section's actual `h1`/`h2` title. Don't
-  apply line-splitting to eyebrows (single short line — no visual benefit)
-  or paragraphs — paragraphs get their own, separate treatment (per-`<p>`
-  stagger, not per-line), see "Multiple paragraphs" above.
+- Use this recipe for any actual heading tag (`h1` through `h6`) that
+  functions as a title — a section headline, a sub-heading, a card title, a
+  column header. Don't apply line-splitting to eyebrows (single short line
+  — no visual benefit) or paragraphs — paragraphs get their own, separate
+  treatment (per-`<p>` stagger, not per-line), see "Multiple paragraphs"
+  above.
+
+### Headings that need a judgment call
+
+Two shapes don't fit the blanket "every heading gets the mask" rule cleanly
+— read both before applying the recipe to a heading that matches either:
+
+**A heading whose text changes via component state**, not a one-time
+scroll-into-view reveal — a carousel caption that swaps on an index change
+(`WhatWeBuildCarousel.tsx`'s `h3`, which crossfades every few seconds via
+Framer Motion's `AnimatePresence`). Re-running `SplitText` on every text
+change fights the crossfade that's already handling that transition, and
+re-splitting on a timer is a different kind of motion than this recipe is
+for. Default: leave the existing state-driven transition (Framer Motion, per
+Step 3 in SKILL.md) in place for the *changing* content, and only apply the
+masked line-stagger to a heading's first, one-time appearance if the
+component has one (e.g. the section's own scroll-entrance, separate from the
+per-slide caption swap). Don't retrofit SplitText onto a ticking caption.
+
+**A repeated heading inside a list of child components already staggered by
+its parent** — e.g. `BlogCard.tsx`'s `h3` post title, repeated 2-3 times
+inside `HomeBlog.tsx`'s own staggered column groups. Adding an independent
+masked-line-stagger to each repeated heading on top of the parent's own
+fade-up stagger double-animates the same visual area with two different
+reveal mechanisms and can read as busy or arrive out of sequence with the
+rest of that card's content. Two acceptable resolutions: (a) skip the mask
+for that specific repeated instance and let it participate in the parent's
+plain fade-up like any other element in the group, or (b) keep the mask but
+drive it off the exact same `ScrollTrigger` as its sibling content so
+everything in that card arrives together rather than the heading doing its
+own separate reveal. Pick one, and say which in your report — don't apply
+both mechanisms to the same element.
 
 ## Applying it to this app's actual static sections
 

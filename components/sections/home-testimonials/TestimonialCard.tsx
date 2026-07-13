@@ -38,7 +38,8 @@ export function TestimonialCard({
         </div>
       )}
 
-      <div className="flex flex-1 flex-col items-start justify-center gap-6">
+      <div className="flex flex-1 flex-col justify-between gap-6 min-h-full">
+        <div />
         <p
           className={clsx(
             "text-[clamp(1.25rem,1.875vw,1.75rem)]",
@@ -51,7 +52,7 @@ export function TestimonialCard({
           <p className={clsx("font-medium", isActive ? "text-black" : "text-white")}>
             {testimonial.name}
           </p>
-          <p className={clsx("text-sm", isActive ? "text-black/70" : "text-white/70")}>
+          <p className={clsx("text-sm", isActive ? "text-black/90" : "text-white/90")}>
             {getLocalizedText(testimonial.title, locale)}
           </p>
         </div>

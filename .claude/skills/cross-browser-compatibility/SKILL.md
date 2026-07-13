@@ -39,6 +39,12 @@ before making claims in your report.
 
 ## Step 0 — Confirm the current build pipeline and target matrix
 
+Also check whether `references/decisions-log.md` exists in this skill's
+folder and read it before starting — it holds findings from past runs of
+this skill on this specific codebase (including clean-review results, not
+just fixes) that are worth knowing before re-checking the same ground from
+scratch. See Step 5 for how to add to it.
+
 Before touching a component, re-verify (things change; don't trust cached
 assumptions from a previous run of this skill):
 1. Read `node_modules/next/dist/docs/03-architecture/supported-browsers.md`
@@ -184,6 +190,20 @@ in which browser; and whether anything you touched overlaps with motion
 (`prefers-reduced-motion`, see `accessible-components`) or layout
 (`responsive-components`) so those skills' concerns don't get missed. Run
 `npx prettier --write <file>` on anything you touch.
+
+## Step 5 — Log new findings for next time
+
+If you found anything not already covered by this skill or its reference
+docs — a new usage worth flagging, a clean-review confirmation worth
+remembering so it isn't re-checked from scratch, or a judgment call — append
+a short dated entry to `references/decisions-log.md` (create the file if it
+doesn't exist). Keep entries terse — the situation, what you found/decided,
+and which file(s) it applied to. A "nothing wrong here" result is worth
+logging too, not just fixes — it saves re-deriving the same confirmation on
+a future run. This is how the skill gets sharper and more tailored to this
+specific project over repeated use. If the same kind of entry shows up three
+or more times, that's a signal it should graduate into the main skill
+instructions — mention this in your report if you spot it.
 
 ## Never
 

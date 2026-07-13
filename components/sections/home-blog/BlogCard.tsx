@@ -56,7 +56,7 @@ export function BlogCard({
 
         <div className="flex items-center justify-between pt-6">
           <span className="text-sm text-impact-gray">{getLocalizedText(post.date, locale)}</span>
-          <Button href={post.href} variant="primary" icon={<ArrowRightIcon weight="bold" className="h-5 w-5" />}>
+          <Button href={post.href} variant="primary-flush" icon={<ArrowRightIcon weight="bold" className="h-5 w-5" />}>
             {getLocalizedText(readMoreLabel, locale)}
           </Button>
         </div>

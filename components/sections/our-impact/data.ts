@@ -6,6 +6,10 @@ export const ourImpactContent: OurImpactContent = {
     en: "Driven by purpose and impact, focused on youth, Impact Axis exists to empower Africa's next generation today and for decades to come.",
     fr: "Animé par la raison d'être et l'impact, centré sur la jeunesse, Impact Axis existe pour donner du pouvoir à la prochaine génération africaine, aujourd'hui et pour les décennies à venir.",
   },
+  reportCta: {
+    en: "View our yearly report",
+    fr: "Voir notre rapport annuel",
+  },
   metrics: [
     {
       number: "450+",
