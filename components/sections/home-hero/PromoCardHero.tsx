@@ -20,16 +20,6 @@ const headlineColStyles = cva("flex flex-col gap-6 self-end", {
   defaultVariants: { locale: "en" },
 });
 
-const cardColStyles = cva("self-center", {
-  variants: {
-    locale: {
-      en: "col-span-3 col-start-10",
-      fr: "col-span-3 col-start-10",
-    },
-  },
-  defaultVariants: { locale: "en" },
-});
-
 export function PromoCardHero({
   data,
   locale,
