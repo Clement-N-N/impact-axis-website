@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import Image from "next/image";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Button } from "@/components/ui/Button";
@@ -44,11 +43,9 @@ export type PromoCardContent = {
 export function PromoCard({
   content,
   locale,
-  className,
 }: {
   content: PromoCardContent;
   locale: Locale;
-  className?: string;
 }) {
   return (
     <div className={cardColStyles({ locale })}>

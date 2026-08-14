@@ -53,7 +53,7 @@ export function PromoCardHero({
             </Button>
           </div>
 
-          <PromoCard content={data.card} locale={locale} className={cardColStyles({ locale })} />
+          <PromoCard content={data.card} locale={locale} />
         </Container>
       </div>
     </section>
