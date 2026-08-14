@@ -1,12 +1,8 @@
-import type { HomeBlogContent } from "./types";
+import type { BlogHeroContent } from "./types";
 
-export const homeBlogContent: HomeBlogContent = {
-  eyebrow: { en: "Never miss an update", fr: "Ne manquez aucune actualité" },
+export const blogHeroContent: BlogHeroContent = {
+  title: { en: "Impact Blog", fr: "Blog Impact" },
   readMoreLabel: { en: "Read more", fr: "En savoir plus" },
-  moreNewsButton: {
-    label: { en: "More news", fr: "Plus d'actualités" },
-    href: "#",
-  },
   posts: [
     {
       id: "goodwill-fellowship-2026",
@@ -16,7 +12,7 @@ export const homeBlogContent: HomeBlogContent = {
         fr: "Libérez votre potentiel : postulez dès aujourd'hui à la bourse Goodwill 2026",
       },
       excerpt: {
-        en: "Are you a young Cameroonian ready to take charge of your future? The Goodwill Fellowship 2026 offers a unique chance to develop leadership skills, gain practical experience, and connect with a community of changemakers.",
+        en: "Are you a young Cameroonian ready to take charge of your future? The Goodwill Fellowship 2026 offers a unique chance to develop leadership skills, gain practical experience, and connect with a community of like-minded changemakers.",
         fr: "Êtes-vous un jeune Camerounais prêt à prendre en main votre avenir ? La bourse Goodwill 2026 offre une occasion unique de développer des compétences en leadership, d'acquérir une expérience pratique et de rejoindre une communauté d'acteurs du changement.",
       },
       // TODO: fr date is a draft translation — flag for native/fluent French review.
@@ -36,21 +32,6 @@ export const homeBlogContent: HomeBlogContent = {
       },
       // TODO: fr date is a draft translation — flag for native/fluent French review.
       date: { en: "Mar 9, 2025", fr: "9 mars 2025" },
-      href: "#",
-    },
-    {
-      id: "goodwill-fellowship-doctor",
-      image: "/images/girls-1.jpg",
-      title: {
-        en: "Unlocking Potential: How the Goodwill Fellowship Empowered a Young Cameroonian Doctor to Make a Community Impact",
-        fr: "Libérer le potentiel : comment la bourse Goodwill a permis à un jeune médecin camerounais d'avoir un impact communautaire",
-      },
-      excerpt: {
-        en: "Did you know that nearly three-quarters of young graduates struggle to find work that matches their skills? Here's how one fellow changed that story for his community.",
-        fr: "Saviez-vous que près des trois quarts des jeunes diplômés peinent à trouver un emploi correspondant à leurs compétences ? Voici comment un boursier a changé cette réalité pour sa communauté.",
-      },
-      // TODO: fr date is a draft translation — flag for native/fluent French review.
-      date: { en: "Jun 9, 2024", fr: "9 juin 2024" },
       href: "#",
     },
   ],

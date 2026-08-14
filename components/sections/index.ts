@@ -9,3 +9,6 @@ export { HomeTestimonials } from "./home-testimonials";
 export { HomeBlog } from "./home-blog";
 export { HomeFaq } from "./home-faq";
 export { BottomCta } from "./bottom-cta";
+export { BlogCard } from "./blog-card";
+export { BlogHero } from "./blog-hero";
+export { BlogBody } from "./blog-body";

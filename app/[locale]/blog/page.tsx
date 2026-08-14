@@ -1,4 +1,7 @@
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
+import { BlogHero } from "@/components/sections/blog-hero";
+import { BlogBody } from "@/components/sections/blog-body";
+import type { Locale } from "@/i18n/routing";
 
 export default async function BlogPage({
   params,
@@ -8,11 +11,10 @@ export default async function BlogPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t = await getTranslations("blog");
-
   return (
-    <div className="flex flex-1 flex-col items-center justify-center py-32">
-      <h1 className="text-3xl font-semibold">{t("title")}</h1>
-    </div>
+    <>
+      <BlogHero locale={locale as Locale} />
+      <BlogBody locale={locale as Locale} />
+    </>
   );
 }
