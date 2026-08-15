@@ -55,28 +55,28 @@ export const heroConfig: HeroConfig = {
     "collage-dark": {
       type: "collage-dark",
       headline: {
-        en: "We build the systems that unlock Africa's boundless potential",
-        fr: "Nous construisons les systèmes qui libèrent le potentiel illimité de l'Afrique",
+        en: "Building the bridge from education to meaningful work.",
+        fr: "Construire le pont entre l'éducation et un travail porteur de sens.",
       },
       seeAllStoriesButton: {
-        label: { en: "See all stories", fr: "Voir toutes les histoires" },
-        href: "/blog",
+        label: { en: "Explore our work", fr: "Découvrir notre travail" },
+        href: "#",
       },
       collageImages: ["/images/girls-1.jpg", "/images/team-1.jpg", "/images/alumni-1.jpg"],
     },
     "collage-description": {
       type: "collage-description",
       headline: {
-        en: "We build the systems that unlock Africa's boundless potential",
-        fr: "Nous construisons les systèmes qui libèrent le potentiel illimité de l'Afrique",
+        en: "Building the bridge from education to meaningful work.",
+        fr: "Construire le pont entre l'éducation et un travail porteur de sens.",
       },
       description: {
-        en: "We design experiential learning, leadership development, and enterprise pathways that prepare people for meaningful work in a fast-changing world.",
-        fr: "Nous concevons l'apprentissage expérientiel, le développement du leadership et des parcours entrepreneuriaux qui préparent les gens à un travail significatif dans un monde en mutation rapide.",
+        en: "Impact Axis is a Cameroon-based nonprofit helping young people build the practical skills, experience and networks they need to access meaningful and dignified work. We do this through experiential learning, mentorship and applied projects.",
+        fr: "Impact Axis est une organisation à but non lucratif basée au Cameroun qui aide les jeunes à développer les compétences pratiques, l'expérience et les réseaux dont ils ont besoin pour accéder à un travail significatif et digne. Nous y parvenons par l'apprentissage expérientiel, le mentorat et des projets appliqués.",
       },
       seeAllStoriesButton: {
-        label: { en: "See all stories", fr: "Voir toutes les histoires" },
-        href: "/blog",
+        label: { en: "Explore our work", fr: "Découvrir notre travail" },
+        href: "#",
       },
       collageImages: ["/images/girls-1.jpg", "/images/team-1.jpg", "/images/alumni-1.jpg"],
     },

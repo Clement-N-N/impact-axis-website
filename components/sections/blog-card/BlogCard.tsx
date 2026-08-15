@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/Button";
 import { Link } from "@/i18n/navigation";
 import { getLocalizedText, type LocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
-import type { BlogPost } from "./types";
+import { resolveSanityImageUrl } from "@/sanity/image";
+import { formatBlogDate, type BlogPost } from "./types";
 
 export type BlogCardVariant = "featured" | "compact" | "horizontal" | "list";
 
@@ -46,13 +47,17 @@ export function BlogCard({
     </Button>
   );
 
-  const image = (
+  const imageSrc = resolveSanityImageUrl(post.image, 800, 800);
+
+  const image = imageSrc ? (
     <Image
-      src={post.image}
+      src={imageSrc}
       alt=""
       fill
       className="object-cover grayscale transition-all duration-500 ease-out group-has-[h3:hover]:scale-110 group-has-[h3:hover]:grayscale-0"
     />
+  ) : (
+    <div className="h-full w-full bg-impact-gray/10" />
   );
 
   if (variant === "list") {
@@ -60,7 +65,7 @@ export function BlogCard({
       <div className="group flex gap-6">
         <div className="relative w-1/3 max-h-[370px] shrink-0 self-stretch overflow-hidden">{image}</div>
         <div className="flex flex-1 flex-col gap-3">
-          <span className="text-sm text-impact-gray">{getLocalizedText(post.date, locale)}</span>
+          <span className="text-sm text-impact-gray">{formatBlogDate(post.date, locale)}</span>
           <h3 className={clsx("font-medium text-black", LIST_TITLE_SIZE)}>{titleLink}</h3>
           <p className="line-clamp-2 text-impact-gray">{getLocalizedText(post.excerpt, locale)}</p>
           <div className="pt-2">{readMoreButton}</div>
@@ -82,14 +87,14 @@ export function BlogCard({
         {image}
       </div>
 
-      <div className={clsx("flex flex-1 flex-col", isHorizontal ? "justify-between" : "gap-6 pt-6")}>
+      <div className={clsx("flex flex-1 flex-col", isHorizontal ? "justify-between" : "gap-6 pt-3")}>
         <div className="flex flex-col gap-2">
           <h3 className={clsx("font-medium text-black", TITLE_SIZE[variant])}>{titleLink}</h3>
           <p className="line-clamp-2 text-impact-gray">{getLocalizedText(post.excerpt, locale)}</p>
         </div>
 
         <div className="flex items-center justify-between pt-6">
-          <span className="text-sm text-impact-gray">{getLocalizedText(post.date, locale)}</span>
+          <span className="text-sm text-impact-gray">{formatBlogDate(post.date, locale)}</span>
           {readMoreButton}
         </div>
       </div>

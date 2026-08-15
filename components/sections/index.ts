@@ -12,3 +12,6 @@ export { BottomCta } from "./bottom-cta";
 export { BlogCard } from "./blog-card";
 export { BlogHero } from "./blog-hero";
 export { BlogBody } from "./blog-body";
+export { BlogContentLayout } from "./blog-content-layout";
+export { BlogDetailsHero } from "./blog-details-hero";
+export { BlogDetailsBody } from "./blog-details-body";

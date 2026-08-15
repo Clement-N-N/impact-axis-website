@@ -9,16 +9,14 @@ import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
-import { ourImpactContent } from "./data";
+import type { OurImpactContent } from "./types";
 import { ImpactCard } from "./ImpactCard";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, SplitText);
 }
 
-export function OurImpact({ locale }: { locale: Locale }) {
-  const data = ourImpactContent;
-
+export function ImpactSection({ data, locale }: { data: OurImpactContent; locale: Locale }) {
   const sectionRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLSpanElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
@@ -120,8 +118,8 @@ export function OurImpact({ locale }: { locale: Locale }) {
           ref={cardsWrapperRef}
           className="col-span-4 grid grid-cols-1 gap-gutter md:col-span-8 md:grid-cols-2 lg:col-span-6 lg:col-start-7"
         >
-          {data.metrics.map((metric) => (
-            <ImpactCard key={metric.number} metric={metric} locale={locale} />
+          {data.metrics.map((metric, index) => (
+            <ImpactCard key={`${metric.number}-${index}`} metric={metric} locale={locale} />
           ))}
         </div>
       </Container>

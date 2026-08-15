@@ -6,7 +6,7 @@ export const HOME_TESTIMONIALS_TYPE = "homeTestimonials";
 
 export const homeTestimonials = defineType({
   name: HOME_TESTIMONIALS_TYPE,
-  title: "Testimonials",
+  title: "Home Page Testimonials",
   type: "document",
   fields: [
     defineField({
@@ -25,7 +25,7 @@ export const homeTestimonials = defineType({
   ],
   preview: {
     prepare() {
-      return { title: "Testimonials" };
+      return { title: "Home Page Testimonials" };
     },
   },
 });

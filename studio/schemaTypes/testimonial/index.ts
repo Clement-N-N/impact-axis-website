@@ -7,7 +7,7 @@ export const TESTIMONIAL_TYPE = "testimonial";
 
 export const testimonial = defineType({
   name: TESTIMONIAL_TYPE,
-  title: "Testimonial",
+  title: "Testimonial Entry",
   type: "document",
   fields: [
     defineField({

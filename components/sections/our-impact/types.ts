@@ -1,15 +1,23 @@
 import type { LocalizedText } from "@/components/sections/home-hero/types";
 
-export type ImpactMetric = {
+export type ImpactStat = {
   number: string;
   label: LocalizedText;
+};
+
+export type ImpactCardDesign = {
   image: string;
   background: string;
 };
 
-export type OurImpactContent = {
+export type ImpactMetric = ImpactStat & ImpactCardDesign;
+
+export type OurImpactChrome = {
   eyebrow: LocalizedText;
   paragraph: LocalizedText;
   reportCta: LocalizedText;
-  metrics: [ImpactMetric, ImpactMetric, ImpactMetric, ImpactMetric, ImpactMetric, ImpactMetric];
+};
+
+export type OurImpactContent = OurImpactChrome & {
+  metrics: ImpactMetric[];
 };

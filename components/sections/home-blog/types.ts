@@ -3,9 +3,12 @@ import type { BlogPost } from "@/components/sections/blog-card/types";
 
 export type { BlogPost };
 
-export type HomeBlogContent = {
+export type HomeBlogChrome = {
   eyebrow: LocalizedText;
   readMoreLabel: LocalizedText;
   moreNewsButton: { label: LocalizedText; href: string };
-  posts: [BlogPost, BlogPost, BlogPost];
+};
+
+export type HomeBlogContent = HomeBlogChrome & {
+  posts: BlogPost[];
 };

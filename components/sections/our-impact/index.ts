@@ -1,1 +1,0 @@
-export { OurImpact } from "./OurImpact";

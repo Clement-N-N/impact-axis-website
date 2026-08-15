@@ -1,16 +1,7 @@
 import type { HeroButton, LocalizedText } from "@/components/sections/home-hero/types";
-import type { PortableTextBlock } from "@portabletext/react";
+import type { LocalizedPortableText, SanityImageValue } from "@/sanity/types";
 
-export type LocalizedPortableText = {
-  en: PortableTextBlock[];
-  fr: PortableTextBlock[];
-};
-
-export type SanityImageValue = {
-  asset: { _ref: string; _type: "reference" };
-  hotspot?: { x: number; y: number; height: number; width: number };
-  alt?: string;
-};
+export type { LocalizedPortableText, SanityImageValue };
 
 export type TestimonialVideo = {
   asset: { url: string; mimeType: string } | null;

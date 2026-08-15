@@ -8,14 +8,14 @@ import { Link } from "@/i18n/navigation";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import { BlogCard } from "@/components/sections/blog-card";
-import { homeBlogContent } from "./data";
+import type { HomeBlogContent } from "./types";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export function HomeBlog({ locale }: { locale: Locale }) {
-  const data = homeBlogContent;
+export function HomeBlogSection({ data, locale }: { data: HomeBlogContent; locale: Locale }) {
+  const [featuredPost, ...secondaryPosts] = data.posts;
 
   const sectionRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLSpanElement>(null);
@@ -70,25 +70,22 @@ export function HomeBlog({ locale }: { locale: Locale }) {
           ref={mainCardRef}
           className="col-span-4 md:col-span-8 lg:col-span-7 lg:row-start-2 lg:border-r lg:border-border lg:pr-10"
         >
-          <BlogCard post={data.posts[0]} locale={locale} readMoreLabel={data.readMoreLabel} />
+          <BlogCard post={featuredPost} locale={locale} readMoreLabel={data.readMoreLabel} />
         </div>
 
         <div
           ref={secondaryColRef}
           className="col-span-4 flex flex-col justify-between gap-8 md:col-span-8 lg:col-span-5 lg:row-start-2 lg:pl-5"
         >
-          <BlogCard
-            post={data.posts[1]}
-            locale={locale}
-            readMoreLabel={data.readMoreLabel}
-            variant="horizontal"
-          />
-          <BlogCard
-            post={data.posts[2]}
-            locale={locale}
-            readMoreLabel={data.readMoreLabel}
-            variant="horizontal"
-          />
+          {secondaryPosts.map((post) => (
+            <BlogCard
+              key={post.id}
+              post={post}
+              locale={locale}
+              readMoreLabel={data.readMoreLabel}
+              variant="horizontal"
+            />
+          ))}
           <Link
             href={data.moreNewsButton.href}
             className="border border-border px-8 py-3 text-center text-sm text-black"

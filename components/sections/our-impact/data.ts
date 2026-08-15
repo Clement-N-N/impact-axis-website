@@ -1,51 +1,43 @@
-import type { OurImpactContent } from "./types";
+import type { ImpactCardDesign, OurImpactChrome } from "./types";
 
-export const ourImpactContent: OurImpactContent = {
+export const ourImpactChrome: OurImpactChrome = {
   eyebrow: { en: "Our Impact", fr: "Notre impact" },
   paragraph: {
-    en: "Driven by purpose and impact, focused on youth, Impact Axis exists to empower Africa's next generation today and for decades to come.",
-    fr: "Animé par la raison d'être et l'impact, centré sur la jeunesse, Impact Axis existe pour donner du pouvoir à la prochaine génération africaine, aujourd'hui et pour les décennies à venir.",
+    en: "We measure progress by what young people can do next. Our impact goes beyond participation — we track whether young people build stronger capabilities, access meaningful opportunities and leave our programmes better positioned for work and life.",
+    fr: "Nous mesurons les progrès à travers ce que les jeunes sont capables de faire ensuite. Notre impact va au-delà de la simple participation — nous suivons si les jeunes développent des compétences plus fortes, accèdent à des opportunités porteuses de sens et terminent nos programmes mieux préparés pour le travail et la vie.",
   },
   reportCta: {
-    en: "View our yearly report",
-    fr: "Voir notre rapport annuel",
+    en: "Explore our impact",
+    fr: "Découvrir notre impact",
   },
-  metrics: [
-    {
-      number: "450+",
-      label: { en: "Young people reached", fr: "Jeunes touchés" },
-      image: "/images/placeholder_image_1.png",
-      background: "linear-gradient(180deg, rgba(250,177,160,0.3) 0%, rgba(247,136,110,0.5) 100%)",
-    },
-    {
-      number: "3.5x",
-      label: { en: "Capability growth average", fr: "Croissance moyenne des capacités" },
-      image: "/images/placeholder_image.png",
-      background: "linear-gradient(180deg, rgba(255,234,167,0.3) 0%, rgba(255,222,117,0.5) 100%)",
-    },
-    {
-      number: "67%",
-      label: { en: "Female participation rate", fr: "Taux de participation féminine" },
-      image: "/images/placeholder_image_2.png",
-      background: "linear-gradient(180deg, rgba(167,255,180,0.3) 0%, rgba(117,255,138,0.5) 100%)",
-    },
-    {
-      number: "92%",
-      label: { en: "Participant satisfaction", fr: "Satisfaction des participants" },
-      image: "/images/placeholder_image_3.png",
-      background: "linear-gradient(180deg, rgba(116,185,255,0.3) 0%, rgba(66,160,255,0.5) 100%)",
-    },
-    {
-      number: "720+",
-      label: { en: "Volunteer hours", fr: "Heures de bénévolat" },
-      image: "/images/placeholder_image_4.png",
-      background: "linear-gradient(180deg, rgba(220,116,255,0.3) 0%, rgba(208,66,255,0.5) 100%)",
-    },
-    {
-      number: "12+",
-      label: { en: "Partner institutions", fr: "Institutions partenaires" },
-      image: "/images/placeholder_image_2.png",
-      background: "linear-gradient(180deg, rgba(255,218,167,0.3) 0%, rgba(255,198,117,0.5) 100%)",
-    },
-  ],
 };
+
+// Card visuals are fixed design, not editorial content — they aren't stored in
+// Sanity. Stats are mapped onto these designs by position; if there are more
+// stats than designs, the designs repeat in sequence.
+export const IMPACT_CARD_DESIGNS: ImpactCardDesign[] = [
+  {
+    image: "/images/placeholder_image_1.png",
+    background: "linear-gradient(180deg, rgba(250,177,160,0.3) 0%, rgba(247,136,110,0.5) 100%)",
+  },
+  {
+    image: "/images/placeholder_image.png",
+    background: "linear-gradient(180deg, rgba(255,234,167,0.3) 0%, rgba(255,222,117,0.5) 100%)",
+  },
+  {
+    image: "/images/placeholder_image_2.png",
+    background: "linear-gradient(180deg, rgba(167,255,180,0.3) 0%, rgba(117,255,138,0.5) 100%)",
+  },
+  {
+    image: "/images/placeholder_image_3.png",
+    background: "linear-gradient(180deg, rgba(116,185,255,0.3) 0%, rgba(66,160,255,0.5) 100%)",
+  },
+  {
+    image: "/images/placeholder_image_4.png",
+    background: "linear-gradient(180deg, rgba(220,116,255,0.3) 0%, rgba(208,66,255,0.5) 100%)",
+  },
+  {
+    image: "/images/placeholder_image_2.png",
+    background: "linear-gradient(180deg, rgba(255,218,167,0.3) 0%, rgba(255,198,117,0.5) 100%)",
+  },
+];

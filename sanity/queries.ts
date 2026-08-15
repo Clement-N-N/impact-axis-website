@@ -11,6 +11,37 @@ export const HOME_FAQ_QUERY = defineQuery(`*[_type == "homeFaq"][0]{
   }
 }`);
 
+export const HOME_IMPACT_QUERY = defineQuery(`*[_type == "homeImpact"][0]{
+  metrics[]{
+    number,
+    label{en, fr}
+  }
+}`);
+
+export const BLOG_POSTS_QUERY = defineQuery(`*[_type == "blogPost"] | order(date desc){
+  "id": slug.current,
+  title{en, fr},
+  excerpt{en, fr},
+  date,
+  image,
+  "href": "/blog/" + slug.current
+}`);
+
+export const BLOG_POST_BY_SLUG_QUERY = defineQuery(`*[_type == "blogPost" && slug.current == $slug][0]{
+  "id": slug.current,
+  title{en, fr},
+  excerpt{en, fr},
+  date,
+  image,
+  "href": "/blog/" + slug.current,
+  authorRole{en, fr},
+  author->{name, image},
+  category->{title{en, fr}},
+  body{en, fr}
+}`);
+
+export const BLOG_SLUGS_QUERY = defineQuery(`*[_type == "blogPost"]{ "slug": slug.current }`);
+
 export const HOME_TESTIMONIALS_QUERY = defineQuery(`*[_type == "homeTestimonials"][0]{
   testimonials[]->{
     name,

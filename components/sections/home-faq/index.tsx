@@ -2,7 +2,7 @@ import type { Locale } from "@/i18n/routing";
 import type { LocalizedText } from "@/components/sections/home-hero/types";
 import { client } from "@/sanity/client";
 import { HOME_FAQ_QUERY } from "@/sanity/queries";
-import { homeFaqContent } from "./data";
+import { homeFaqChrome } from "./data";
 import type { FaqItem, HomeFaqContent } from "./types";
 import { FaqSection } from "./FaqSection";
 
@@ -32,29 +32,27 @@ function isSanityFaqData(value: unknown): value is SanityFaqData {
   return true;
 }
 
-async function getHomeFaqContent(): Promise<HomeFaqContent> {
+async function getHomeFaqContent(): Promise<HomeFaqContent | null> {
   try {
     const result = await client.fetch(HOME_FAQ_QUERY, {}, { next: { revalidate: 60 } });
     if (isSanityFaqData(result)) {
       // Everything except the Q&A list stays hardcoded by design (kept out of
       // Sanity to avoid adding editing surface the site owner doesn't need).
       return {
-        eyebrow: homeFaqContent.eyebrow,
+        eyebrow: homeFaqChrome.eyebrow,
         faqs: result.faqs,
-        stillHaveQuestionsHeading: homeFaqContent.stillHaveQuestionsHeading,
-        contactButton: homeFaqContent.contactButton,
+        stillHaveQuestionsHeading: homeFaqChrome.stillHaveQuestionsHeading,
+        contactButton: homeFaqChrome.contactButton,
       };
     }
   } catch (error) {
-    console.error(
-      "Failed to fetch home FAQ content from Sanity, falling back to default FAQ content.",
-      error,
-    );
+    console.error("Failed to fetch home FAQ content from Sanity.", error);
   }
-  return homeFaqContent;
+  return null;
 }
 
 export async function HomeFaq({ locale }: { locale: Locale }) {
   const data = await getHomeFaqContent();
+  if (!data) return null;
   return <FaqSection data={data} locale={locale} />;
 }

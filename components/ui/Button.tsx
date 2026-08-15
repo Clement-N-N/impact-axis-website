@@ -7,13 +7,13 @@ const buttonStyles = cva(
   {
     variants: {
       variant: {
-        primary: "border border-impact-yellow bg-impact-yellow py-3 pl-3 pr-4 text-black",
-        dark: "border border-black bg-black py-3 pl-3 pr-4 text-white",
-        white: "border border-white bg-white py-3 pl-3 pr-4 text-black",
-        outline: "border border-border bg-white py-3 pl-3 pr-4 text-black",
+        primary: "border border-impact-yellow bg-impact-yellow py-1.5 px-1.5 text-black",
+        dark: "border border-black bg-black py-1.5 px-1.5 text-white",
+        white: "border border-white bg-white py-1.5 px-1.5 text-black",
+        outline: "border border-border bg-white py-1.5 px-1.5 text-black",
         "primary-flush": "bg-transparent text-black",
         "dark-flush": "bg-black text-white",
-        "outline-white": "border border-white bg-transparent py-3 pl-3 pr-4 text-white",
+        "outline-white": "border border-white bg-transparent py-1.5 px-1.5 text-white",
       },
     },
     defaultVariants: { variant: "primary" },

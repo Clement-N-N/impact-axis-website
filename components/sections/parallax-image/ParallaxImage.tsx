@@ -15,10 +15,17 @@ type ParallaxImageProps = {
   src: string;
   heightClass?: string;
   padded?: boolean;
+  reveal?: boolean;
 };
 
-export function ParallaxImage({ src, heightClass = "h-[55vh]", padded = true }: ParallaxImageProps) {
+export function ParallaxImage({
+  src,
+  heightClass = "h-[55vh]",
+  padded = true,
+  reveal = false,
+}: ParallaxImageProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,13 +44,36 @@ export function ParallaxImage({ src, heightClass = "h-[55vh]", padded = true }: 
           },
         },
       );
+
+      if (reveal) {
+        const prefersReducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        if (prefersReducedMotion) {
+          gsap.set(frameRef.current, { opacity: 1, y: 0 });
+        } else {
+          gsap.set(frameRef.current, { opacity: 0, y: 20 });
+          gsap.to(frameRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 80%",
+              once: true,
+            },
+          });
+        }
+      }
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [reveal]);
 
   const frame = (
-    <div className={clsx("relative w-full overflow-hidden", heightClass)}>
+    <div ref={frameRef} className={clsx("relative w-full overflow-hidden", heightClass)}>
       <div ref={imageRef} className="absolute inset-x-0 -top-[18%] -bottom-[18%]">
         <Image src={src} alt="" fill className="object-cover" />
       </div>

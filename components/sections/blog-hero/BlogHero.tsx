@@ -7,14 +7,23 @@ import { Container } from "@/components/layout/Container";
 import { BlogCard } from "@/components/sections/blog-card";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
-import { blogHeroContent } from "./data";
+import type { BlogPost } from "@/components/sections/blog-card/types";
+import type { BlogHeroContent } from "./types";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export function BlogHero({ locale }: { locale: Locale }) {
-  const data = blogHeroContent;
+export function BlogHero({
+  data,
+  posts,
+  locale,
+}: {
+  data: BlogHeroContent;
+  posts: BlogPost[];
+  locale: Locale;
+}) {
+  const [featuredPost, compactPost] = posts;
 
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -65,19 +74,23 @@ export function BlogHero({ locale }: { locale: Locale }) {
           </h1>
         </div>
 
-        <div
-          ref={featuredRef}
-          className="col-span-4 mt-10 md:col-span-8 lg:col-span-8 lg:row-start-2 lg:mt-16"
-        >
-          <BlogCard post={data.posts[0]} locale={locale} readMoreLabel={data.readMoreLabel} variant="featured" />
-        </div>
+        {featuredPost && (
+          <div
+            ref={featuredRef}
+            className="col-span-4 mt-5 md:col-span-8 lg:col-span-8 lg:row-start-2 lg:mt-8"
+          >
+            <BlogCard post={featuredPost} locale={locale} readMoreLabel={data.readMoreLabel} variant="featured" />
+          </div>
+        )}
 
-        <div
-          ref={compactRef}
-          className="col-span-4 mt-10 md:col-span-8 lg:col-span-4 lg:row-start-2 lg:mt-16"
-        >
-          <BlogCard post={data.posts[1]} locale={locale} readMoreLabel={data.readMoreLabel} variant="compact" />
-        </div>
+        {compactPost && (
+          <div
+            ref={compactRef}
+            className="col-span-4 mt-5 md:col-span-8 lg:col-span-4 lg:row-start-2 lg:mt-8"
+          >
+            <BlogCard post={compactPost} locale={locale} readMoreLabel={data.readMoreLabel} variant="compact" />
+          </div>
+        )}
       </Container>
     </section>
   );
