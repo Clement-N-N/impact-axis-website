@@ -5,4 +5,5 @@ export default defineCliConfig({
     projectId: "r4ex3fmf",
     dataset: "production",
   },
+  studioHost: "impact-axis-admin",
 });
