@@ -9,10 +9,10 @@
   },
   "megaMenu": {
     "items": {
-      "partners": "Partners & Institutions",
-      "funders": "Funders & Foundations",
-      "ecosystem": "Ecosystem Builders",
-      "talented": "Talented Collaborators"
+      "partners": "Funders & Development Partners",
+      "funders": "Employers & Corporate Partners",
+      "ecosystem": "Education & Training Institutions",
+      "talented": "Mentors & Professionals"
     },
     "tagline": "Give young Africans the skills, judgment, and confidence employers actually need."
   },

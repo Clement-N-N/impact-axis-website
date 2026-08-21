@@ -6,6 +6,9 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Navbar } from "@/components/layout/Navbar";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { Footer } from "@/components/layout/Footer";
+import { client } from "@/sanity/client";
+import { SOCIAL_LINKS_QUERY } from "@/sanity/queries";
+import type { SocialLinks } from "@/sanity/types";
 import "../globals.css";
 import "@/styles/_fonts.scss";
 import "@/styles/_base.scss";
@@ -17,6 +20,16 @@ export const metadata: Metadata = {
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
+}
+
+async function getSocialLinks(): Promise<SocialLinks> {
+  try {
+    const result = await client.fetch(SOCIAL_LINKS_QUERY, {}, { next: { revalidate: 60 } });
+    if (result && typeof result === "object") return result as SocialLinks;
+  } catch (error) {
+    console.error("Failed to fetch social links from Sanity.", error);
+  }
+  return {};
 }
 
 export default async function RootLayout({
@@ -35,15 +48,16 @@ export default async function RootLayout({
   setRequestLocale(locale);
 
   const messages = await getMessages();
+  const socialLinks = await getSocialLinks();
 
   return (
     <html lang={locale} className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <Navbar />
+          <Navbar socialLinks={socialLinks} />
           <MobileNav />
           <main>{children}</main>
-          <Footer />
+          <Footer socialLinks={socialLinks} />
           {process.env.NODE_ENV === "development" && (
             <>
               <LocalizationDebuggerLoader />

@@ -9,10 +9,10 @@
   },
   "megaMenu": {
     "items": {
-      "partners": "Partenaires et institutions",
-      "funders": "Bailleurs de fonds et fondations",
-      "ecosystem": "Bâtisseurs d'écosystème",
-      "talented": "Collaborateurs talentueux"
+      "partners": "Bailleurs de fonds et partenaires de développement",
+      "funders": "Employeurs et partenaires d'entreprise",
+      "ecosystem": "Établissements d'éducation et de formation",
+      "talented": "Mentors et professionnels"
     },
     "tagline": "Donner aux jeunes Africains les compétences, le jugement et la confiance dont les employeurs ont réellement besoin."
   },

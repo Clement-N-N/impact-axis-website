@@ -4,6 +4,10 @@ export const HOME_SETTINGS_QUERY = defineQuery(
   `*[_type == "homeSettings"][0]{ heroVariant }`,
 );
 
+export const SOCIAL_LINKS_QUERY = defineQuery(
+  `*[_type == "socialLinks"][0]{ facebook, instagram, x, linkedin, youtube }`,
+);
+
 export const HOME_FAQ_QUERY = defineQuery(`*[_type == "homeFaq"][0]{
   faqs[]{
     question{en, fr},
@@ -18,13 +22,21 @@ export const HOME_IMPACT_QUERY = defineQuery(`*[_type == "homeImpact"][0]{
   }
 }`);
 
-export const BLOG_POSTS_QUERY = defineQuery(`*[_type == "blogPost"] | order(date desc){
+export const BLOG_POSTS_QUERY = defineQuery(`*[
+  _type == "blogPost" &&
+  (!defined($categorySlug) || category->slug.current == $categorySlug)
+] | order(date desc){
   "id": slug.current,
   title{en, fr},
   excerpt{en, fr},
   date,
   image,
   "href": "/blog/" + slug.current
+}`);
+
+export const BLOG_CATEGORIES_QUERY = defineQuery(`*[_type == "blogCategory"] | order(title.en asc){
+  title{en, fr},
+  "slug": slug.current
 }`);
 
 export const BLOG_POST_BY_SLUG_QUERY = defineQuery(`*[_type == "blogPost" && slug.current == $slug][0]{

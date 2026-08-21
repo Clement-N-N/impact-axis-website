@@ -9,6 +9,7 @@ import { navTranslations } from "./nav";
 import { footerTranslations } from "./footer";
 import { termsOfUseTranslations } from "./terms-of-use";
 import { privacyPolicyTranslations } from "./privacy-policy";
+import { contactTranslations } from "./contact";
 
 const messages = {
   nav: navTranslations.en,
@@ -22,6 +23,7 @@ const messages = {
   impact: impactTranslations.en,
   termsOfUse: termsOfUseTranslations.en,
   privacyPolicy: privacyPolicyTranslations.en,
+  contact: contactTranslations.en,
 };
 
 export default messages;

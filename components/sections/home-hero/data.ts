@@ -60,7 +60,7 @@ export const heroConfig: HeroConfig = {
       },
       seeAllStoriesButton: {
         label: { en: "Explore our work", fr: "Découvrir notre travail" },
-        href: "#",
+        href: "/what-we-do",
       },
       collageImages: ["/images/girls-1.jpg", "/images/team-1.jpg", "/images/alumni-1.jpg"],
     },
@@ -76,7 +76,7 @@ export const heroConfig: HeroConfig = {
       },
       seeAllStoriesButton: {
         label: { en: "Explore our work", fr: "Découvrir notre travail" },
-        href: "#",
+        href: "/what-we-do",
       },
       collageImages: ["/images/girls-1.jpg", "/images/team-1.jpg", "/images/alumni-1.jpg"],
     },

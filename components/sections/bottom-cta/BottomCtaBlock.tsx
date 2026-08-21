@@ -67,15 +67,15 @@ export function BottomCtaBlock({ block, locale }: { block: BottomCtaBlockData; l
   return (
     <div
       ref={wrapperRef}
-      className="relative aspect-[4/3] w-full overflow-hidden md:aspect-auto md:h-full md:w-1/2"
+      className="relative aspect-[4/3] w-full overflow-hidden md:aspect-auto md:h-full"
     >
       <Image src={block.image} alt="" fill className="object-cover" />
       <div className="absolute inset-0 bg-[#191E20]/50">
         <div
-          className="flex h-full w-full flex-col justify-between p-10"
+          className="flex h-full w-full flex-col items-center justify-center gap-6 p-10 text-center"
           style={{ backgroundColor: `${block.accentColor}8C` }}
         >
-          <h2 ref={headlineRef} className="max-w-md text-[clamp(1.5rem,2.5vw,2.25rem)] font-medium leading-[1.3] text-white">
+          <h2 ref={headlineRef} className="max-w-2xl text-[clamp(1.5rem,2.5vw,2.25rem)] font-medium leading-[1.3] text-white">
             {getLocalizedText(block.title, locale)}
           </h2>
           <Button

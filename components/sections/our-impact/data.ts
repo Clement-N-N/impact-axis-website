@@ -25,7 +25,7 @@ export const IMPACT_CARD_DESIGNS: ImpactCardDesign[] = [
     background: "linear-gradient(180deg, rgba(255,234,167,0.3) 0%, rgba(255,222,117,0.5) 100%)",
   },
   {
-    image: "/images/placeholder_image_2.png",
+    image: "/images/placeholder_image_4.png",
     background: "linear-gradient(180deg, rgba(167,255,180,0.3) 0%, rgba(117,255,138,0.5) 100%)",
   },
   {
@@ -33,7 +33,7 @@ export const IMPACT_CARD_DESIGNS: ImpactCardDesign[] = [
     background: "linear-gradient(180deg, rgba(116,185,255,0.3) 0%, rgba(66,160,255,0.5) 100%)",
   },
   {
-    image: "/images/placeholder_image_4.png",
+    image: "/images/placeholder_image_2.png",
     background: "linear-gradient(180deg, rgba(220,116,255,0.3) 0%, rgba(208,66,255,0.5) 100%)",
   },
   {

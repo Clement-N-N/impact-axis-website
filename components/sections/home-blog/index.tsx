@@ -10,7 +10,11 @@ const FEATURED_POST_COUNT = 3;
 
 async function getHomeBlogContent(): Promise<HomeBlogContent | null> {
   try {
-    const result = await client.fetch(BLOG_POSTS_QUERY, {}, { next: { revalidate: 60 } });
+    const result = await client.fetch(
+      BLOG_POSTS_QUERY,
+      { categorySlug: null },
+      { next: { revalidate: 60 } },
+    );
     if (Array.isArray(result) && result.length > 0 && result.every(isBlogPost)) {
       return { ...homeBlogChrome, posts: result.slice(0, FEATURED_POST_COUNT) };
     }

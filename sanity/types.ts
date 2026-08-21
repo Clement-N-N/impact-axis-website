@@ -10,3 +10,11 @@ export type LocalizedPortableText = {
   en: PortableTextBlock[];
   fr: PortableTextBlock[];
 };
+
+export type SocialLinks = {
+  facebook?: string;
+  instagram?: string;
+  x?: string;
+  linkedin?: string;
+  youtube?: string;
+};

@@ -103,7 +103,7 @@ export function ImpactSection({ data, locale }: { data: OurImpactContent; locale
                 {getLocalizedText(data.paragraph, locale)}
               </h2>
               <Button
-                href="#"
+                href="/impact"
                 variant="outline"
                 icon={<ArrowRightIcon weight="bold" className="h-5 w-5" />}
                 className="mt-10"

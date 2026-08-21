@@ -4,10 +4,8 @@ import { BottomCtaBlock } from "./BottomCtaBlock";
 
 export function BottomCta({ locale }: { locale: Locale }) {
   return (
-    <section className="flex aspect-auto w-full flex-col overflow-hidden md:aspect-[24/5] md:flex-row">
-      {bottomCtaContent.blocks.map((block, index) => (
-        <BottomCtaBlock key={index} block={block} locale={locale} />
-      ))}
+    <section className="flex aspect-auto w-full overflow-hidden md:aspect-[24/5]">
+      <BottomCtaBlock block={bottomCtaContent.block} locale={locale} />
     </section>
   );
 }

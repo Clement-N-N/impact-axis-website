@@ -25,7 +25,11 @@ async function getPostBySlug(slug: string): Promise<BlogPostDetail | null> {
 
 async function getRelatedPost(slug: string): Promise<BlogPost | null> {
   try {
-    const posts = (await client.fetch(BLOG_POSTS_QUERY, {}, { next: { revalidate: 60 } })) as BlogPost[];
+    const posts = (await client.fetch(
+      BLOG_POSTS_QUERY,
+      { categorySlug: null },
+      { next: { revalidate: 60 } },
+    )) as BlogPost[];
     return posts.find((candidate) => candidate.id !== slug) ?? null;
   } catch (error) {
     console.error("Failed to fetch related blog post from Sanity.", error);

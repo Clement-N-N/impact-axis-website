@@ -8,6 +8,7 @@ import clsx from "clsx";
 import { cva } from "class-variance-authority";
 import { CaretDownIcon } from "@phosphor-icons/react";
 import { Link, usePathname } from "@/i18n/navigation";
+import type { SocialLinks } from "@/sanity/types";
 import { Container } from "./Container";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Logo } from "./Logo";
@@ -95,7 +96,7 @@ function NavLinkText({
   );
 }
 
-export function Navbar() {
+export function Navbar({ socialLinks }: { socialLinks: SocialLinks }) {
   const t = useTranslations("nav");
   const locale = useLocale();
   const pathname = usePathname();
@@ -247,7 +248,7 @@ export function Navbar() {
           </div>
         </div>
       </Container>
-      <MegaMenu id={MEGA_MENU_ID} isOpen={isMegaMenuOpen} />
+      <MegaMenu id={MEGA_MENU_ID} isOpen={isMegaMenuOpen} socialLinks={socialLinks} />
       <MegaMenuBackdrop
         isOpen={isMegaMenuOpen}
         onClick={() => setIsMegaMenuOpen(false)}

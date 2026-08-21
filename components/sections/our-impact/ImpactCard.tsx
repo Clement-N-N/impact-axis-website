@@ -5,7 +5,7 @@ import type { ImpactMetric } from "./types";
 
 export function ImpactCard({ metric, locale }: { metric: ImpactMetric; locale: Locale }) {
   return (
-    <div className="flex flex-col gap-6" style={{ backgroundImage: metric.background }}>
+    <div className="flex flex-col gap-6 justify-between" style={{ backgroundImage: metric.background }}>
       <div className="flex min-h-32 flex-col p-6">
         <span className="text-[clamp(1.75rem,3vw,2.5rem)] font-medium text-black">{metric.number}</span>
         <span className="text-[clamp(1rem,1.25vw,1.125rem)] text-black">

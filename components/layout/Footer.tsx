@@ -14,6 +14,7 @@ import {
   YoutubeLogoIcon,
 } from "@phosphor-icons/react";
 import { Link } from "@/i18n/navigation";
+import type { SocialLinks } from "@/sanity/types";
 import { Container } from "./Container";
 
 if (typeof window !== "undefined") {
@@ -23,15 +24,16 @@ if (typeof window !== "undefined") {
 const inputStyles = "bg-white/10 px-4 py-3 text-white placeholder:text-white/50";
 
 const SOCIALS = [
-  { Icon: FacebookLogoIcon, label: "Facebook" },
-  { Icon: InstagramLogoIcon, label: "Instagram" },
-  { Icon: XLogoIcon, label: "X" },
-  { Icon: LinkedinLogoIcon, label: "LinkedIn" },
-  { Icon: YoutubeLogoIcon, label: "YouTube" },
-] as const;
+  { key: "facebook", Icon: FacebookLogoIcon, label: "Facebook" },
+  { key: "instagram", Icon: InstagramLogoIcon, label: "Instagram" },
+  { key: "x", Icon: XLogoIcon, label: "X" },
+  { key: "linkedin", Icon: LinkedinLogoIcon, label: "LinkedIn" },
+  { key: "youtube", Icon: YoutubeLogoIcon, label: "YouTube" },
+] as const satisfies readonly { key: keyof SocialLinks; Icon: unknown; label: string }[];
 
-export function Footer() {
+export function Footer({ socialLinks }: { socialLinks: SocialLinks }) {
   const t = useTranslations("footer");
+  const activeSocials = SOCIALS.filter((social) => socialLinks[social.key]);
   const tNav = useTranslations("nav");
   const currentYear = new Date().getFullYear();
   const formIdPrefix = useId();
@@ -45,10 +47,10 @@ export function Footer() {
   ];
 
   const workWithUsLinks = [
-    { href: "/work-with-us#partners-institutions", label: tNav("megaMenu.items.partners") },
-    { href: "/work-with-us#funders-foundations", label: tNav("megaMenu.items.funders") },
-    { href: "/work-with-us#ecosystem-builders", label: tNav("megaMenu.items.ecosystem") },
-    { href: "/work-with-us#talented-collaborators", label: tNav("megaMenu.items.talented") },
+    { href: "/work-with-us#funders-development-partners", label: tNav("megaMenu.items.partners") },
+    { href: "/work-with-us#employers-corporate-partners", label: tNav("megaMenu.items.funders") },
+    { href: "/work-with-us#education-training-institutions", label: tNav("megaMenu.items.ecosystem") },
+    { href: "/work-with-us#mentors-professionals", label: tNav("megaMenu.items.talented") },
   ];
 
   const legalLinks = [
@@ -228,10 +230,12 @@ export function Footer() {
             </div>
 
             <div ref={socialsRef} className="flex gap-3">
-              {SOCIALS.map(({ Icon, label }) => (
+              {activeSocials.map(({ key, Icon, label }) => (
                 <a
-                  key={label}
-                  href="#"
+                  key={key}
+                  href={socialLinks[key]}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
                   className="flex h-9 w-9 items-center justify-center bg-white/10 text-white/70 hover:text-white"
                 >

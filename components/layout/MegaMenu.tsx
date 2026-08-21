@@ -15,6 +15,7 @@ import {
   YoutubeLogoIcon,
 } from "@phosphor-icons/react";
 import { Link } from "@/i18n/navigation";
+import type { SocialLinks } from "@/sanity/types";
 import {
   EcosystemIcon,
   FundersIcon,
@@ -29,25 +30,25 @@ const ITEMS = [
     key: "partners",
     Icon: PartnersIcon,
     accent: "text-icon-blue",
-    href: "/work-with-us#partners-institutions",
+    href: "/work-with-us#funders-development-partners",
   },
   {
     key: "funders",
     Icon: FundersIcon,
     accent: "text-icon-green",
-    href: "/work-with-us#funders-foundations",
+    href: "/work-with-us#employers-corporate-partners",
   },
   {
     key: "ecosystem",
     Icon: EcosystemIcon,
     accent: "text-icon-peach",
-    href: "/work-with-us#ecosystem-builders",
+    href: "/work-with-us#education-training-institutions",
   },
   {
     key: "talented",
     Icon: TalentedIcon,
     accent: "text-icon-purple",
-    href: "/work-with-us#talented-collaborators",
+    href: "/work-with-us#mentors-professionals",
   },
 ] as const;
 
@@ -92,14 +93,23 @@ const footerTextStyles = cva("block", {
 });
 
 const SOCIALS = [
-  { Icon: InstagramLogoIcon, label: "Instagram", hoverColor: "hover:text-[#E1306C]" },
-  { Icon: FacebookLogoIcon, label: "Facebook", hoverColor: "hover:text-[#1877F2]" },
-  { Icon: XLogoIcon, label: "X", hoverColor: "hover:text-[#000000]" },
-  { Icon: LinkedinLogoIcon, label: "LinkedIn", hoverColor: "hover:text-[#0A66C2]" },
-  { Icon: YoutubeLogoIcon, label: "YouTube", hoverColor: "hover:text-[#FF0000]" },
-] as const;
+  { key: "instagram", Icon: InstagramLogoIcon, label: "Instagram", hoverColor: "hover:text-[#E1306C]" },
+  { key: "facebook", Icon: FacebookLogoIcon, label: "Facebook", hoverColor: "hover:text-[#1877F2]" },
+  { key: "x", Icon: XLogoIcon, label: "X", hoverColor: "hover:text-[#000000]" },
+  { key: "linkedin", Icon: LinkedinLogoIcon, label: "LinkedIn", hoverColor: "hover:text-[#0A66C2]" },
+  { key: "youtube", Icon: YoutubeLogoIcon, label: "YouTube", hoverColor: "hover:text-[#FF0000]" },
+] as const satisfies readonly { key: keyof SocialLinks; Icon: unknown; label: string; hoverColor: string }[];
 
-export function MegaMenu({ id, isOpen }: { id: string; isOpen: boolean }) {
+export function MegaMenu({
+  id,
+  isOpen,
+  socialLinks,
+}: {
+  id: string;
+  isOpen: boolean;
+  socialLinks: SocialLinks;
+}) {
+  const activeSocials = SOCIALS.filter((social) => socialLinks[social.key]);
   const t = useTranslations("nav");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [hoveredSocial, setHoveredSocial] = useState<number | null>(null);
@@ -306,10 +316,12 @@ export function MegaMenu({ id, isOpen }: { id: string; isOpen: boolean }) {
           )}
         >
           <div ref={socialsRef} className={clsx(imageColSpanStyles({ locale: locale === "fr" ? "fr" : "en" }), "flex items-center gap-4 text-black")}>
-            {SOCIALS.map(({ Icon, label, hoverColor }, index) => (
+            {activeSocials.map(({ key, Icon, label, hoverColor }, index) => (
               <a
-                key={label}
-                href="#"
+                key={key}
+                href={socialLinks[key]}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={label}
                 ref={(el) => {
                   socialRefs.current[index] = el;

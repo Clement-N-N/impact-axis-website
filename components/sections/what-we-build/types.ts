@@ -14,5 +14,5 @@ export type WhatWeBuildContent = {
     headline: LocalizedText;
     backgroundImage: string;
   };
-  slides: [WhatWeBuildSlide, WhatWeBuildSlide, WhatWeBuildSlide, WhatWeBuildSlide];
+  slides: [WhatWeBuildSlide, WhatWeBuildSlide, WhatWeBuildSlide];
 };

@@ -17,6 +17,6 @@ export const homeFaqChrome: Pick<
       en: "Contact us",
       fr: "Contactez-nous",
     },
-    href: "#",
+    href: "/contact",
   },
 };

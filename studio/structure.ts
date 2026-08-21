@@ -3,6 +3,7 @@ import { HOME_SETTINGS_ID, HOME_SETTINGS_TYPE } from "./schemaTypes/homeSettings
 import { HOME_FAQ_ID, HOME_FAQ_TYPE } from "./schemaTypes/homeFaq";
 import { HOME_TESTIMONIALS_ID, HOME_TESTIMONIALS_TYPE } from "./schemaTypes/homeTestimonials";
 import { HOME_IMPACT_ID, HOME_IMPACT_TYPE } from "./schemaTypes/homeImpact";
+import { SOCIAL_LINKS_ID, SOCIAL_LINKS_TYPE } from "./schemaTypes/socialLinks";
 import { TESTIMONIAL_TYPE } from "./schemaTypes/testimonial";
 import { BLOG_POST_TYPE } from "./schemaTypes/blogPost";
 import { BLOG_AUTHOR_TYPE } from "./schemaTypes/blogAuthor";
@@ -16,6 +17,7 @@ const EXPLICITLY_PLACED_TYPES = new Set([
   HOME_FAQ_TYPE,
   HOME_TESTIMONIALS_TYPE,
   HOME_IMPACT_TYPE,
+  SOCIAL_LINKS_TYPE,
   TESTIMONIAL_TYPE,
   BLOG_POST_TYPE,
   BLOG_AUTHOR_TYPE,
@@ -63,6 +65,10 @@ export const structure: StructureResolver = (S) =>
         .id(HOME_IMPACT_ID)
         .title("Home Page Impact Stats")
         .child(S.document().schemaType(HOME_IMPACT_TYPE).documentId(HOME_IMPACT_ID)),
+      S.listItem()
+        .id(SOCIAL_LINKS_ID)
+        .title("Social Links")
+        .child(S.document().schemaType(SOCIAL_LINKS_TYPE).documentId(SOCIAL_LINKS_ID)),
       S.listItem()
         .id(HOME_SETTINGS_ID)
         .title("Home Page Settings")

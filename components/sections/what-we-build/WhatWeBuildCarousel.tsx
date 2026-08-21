@@ -125,7 +125,7 @@ export function WhatWeBuildCarousel({ locale }: { locale: Locale }) {
                     type="button"
                     onClick={() => setActiveIndex(index)}
                     aria-current={isActive ? "true" : undefined}
-                    className="relative w-full border-b border-black/10 py-3 text-left text-[clamp(0.875rem,1.125vw,1rem)] text-black"
+                    className="relative w-full cursor-pointer border-b border-black/10 py-3 text-left text-[clamp(0.875rem,1.125vw,1rem)] text-black"
                   >
                     {getLocalizedText(slide.legendLabel, locale)}
                     {isActive && prefersReducedMotion && (

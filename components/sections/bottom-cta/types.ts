@@ -9,5 +9,5 @@ export type BottomCtaBlock = {
 };
 
 export type BottomCtaContent = {
-  blocks: [BottomCtaBlock, BottomCtaBlock];
+  block: BottomCtaBlock;
 };
