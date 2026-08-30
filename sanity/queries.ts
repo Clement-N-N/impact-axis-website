@@ -39,6 +39,14 @@ export const BLOG_CATEGORIES_QUERY = defineQuery(`*[_type == "blogCategory"] | o
   "slug": slug.current
 }`);
 
+export const BLOG_CATEGORY_BY_SLUG_QUERY = defineQuery(
+  `*[_type == "blogCategory" && slug.current == $slug][0]{ title{en, fr}, "slug": slug.current }`,
+);
+
+export const BLOG_CATEGORY_SLUGS_QUERY = defineQuery(
+  `*[_type == "blogCategory"]{ "slug": slug.current }`,
+);
+
 export const BLOG_POST_BY_SLUG_QUERY = defineQuery(`*[_type == "blogPost" && slug.current == $slug][0]{
   "id": slug.current,
   title{en, fr},
@@ -53,6 +61,31 @@ export const BLOG_POST_BY_SLUG_QUERY = defineQuery(`*[_type == "blogPost" && slu
 }`);
 
 export const BLOG_SLUGS_QUERY = defineQuery(`*[_type == "blogPost"]{ "slug": slug.current }`);
+
+export const EVENTS_QUERY = defineQuery(`*[_type == "event"] | order(date asc){
+  "slug": slug.current,
+  title{en, fr},
+  location{en, fr},
+  date
+}`);
+
+export const EVENT_DETAILS_QUERY = defineQuery(`*[_type == "event"]{
+  "slug": slug.current,
+  heroImage,
+  registerHref,
+  speakers[]{
+    title{en, fr},
+    "name": person->name,
+    "image": person->image
+  },
+  partners[]->{name, logo},
+  programOverview{en, fr},
+  specialGuests[]{
+    title{en, fr},
+    "name": person->name,
+    "image": person->image
+  }
+}`);
 
 export const HOME_TESTIMONIALS_QUERY = defineQuery(`*[_type == "homeTestimonials"][0]{
   testimonials[]->{

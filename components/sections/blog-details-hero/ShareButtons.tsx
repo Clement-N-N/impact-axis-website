@@ -18,7 +18,7 @@ function PillButton({ onClick, icon, label }: { onClick: () => void; icon: React
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm text-black"
+      className="flex items-center gap-2 border border-border px-2 py-1 !text-sm text-black cursor-pointer"
     >
       {icon}
       {label}
@@ -43,16 +43,16 @@ export function ShareButtons({ title, locale }: { title: LocalizedText; locale: 
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="flex flex-wrap gap-3">
       <PillButton
-        icon={<FacebookLogoIcon weight="fill" className="h-4 w-4 text-[#1877F2]" />}
+        icon={<FacebookLogoIcon weight="fill" className="h-5 w-5 text-[#1877F2]" />}
         label={getLocalizedText(labels.facebook, locale)}
         onClick={() =>
           openShare(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`)
         }
       />
       <PillButton
-        icon={<XLogoIcon weight="fill" className="h-4 w-4" />}
+        icon={<XLogoIcon weight="fill" className="h-5 w-5" />}
         label={getLocalizedText(labels.x, locale)}
         onClick={() =>
           openShare(
@@ -61,14 +61,14 @@ export function ShareButtons({ title, locale }: { title: LocalizedText; locale: 
         }
       />
       <PillButton
-        icon={<LinkedinLogoIcon weight="fill" className="h-4 w-4 text-[#0A66C2]" />}
+        icon={<LinkedinLogoIcon weight="fill" className="h-5 w-5 text-[#0A66C2]" />}
         label={getLocalizedText(labels.linkedin, locale)}
         onClick={() =>
           openShare(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`)
         }
       />
       <PillButton
-        icon={<CopySimpleIcon weight="bold" className="h-4 w-4" />}
+        icon={<CopySimpleIcon weight="bold" className="h-5 w-5" />}
         label={copied ? getLocalizedText(labels.copied, locale) : getLocalizedText(labels.copy, locale)}
         onClick={handleCopy}
       />

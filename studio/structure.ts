@@ -8,6 +8,9 @@ import { TESTIMONIAL_TYPE } from "./schemaTypes/testimonial";
 import { BLOG_POST_TYPE } from "./schemaTypes/blogPost";
 import { BLOG_AUTHOR_TYPE } from "./schemaTypes/blogAuthor";
 import { BLOG_CATEGORY_TYPE } from "./schemaTypes/blogCategory";
+import { EVENT_TYPE } from "./schemaTypes/event";
+import { EVENT_PERSON_TYPE } from "./schemaTypes/eventPerson";
+import { EVENT_PARTNER_TYPE } from "./schemaTypes/eventPartner";
 
 // Every type placed explicitly below (either as a pinned singleton or inside
 // a group) — excluded from the catch-all fallback so it isn't listed twice.
@@ -22,6 +25,9 @@ const EXPLICITLY_PLACED_TYPES = new Set([
   BLOG_POST_TYPE,
   BLOG_AUTHOR_TYPE,
   BLOG_CATEGORY_TYPE,
+  EVENT_TYPE,
+  EVENT_PERSON_TYPE,
+  EVENT_PARTNER_TYPE,
 ]);
 
 export const structure: StructureResolver = (S) =>
@@ -39,6 +45,18 @@ export const structure: StructureResolver = (S) =>
               S.documentTypeListItem(BLOG_POST_TYPE).title("Posts"),
               S.documentTypeListItem(BLOG_AUTHOR_TYPE).title("Authors"),
               S.documentTypeListItem(BLOG_CATEGORY_TYPE).title("Categories"),
+            ]),
+        ),
+      S.listItem()
+        .id("eventsGroup")
+        .title("Events")
+        .child(
+          S.list()
+            .title("Events")
+            .items([
+              S.documentTypeListItem(EVENT_TYPE).title("Events"),
+              S.documentTypeListItem(EVENT_PERSON_TYPE).title("Speakers"),
+              S.documentTypeListItem(EVENT_PARTNER_TYPE).title("Partners"),
             ]),
         ),
       S.listItem()

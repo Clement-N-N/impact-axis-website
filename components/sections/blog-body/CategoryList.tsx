@@ -33,7 +33,7 @@ export function CategoryList({
           return (
             <li key={category.slug}>
               <Link
-                href={`/blog?category=${category.slug}`}
+                href={`/blog/category/${category.slug}`}
                 aria-current={isActive ? "true" : undefined}
                 className={clsx(isActive ? "font-medium text-black" : "text-impact-gray hover:text-black")}
               >

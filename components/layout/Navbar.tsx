@@ -33,8 +33,8 @@ const navLinkStyles = cva(
 const logoColStyles = cva("", {
   variants: {
     locale: {
-      en: "lg:col-span-4 xxl:col-span-5 2xl:col-span-6",
-      fr: "lg:col-span-3 xxl:col-span-4 2xl:col-span-5",
+      en: "lg:col-span-4 xxl:col-span-4 2xl:col-span-6",
+      fr: "lg:col-span-3 xxl:col-span-3 2xl:col-span-4",
     },
   },
   defaultVariants: { locale: "en" },
@@ -45,8 +45,8 @@ const navColStyles = cva(
   {
     variants: {
       locale: {
-        en: "lg:col-span-8 xxl:col-span-7 2xl:col-span-6",
-        fr: "lg:col-span-9 xxl:col-span-8 2xl:col-span-7",
+        en: "lg:col-span-8 xxl:col-span-8 2xl:col-span-6",
+        fr: "lg:col-span-9 xxl:col-span-9 2xl:col-span-8",
       },
     },
     defaultVariants: { locale: "en" },
@@ -161,7 +161,7 @@ export function Navbar({ socialLinks }: { socialLinks: SocialLinks }) {
         if (menuEl && menuEl.contains(e.target as Node)) return;
         setIsMegaMenuOpen(false);
       }}
-      className="border-border sticky top-0 z-50 hidden border-b bg-white lg:block"
+      className="border-border sticky top-0 z-50 hidden border-b bg-white xl:block"
     >
       {/* Desktop nav  */}
       <Container className="gap-gutter h-header z-50 grid grid-cols-12 items-center">

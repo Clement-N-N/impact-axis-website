@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Container } from "@/components/layout/Container";
-import { BlogCard } from "@/components/sections/blog-card";
+import { BlogCard } from "@/components/ui/BlogCard";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import type { BlogPost } from "@/components/sections/blog-card/types";

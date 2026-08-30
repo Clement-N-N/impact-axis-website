@@ -1,4 +1,4 @@
-import { BlogCard } from "@/components/sections/blog-card";
+import { BlogCard } from "@/components/ui/BlogCard";
 import { BlogContentLayout } from "@/components/sections/blog-content-layout";
 import { PromoCard } from "@/components/ui/PromoCard";
 import type { Locale } from "@/i18n/routing";

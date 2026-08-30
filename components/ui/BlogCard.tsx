@@ -6,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { getLocalizedText, type LocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import { resolveSanityImageUrl } from "@/sanity/image";
-import { formatBlogDate, type BlogPost } from "./types";
+import { formatBlogDate, type BlogPost } from "@/components/sections/blog-card/types";
 
 export type BlogCardVariant = "featured" | "compact" | "horizontal" | "list";
 
@@ -54,7 +54,7 @@ export function BlogCard({
       src={imageSrc}
       alt=""
       fill
-      className="object-cover grayscale transition-all duration-500 ease-out group-has-[h3:hover]:scale-110 group-has-[h3:hover]:grayscale-0"
+      className="object-cover grayscale transition-all duration-500 ease-out group-has-[h3:hover]/card:scale-110 group-has-[h3:hover]/card:grayscale-0"
     />
   ) : (
     <div className="h-full w-full bg-impact-gray/10" />
@@ -62,7 +62,7 @@ export function BlogCard({
 
   if (variant === "list") {
     return (
-      <div className="group flex gap-6">
+      <div className="group/card flex gap-6">
         <div className="relative w-1/3 max-h-[370px] shrink-0 self-stretch overflow-hidden">{image}</div>
         <div className="flex flex-1 flex-col gap-3">
           <span className="text-sm text-impact-gray">{formatBlogDate(post.date, locale)}</span>
@@ -77,7 +77,7 @@ export function BlogCard({
   const isHorizontal = variant === "horizontal";
 
   return (
-    <div className={clsx("group", isHorizontal ? "flex gap-6" : "flex flex-col")}>
+    <div className={clsx("group/card", isHorizontal ? "flex gap-6" : "flex flex-col")}>
       <div
         className={clsx(
           "relative shrink-0 overflow-hidden",

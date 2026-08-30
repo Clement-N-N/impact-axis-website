@@ -1,0 +1,1 @@
+export { BlogCategoryHero } from "./BlogCategoryHero";

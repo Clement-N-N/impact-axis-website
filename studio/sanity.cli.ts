@@ -6,4 +6,7 @@ export default defineCliConfig({
     dataset: "production",
   },
   studioHost: "impact-axis-admin",
+  deployment: {
+    appId: "czm6jfj22zkftwrwi18up9qn",
+  },
 });

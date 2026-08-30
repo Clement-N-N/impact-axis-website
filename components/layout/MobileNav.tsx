@@ -198,7 +198,7 @@ export function MobileNav() {
   }
 
   return (
-    <header className="border-border sticky top-0 z-[100] border-b bg-white lg:hidden">
+    <header className="border-border sticky top-0 z-[100] border-b bg-white xl:hidden">
       <Container className="flex h-header items-center justify-between">
         <Logo />
         <button

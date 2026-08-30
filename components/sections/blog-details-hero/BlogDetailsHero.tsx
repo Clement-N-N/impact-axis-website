@@ -26,15 +26,17 @@ export function BlogDetailsHero({ post, locale }: { post: BlogPostDetail; locale
         </Container>
       </section>
 
-      {imageSrc && <ParallaxImage src={imageSrc} heightClass="h-[80vh]" padded={false} reveal />}
+      {imageSrc && (
+        <ParallaxImage src={imageSrc} heightClass="h-[80vh]" padded={false} reveal exitGradient />
+      )}
 
-      <section className="w-full bg-white pt-10 pb-section">
+      <section className="w-full bg-white pt-6 pb-section">
         <Container className="grid grid-cols-4 gap-gutter md:grid-cols-8 lg:grid-cols-12">
           <div className="hidden h-full lg:col-span-1 lg:block">
             <div className="mt-[1vw] h-[8px] w-[8px] bg-black" />
           </div>
 
-          <div className="col-span-4 flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between md:col-span-8 lg:col-span-11">
+          <div className="col-span-4 flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between md:col-span-8 lg:col-span-11">
             <div className="flex flex-col gap-3">
               <AuthorCard author={post.author} role={post.authorRole} locale={locale} />
               <span className="text-sm text-impact-gray">{formatBlogDate(post.date, locale)}</span>

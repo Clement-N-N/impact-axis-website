@@ -16,6 +16,7 @@ type ParallaxImageProps = {
   heightClass?: string;
   padded?: boolean;
   reveal?: boolean;
+  exitGradient?: boolean;
 };
 
 export function ParallaxImage({
@@ -23,10 +24,12 @@ export function ParallaxImage({
   heightClass = "h-[55vh]",
   padded = true,
   reveal = false,
+  exitGradient = false,
 }: ParallaxImageProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+  const gradientRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -44,6 +47,20 @@ export function ParallaxImage({
           },
         },
       );
+
+      if (exitGradient) {
+        gsap.set(gradientRef.current, { opacity: 0 });
+        gsap.to(gradientRef.current, {
+          opacity: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      }
 
       if (reveal) {
         const prefersReducedMotion = window.matchMedia(
@@ -70,13 +87,19 @@ export function ParallaxImage({
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [reveal]);
+  }, [reveal, exitGradient]);
 
   const frame = (
     <div ref={frameRef} className={clsx("relative w-full overflow-hidden", heightClass)}>
       <div ref={imageRef} className="absolute inset-x-0 -top-[18%] -bottom-[18%]">
         <Image src={src} alt="" fill className="object-cover" />
       </div>
+      {exitGradient && (
+        <div
+          ref={gradientRef}
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent to-black/80"
+        />
+      )}
     </div>
   );
 

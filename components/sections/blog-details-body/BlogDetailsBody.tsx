@@ -1,5 +1,5 @@
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
-import { BlogCard } from "@/components/sections/blog-card";
+import { BlogCard } from "@/components/ui/BlogCard";
 import type { BlogPost, BlogPostDetail } from "@/components/sections/blog-card/types";
 import { blogBodyContent } from "@/components/sections/blog-body/data";
 import { BlogContentLayout } from "@/components/sections/blog-content-layout";
@@ -26,7 +26,7 @@ export function BlogDetailsBody({
   return (
     <BlogContentLayout
       main={
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 max-w-[850px]">
           <PortableText value={post.body[locale]} components={portableTextComponents} />
         </div>
       }

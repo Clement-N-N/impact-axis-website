@@ -7,7 +7,7 @@ import { Container } from "@/components/layout/Container";
 import { Link } from "@/i18n/navigation";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
-import { BlogCard } from "@/components/sections/blog-card";
+import { BlogCard } from "@/components/ui/BlogCard";
 import type { HomeBlogContent } from "./types";
 
 if (typeof window !== "undefined") {
