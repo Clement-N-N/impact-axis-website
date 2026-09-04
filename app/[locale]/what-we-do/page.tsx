@@ -1,4 +1,29 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+
+type Props = {
+  params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "whatWeDo" });
+
+  const title = t("title") || (locale === "fr" ? "Ce que nous faisons" : "What We Do");
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
+  const canonical = `${baseUrl}/${locale}/what-we-do`;
+
+  return {
+    title,
+    alternates: {
+      canonical,
+      languages: {
+        en: `${baseUrl}/en/what-we-do`,
+        fr: `${baseUrl}/fr/what-we-do`,
+      },
+    },
+  };
+}
 
 export default async function WhatWeDoPage({
   params,

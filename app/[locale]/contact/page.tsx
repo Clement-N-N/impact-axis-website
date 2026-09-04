@@ -1,4 +1,49 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+
+type Props = {
+  params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "contact" });
+
+  const title = t("title") || (locale === "fr" ? "Contactez-nous" : "Contact Us");
+  const description =
+    t("intro") ||
+    (locale === "fr"
+      ? "Contactez l'équipe Impact Axis pour toute question ou partenariat."
+      : "Get in touch with the Impact Axis team for inquiries, support, or partnerships.");
+
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
+  const canonical = `${baseUrl}/${locale}/contact`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical,
+      languages: {
+        en: `${baseUrl}/en/contact`,
+        fr: `${baseUrl}/fr/contact`,
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      siteName: "Impact Axis",
+      locale: locale === "fr" ? "fr_FR" : "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
 
 export default async function ContactPage({
   params,
