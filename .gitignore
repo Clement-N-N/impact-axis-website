@@ -45,3 +45,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+gsap_animation_issues.md
+newsletter_integration_plan.md

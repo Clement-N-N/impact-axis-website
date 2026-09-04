@@ -31,9 +31,23 @@ const SOCIALS = [
   { key: "youtube", Icon: YoutubeLogoIcon, label: "YouTube" },
 ] as const satisfies readonly { key: keyof SocialLinks; Icon: unknown; label: string }[];
 
+const DEFAULT_SOCIAL_LINKS: Partial<Record<keyof SocialLinks, string>> = {
+  facebook: "https://facebook.com/impact.axis",
+  instagram: "https://instagram.com/impact.axis",
+  linkedin: "https://linkedin.com/company/impact-axis",
+  youtube: "https://www.youtube.com/@Impact-Axis",
+};
+
 export function Footer({ socialLinks }: { socialLinks: SocialLinks }) {
   const t = useTranslations("footer");
-  const activeSocials = SOCIALS.filter((social) => socialLinks[social.key]);
+  const mergedSocialLinks = {
+    ...DEFAULT_SOCIAL_LINKS,
+    ...socialLinks,
+  };
+  const activeSocials = SOCIALS.filter((social) => Boolean(mergedSocialLinks[social.key])).map((social) => ({
+    ...social,
+    url: mergedSocialLinks[social.key]!,
+  }));
   const tNav = useTranslations("nav");
   const currentYear = new Date().getFullYear();
   const formIdPrefix = useId();
@@ -56,7 +70,6 @@ export function Footer({ socialLinks }: { socialLinks: SocialLinks }) {
   const legalLinks = [
     { href: "/terms-of-use", label: t("legal.termsOfUse") },
     { href: "/privacy-policy", label: t("legal.privacyPolicy") },
-    // { href: "#", label: t("legal.donorPrivacyPolicy") },
   ];
 
   const footerRef = useRef<HTMLElement>(null);
@@ -230,10 +243,10 @@ export function Footer({ socialLinks }: { socialLinks: SocialLinks }) {
             </div>
 
             <div ref={socialsRef} className="flex gap-3">
-              {activeSocials.map(({ key, Icon, label }) => (
+              {activeSocials.map(({ key, Icon, label, url }) => (
                 <a
                   key={key}
-                  href={socialLinks[key]}
+                  href={url}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}

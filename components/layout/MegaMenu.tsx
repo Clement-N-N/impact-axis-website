@@ -100,6 +100,13 @@ const SOCIALS = [
   { key: "youtube", Icon: YoutubeLogoIcon, label: "YouTube", hoverColor: "hover:text-[#FF0000]" },
 ] as const satisfies readonly { key: keyof SocialLinks; Icon: unknown; label: string; hoverColor: string }[];
 
+const DEFAULT_SOCIAL_LINKS: Partial<Record<keyof SocialLinks, string>> = {
+  facebook: "https://facebook.com/impact.axis",
+  instagram: "https://instagram.com/impact.axis",
+  linkedin: "https://linkedin.com/company/impact-axis",
+  youtube: "https://www.youtube.com/@Impact-Axis",
+};
+
 export function MegaMenu({
   id,
   isOpen,
@@ -109,7 +116,14 @@ export function MegaMenu({
   isOpen: boolean;
   socialLinks: SocialLinks;
 }) {
-  const activeSocials = SOCIALS.filter((social) => socialLinks[social.key]);
+  const mergedSocialLinks = {
+    ...DEFAULT_SOCIAL_LINKS,
+    ...socialLinks,
+  };
+  const activeSocials = SOCIALS.filter((social) => Boolean(mergedSocialLinks[social.key])).map((social) => ({
+    ...social,
+    url: mergedSocialLinks[social.key]!,
+  }));
   const t = useTranslations("nav");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [hoveredSocial, setHoveredSocial] = useState<number | null>(null);
@@ -316,10 +330,10 @@ export function MegaMenu({
           )}
         >
           <div ref={socialsRef} className={clsx(imageColSpanStyles({ locale: locale === "fr" ? "fr" : "en" }), "flex items-center gap-4 text-black")}>
-            {activeSocials.map(({ key, Icon, label, hoverColor }, index) => (
+            {activeSocials.map(({ key, Icon, label, hoverColor, url }, index) => (
               <a
                 key={key}
-                href={socialLinks[key]}
+                href={url}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
