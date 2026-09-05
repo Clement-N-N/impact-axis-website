@@ -313,7 +313,7 @@ export function MobileNav() {
           </nav>
 
           <div className="flex items-center justify-between border-t border-border py-6">
-            <LanguageSwitcher />
+            <LanguageSwitcher className="h-10 px-4 border border-border rounded-md text-sm font-medium" />
             <Link
               ref={ctaRef}
               href="/work-with-us"

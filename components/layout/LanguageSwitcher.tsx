@@ -1,10 +1,11 @@
 "use client";
 
+import clsx from "clsx";
 import { useLocale } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 
-export function LanguageSwitcher() {
+export function LanguageSwitcher({ className }: { className?: string }) {
   const locale = useLocale();
   const pathname = usePathname();
   const otherLocale =
@@ -14,9 +15,12 @@ export function LanguageSwitcher() {
     <Link
       href={pathname}
       locale={otherLocale}
-      className="text-xs text-black block w-[70px] h-header border-l border-border flex items-center justify-center"
+      className={clsx(
+        "text-xs text-black flex items-center justify-center transition-colors hover:bg-black/5",
+        className || "block w-[70px] h-header border-l border-border"
+      )}
     >
-      {locale.toUpperCase()}
+      {otherLocale.toUpperCase()}
     </Link>
   );
 }
