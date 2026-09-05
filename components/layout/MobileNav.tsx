@@ -65,6 +65,7 @@ export function MobileNav() {
     { href: "/", label: t("links.home") },
     { href: "/about", label: t("links.about") },
     { href: "/what-we-do", label: t("links.whatWeDo") },
+    { href: "/events", label: t("links.events") },
     { href: "/blog", label: t("links.blog") },
     { href: "/impact", label: t("links.impact") },
   ] as const;

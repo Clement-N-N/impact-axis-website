@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
-import { EventsHero } from "@/components/sections/events-hero";
 import { eventsHeroContent } from "@/components/sections/events-hero/data";
-import { EventsList } from "@/components/sections/events-list";
-import { EventDetailsOverlay } from "@/components/sections/event-details";
+import { EventsPageContent } from "@/components/sections/events-list";
 import { getEventDetails, getEvents } from "@/sanity/events";
 import type { Locale } from "@/i18n/routing";
 
@@ -60,13 +58,19 @@ export default async function EventsPage({
 
   const [events, eventDetails] = await Promise.all([getEvents(), getEventDetails()]);
 
+  const now = new Date();
+  const featuredEvent =
+    events.find((e) => new Date(e.date) >= now) || events[0] || null;
+
   return (
-    <>
-      <EventsHero data={eventsHeroContent} locale={locale as Locale} />
-      <EventsList events={events} locale={locale as Locale} />
-      <Suspense fallback={null}>
-        <EventDetailsOverlay events={events} eventDetails={eventDetails} locale={locale as Locale} />
-      </Suspense>
-    </>
+    <Suspense fallback={<div className="min-h-screen w-full bg-white" />}>
+      <EventsPageContent
+        heroData={eventsHeroContent}
+        events={events}
+        eventDetails={eventDetails}
+        featuredEvent={featuredEvent}
+        locale={locale as Locale}
+      />
+    </Suspense>
   );
 }

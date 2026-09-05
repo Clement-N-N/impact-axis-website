@@ -110,6 +110,7 @@ export function Navbar({ socialLinks }: { socialLinks: SocialLinks }) {
     { href: "/what-we-do", label: t("links.whatWeDo") },
   ] as const;
   const NAV_LINKS_AFTER = [
+    { href: "/events", label: t("links.events") },
     { href: "/blog", label: t("links.blog") },
     { href: "/impact", label: t("links.impact") },
   ] as const;

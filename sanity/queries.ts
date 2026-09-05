@@ -66,7 +66,8 @@ export const EVENTS_QUERY = defineQuery(`*[_type == "event"] | order(date asc){
   "slug": slug.current,
   title{en, fr},
   location{en, fr},
-  date
+  date,
+  heroImage
 }`);
 
 export const EVENT_DETAILS_QUERY = defineQuery(`*[_type == "event"]{
