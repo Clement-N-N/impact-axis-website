@@ -5,8 +5,8 @@ import {
   JourneyHero,
   JourneyTimeline,
   JourneyCta,
-  journeyPageContent,
 } from "@/components/sections/journey";
+import { getJourneyPageContent } from "@/sanity/journey";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -54,12 +54,13 @@ export default async function JourneyPage({
   setRequestLocale(locale);
 
   const loc = locale as Locale;
+  const content = await getJourneyPageContent();
 
   return (
     <div className="w-full bg-white">
-      <JourneyHero data={journeyPageContent.hero} locale={loc} />
-      <JourneyTimeline milestones={journeyPageContent.milestones} locale={loc} />
-      <JourneyCta data={journeyPageContent.cta} locale={loc} />
+      <JourneyHero data={content.hero} locale={loc} />
+      <JourneyTimeline milestones={content.milestones} locale={loc} />
+      <JourneyCta data={content.cta} locale={loc} />
     </div>
   );
 }

@@ -11,8 +11,8 @@ import {
   OurPrinciplesSection,
   OurPeopleSection,
   PartnershipSection,
-  aboutPageContent,
 } from "@/components/sections/about";
+import { getAboutPageContent } from "@/sanity/about";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -60,7 +60,7 @@ export default async function AboutPage({
   setRequestLocale(locale);
 
   const loc = locale as Locale;
-  const content = aboutPageContent;
+  const content = await getAboutPageContent();
 
   return (
     <div className="w-full bg-white">

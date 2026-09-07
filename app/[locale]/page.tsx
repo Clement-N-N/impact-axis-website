@@ -11,6 +11,7 @@ import { HomeTestimonials } from "@/components/sections/home-testimonials";
 import { HomeBlog } from "@/components/sections/home-blog";
 import { HomeFaq } from "@/components/sections/home-faq";
 import { BottomCta } from "@/components/sections/bottom-cta";
+import { getHomePageContent } from "@/sanity/home";
 import type { Locale } from "@/i18n/routing";
 
 type Props = {
@@ -64,21 +65,36 @@ export default async function Home({
   setRequestLocale(locale);
 
   const loc = locale as Locale;
+  const content = await getHomePageContent();
 
   return (
     <>
       <HomeHero locale={loc} />
-      <WhyWeExist locale={loc} />
+      <WhyWeExist locale={loc} data={content.whyWeExist} />
       <ParallaxImage src="/images/team-1.jpg" heightClass="h-[55vh]" />
-      <HomeSolution locale={loc} />
+      <HomeSolution locale={loc} data={content.solution} />
       <ParallaxImage src="/images/pattern-1.png" heightClass="h-[35vh]" padded={false} />
-      <WhoWeServe locale={loc} />
-      <WhatWeBuild locale={loc} />
-      <OurImpact locale={loc} />
+      <WhoWeServe locale={loc} data={content.whoWeServe} />
+      <WhatWeBuild locale={loc} data={content.whatWeBuild} />
+      <OurImpact locale={loc} chrome={content.impactChrome} />
       <HomeTestimonials locale={loc} />
       <HomeBlog locale={loc} />
       <HomeFaq locale={loc} />
-      <BottomCta locale={loc} />
+      <BottomCta
+        locale={loc}
+        data={{
+          block: {
+            image: "/images/girls-2.jpg",
+            accentColor: "#121E6E",
+            title: content.bottomCta.title,
+            button: {
+              label: content.bottomCta.buttonLabel,
+              href: "/contact",
+            },
+            buttonVariant: "white",
+          },
+        }}
+      />
     </>
   );
 }
