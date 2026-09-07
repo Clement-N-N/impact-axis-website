@@ -9,13 +9,20 @@ import { Container } from "@/components/layout/Container";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import { whatWeBuildContent } from "./data";
+import type { WhatWeBuildOverlayContent } from "./types";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, SplitText);
 }
 
-export function WhatWeBuildOverlay({ locale }: { locale: Locale }) {
-  const { overlay } = whatWeBuildContent;
+export function WhatWeBuildOverlay({
+  locale,
+  data: propData,
+}: {
+  locale: Locale;
+  data?: WhatWeBuildOverlayContent;
+}) {
+  const overlay = propData ?? whatWeBuildContent.overlay;
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const eyebrowRef = useRef<HTMLSpanElement>(null);

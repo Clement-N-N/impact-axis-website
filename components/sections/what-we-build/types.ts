@@ -8,11 +8,13 @@ export type WhatWeBuildSlide = {
   button: HeroButton;
 };
 
+export type WhatWeBuildOverlayContent = {
+  eyebrow: LocalizedText;
+  headline: LocalizedText;
+  backgroundImage: string;
+};
+
 export type WhatWeBuildContent = {
-  overlay: {
-    eyebrow: LocalizedText;
-    headline: LocalizedText;
-    backgroundImage: string;
-  };
-  slides: [WhatWeBuildSlide, WhatWeBuildSlide, WhatWeBuildSlide];
+  overlay: WhatWeBuildOverlayContent;
+  slides: WhatWeBuildSlide[];
 };

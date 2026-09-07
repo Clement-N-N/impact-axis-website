@@ -9,5 +9,5 @@ export type WhoWeServeCard = {
 
 export type WhoWeServeContent = {
   eyebrow: LocalizedText;
-  cards: [WhoWeServeCard, WhoWeServeCard, WhoWeServeCard];
+  cards: WhoWeServeCard[];
 };

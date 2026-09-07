@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { HomeHero } from "@/components/sections/home-hero";
 import { WhyWeExist } from "@/components/sections/why-we-exist";
 import { ParallaxImage } from "@/components/sections/parallax-image";
@@ -63,20 +63,22 @@ export default async function Home({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const loc = locale as Locale;
+
   return (
     <>
-      <HomeHero locale={locale as Locale} />
-      <WhyWeExist locale={locale as Locale} />
+      <HomeHero locale={loc} />
+      <WhyWeExist locale={loc} />
       <ParallaxImage src="/images/team-1.jpg" heightClass="h-[55vh]" />
-      <HomeSolution locale={locale as Locale} />
+      <HomeSolution locale={loc} />
       <ParallaxImage src="/images/pattern-1.png" heightClass="h-[35vh]" padded={false} />
-      <WhoWeServe locale={locale as Locale} />
-      <WhatWeBuild locale={locale as Locale} />
-      <OurImpact locale={locale as Locale} />
-      <HomeTestimonials locale={locale as Locale} />
-      <HomeBlog locale={locale as Locale} />
-      <HomeFaq locale={locale as Locale} />
-      <BottomCta locale={locale as Locale} />
+      <WhoWeServe locale={loc} />
+      <WhatWeBuild locale={loc} />
+      <OurImpact locale={loc} />
+      <HomeTestimonials locale={loc} />
+      <HomeBlog locale={loc} />
+      <HomeFaq locale={loc} />
+      <BottomCta locale={loc} />
     </>
   );
 }
