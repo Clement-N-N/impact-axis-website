@@ -2,8 +2,7 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { XIcon } from "@phosphor-icons/react";
+import { ArrowLeftIcon, CalendarIcon, MapPinIcon } from "@phosphor-icons/react";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 import { PortableTextRenderer } from "@/components/ui/PortableTextRenderer";
@@ -11,7 +10,7 @@ import { getLocalizedText } from "@/components/sections/home-hero/types";
 import { eventsHeroContent } from "@/components/sections/events-hero/data";
 import { formatEventDate } from "@/components/sections/events-list/formatEventDate";
 import type { EventItem } from "@/components/sections/events-list/types";
-import { useRouter } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { resolveSanityImageUrl } from "@/sanity/image";
 import { eventDetailsContent } from "./data";
@@ -20,18 +19,18 @@ import { SpeakerCard } from "./SpeakerCard";
 import type { EventDetail } from "./types";
 
 const EYEBROW_CLASSES =
-  "text-[clamp(0.875rem,1.3125vw,1.1875rem)] leading-[clamp(1.25rem,3vw,2.75rem)] text-black";
+  "text-[clamp(0.875rem,1.3125vw,1.1875rem)] leading-[clamp(1.25rem,3vw,2.75rem)] text-black font-bold uppercase tracking-widest";
 
 function DotSectionRow({ tag, children }: { tag: React.ReactNode; children: React.ReactNode }) {
   return (
     <>
-      <div className="hidden h-full lg:col-span-1 lg:mt-20 lg:block">
+      <div className="hidden h-full lg:col-span-1 lg:mt-16 lg:block">
         <div className="mt-[1vw] h-[8px] w-[8px] bg-black" />
       </div>
-      <div className="col-span-4 mt-16 md:col-span-8 lg:col-span-5 lg:col-start-2 lg:mt-20">
+      <div className="col-span-4 mt-12 md:col-span-8 lg:col-span-4 lg:col-start-2 lg:mt-16">
         <span className={EYEBROW_CLASSES}>{tag}</span>
       </div>
-      <div className="col-span-4 mt-5 md:col-span-8 lg:col-span-6 lg:col-start-7 lg:mt-20">
+      <div className="col-span-4 mt-4 md:col-span-8 lg:col-span-7 lg:col-start-6 lg:mt-16">
         {children}
       </div>
     </>
@@ -47,90 +46,76 @@ export function EventDetailsDrawer({
   detail: EventDetail;
   locale: Locale;
 }) {
-  const router = useRouter();
   const data = eventDetailsContent;
   const heroImageSrc = resolveSanityImageUrl(detail.heroImage, 1600, 1000);
 
-  const close = () => router.push("/events");
-
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") close();
-    }
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // Scroll to top when opening an event detail page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [event.slug]);
 
   return (
-    <>
-      <motion.div
-        aria-hidden="true"
-        onClick={close}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.2 }}
-        className="fixed inset-x-0 top-header bottom-0 z-1000 bg-black/50 backdrop-blur-[3px]"
-      />
+    <div className="w-full bg-white py-12 text-black">
+      <Container className="grid grid-cols-4 gap-gutter md:grid-cols-8 lg:grid-cols-12">
+       
 
-      <motion.div
-        role="dialog"
-        aria-modal="true"
-        aria-label={getLocalizedText(event.title, locale)}
-        initial={{ y: "100%" }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.35, ease: [0.65, 0, 0.35, 1] }}
-        className="fixed inset-x-0 bottom-0 z-[1001] max-h-[90vh] overflow-y-auto bg-white pt-section pb-section"
-      >
-        <button
-          type="button"
-          aria-label="Close"
-          onClick={close}
-          className="absolute right-6 top-6 flex h-10 w-10 cursor-pointer items-center justify-center bg-black/5 text-black hover:bg-black/10"
-        >
-          <XIcon weight="bold" className="h-5 w-5" />
-        </button>
+        {/* Title Section */}
+        <div className="col-span-4 mt-6 md:col-span-8 lg:col-span-12">
+          <div className="mb-3 flex items-center gap-2">
+            <span className="h-2 w-2 bg-[#febb09] inline-block" />
+            <span className="text-xs font-bold uppercase tracking-widest text-black">
+              {getLocalizedText(eventsHeroContent.eyebrow, locale)}
+            </span>
+          </div>
+          <h1 className="text-[clamp(2.25rem,4vw,3.5rem)] font-extrabold leading-[1.15] text-black tracking-tight">
+            {getLocalizedText(event.title, locale)}
+          </h1>
+        </div>
 
-        <Container className="grid grid-cols-4 gap-gutter md:grid-cols-8 lg:grid-cols-12">
-          {/* Title section */}
-          <div className="hidden h-full lg:col-span-1 lg:block">
-            <div className="mt-[1vw] h-[8px] w-[8px] bg-black" />
-          </div>
-          <div className="col-span-4 md:col-span-8 lg:col-span-2 lg:col-start-2">
-            <span className={EYEBROW_CLASSES}>{getLocalizedText(eventsHeroContent.eyebrow, locale)}</span>
-          </div>
-          <div className="col-span-4 mt-5 md:col-span-8 lg:col-span-5 lg:col-start-4 lg:mt-0">
-            <h2 className="text-[clamp(1.75rem,3vw,2.7rem)] font-medium leading-[1.3] text-black">
-              {getLocalizedText(event.title, locale)}
-            </h2>
-          </div>
-
-          {/* Image */}
-          <div className="relative col-span-4 mt-8 h-[300px] overflow-hidden md:col-span-8 lg:col-span-12 lg:h-[480px]">
-            {heroImageSrc && (
-              <Image src={heroImageSrc} alt={detail.heroImage.alt ?? ""} fill className="object-cover" />
-            )}
-          </div>
-
-          {/* Meta row: location/date + register */}
-          <div className="col-span-4 mt-8 flex flex-col gap-6 md:col-span-8 md:flex-row md:items-center md:justify-between lg:col-span-11 lg:col-start-2">
-            <div>
-              <p className="font-medium text-black">{getLocalizedText(event.location, locale)}</p>
-              <p className="text-impact-gray">{formatEventDate(event.date, locale)}</p>
+        {/* Meta Bar: Date, Location, CTA */}
+        <div className="col-span-4 mt-6 flex flex-col gap-6 border border-border bg-gray-50/80 p-6 md:col-span-8 md:flex-row md:items-center md:justify-between lg:col-span-12">
+          <div className="flex flex-wrap gap-6 text-sm">
+            <div className="flex items-center gap-2 text-black font-semibold">
+              <CalendarIcon weight="bold" className="h-5 w-5 text-black" />
+              <span>{formatEventDate(event.date, locale)}</span>
             </div>
+            <div className="flex items-center gap-2 text-impact-gray font-medium">
+              <MapPinIcon weight="bold" className="h-5 w-5 text-impact-gray" />
+              <span>{getLocalizedText(event.location, locale)}</span>
+            </div>
+          </div>
+
+          {detail.registerHref && (
             <Button variant="primary" href={detail.registerHref}>
               {getLocalizedText(data.registerLabel, locale)}
             </Button>
-          </div>
+          )}
+        </div>
 
-          {/* Speakers */}
+        {/* Hero Image */}
+        {heroImageSrc && (
+          <div className="relative col-span-4 mt-8 aspect-[16/9] w-full overflow-hidden border border-border bg-gray-100 shadow-md md:col-span-8 lg:col-span-12 lg:aspect-[21/9]">
+            <Image
+              src={heroImageSrc}
+              alt={detail.heroImage.alt ?? getLocalizedText(event.title, locale)}
+              fill
+              priority
+              className="object-cover"
+            />
+          </div>
+        )}
+
+        {/* Program Overview */}
+        {detail.programOverview?.[locale] && (
+          <DotSectionRow tag={getLocalizedText(data.overviewLabel, locale)}>
+            <div className="prose prose-lg max-w-none text-black">
+              <PortableTextRenderer value={detail.programOverview[locale]} />
+            </div>
+          </DotSectionRow>
+        )}
+
+        {/* Speakers */}
+        {detail.speakers && detail.speakers.length > 0 && (
           <DotSectionRow tag={getLocalizedText(data.speakersLabel, locale)}>
             <div className="grid grid-cols-1 gap-gutter sm:grid-cols-2">
               {detail.speakers.map((speaker) => (
@@ -138,8 +123,10 @@ export function EventDetailsDrawer({
               ))}
             </div>
           </DotSectionRow>
+        )}
 
-          {/* Partners */}
+        {/* Partners */}
+        {detail.partners && detail.partners.length > 0 && (
           <DotSectionRow tag={getLocalizedText(data.partnersLabel, locale)}>
             <div className="flex flex-wrap gap-gutter">
               {detail.partners.map((partner) => (
@@ -147,13 +134,10 @@ export function EventDetailsDrawer({
               ))}
             </div>
           </DotSectionRow>
+        )}
 
-          {/* Overview of the program */}
-          <DotSectionRow tag={getLocalizedText(data.overviewLabel, locale)}>
-            <PortableTextRenderer value={detail.programOverview[locale]} />
-          </DotSectionRow>
-
-          {/* Special guests */}
+        {/* Special guests */}
+        {detail.specialGuests && detail.specialGuests.length > 0 && (
           <DotSectionRow tag={getLocalizedText(data.specialGuestsLabel, locale)}>
             <div className="grid grid-cols-1 gap-gutter sm:grid-cols-2">
               {detail.specialGuests.map((guest) => (
@@ -161,8 +145,21 @@ export function EventDetailsDrawer({
               ))}
             </div>
           </DotSectionRow>
-        </Container>
-      </motion.div>
-    </>
+        )}
+
+        {/* Bottom Back Button */}
+        <div className="col-span-4 mt-16 border-t border-border pt-8 md:col-span-8 lg:col-span-12">
+          <Link
+            href="/events"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-black hover:underline"
+          >
+            <ArrowLeftIcon weight="bold" className="h-4 w-4" />
+            <span>
+              {locale === "fr" ? "Retour à tous les événements" : "Back to all events"}
+            </span>
+          </Link>
+        </div>
+      </Container>
+    </div>
   );
 }

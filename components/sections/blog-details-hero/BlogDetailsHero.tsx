@@ -27,7 +27,7 @@ export function BlogDetailsHero({ post, locale }: { post: BlogPostDetail; locale
       </section>
 
       {imageSrc && (
-        <ParallaxImage src={imageSrc} heightClass="h-[80vh]" padded={false} reveal exitGradient />
+        <ParallaxImage src={imageSrc} heightClass="aspect-[16/10] sm:aspect-auto sm:h-[60vh] lg:h-[80vh] min-h-[240px]" padded={false} reveal exitGradient />
       )}
 
       <section className="w-full bg-white pt-6 pb-section">
