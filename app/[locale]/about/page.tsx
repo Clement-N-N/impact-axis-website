@@ -1,5 +1,18 @@
 import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
+import type { Locale } from "@/i18n/routing";
+import {
+  AboutHero,
+  WhyWeExistAbout,
+  MissionVisionSection,
+  ArchDivider,
+  OurApproachSection,
+  OurStorySection,
+  OurPrinciplesSection,
+  OurPeopleSection,
+  PartnershipSection,
+} from "@/components/sections/about";
+import { getAboutPageContent } from "@/sanity/about";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -7,20 +20,33 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "about" });
+  const isFr = locale === "fr";
 
-  const title = t("title") || (locale === "fr" ? "À propos de nous" : "About Us");
+  const title = isFr ? "À propos de nous — Impact Axis" : "About Us — Impact Axis";
+  const description = isFr
+    ? "Impact Axis est une organisation à but non lucratif qui développe l'employabilité et les compétences des jeunes au Cameroun."
+    : "Impact Axis is a Cameroon-based nonprofit youth workforce development organisation building stronger pathways to meaningful work.";
+
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
   const canonical = `${baseUrl}/${locale}/about`;
 
   return {
     title,
+    description,
     alternates: {
       canonical,
       languages: {
         en: `${baseUrl}/en/about`,
         fr: `${baseUrl}/fr/about`,
       },
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      siteName: "Impact Axis",
+      locale: isFr ? "fr_FR" : "en_US",
+      type: "website",
     },
   };
 }
@@ -33,11 +59,20 @@ export default async function AboutPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t = await getTranslations("about");
+  const loc = locale as Locale;
+  const content = await getAboutPageContent();
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center py-32">
-      <h1 className="text-3xl font-semibold">{t("title")}</h1>
+    <div className="w-full bg-white">
+      <AboutHero data={content.hero} locale={loc} />
+      <WhyWeExistAbout data={content.whyWeExist} locale={loc} />
+      <MissionVisionSection data={content.missionVision} locale={loc} />
+      <ArchDivider />
+      <OurApproachSection data={content.ourApproach} locale={loc} />
+      <OurStorySection data={content.ourStory} locale={loc} />
+      <OurPrinciplesSection data={content.ourPrinciples} locale={loc} />
+      <OurPeopleSection data={content.ourPeople} locale={loc} />
+      <PartnershipSection data={content.partnership} locale={loc} />
     </div>
   );
 }
