@@ -31,22 +31,11 @@ const SOCIALS = [
   { key: "youtube", Icon: YoutubeLogoIcon, label: "YouTube" },
 ] as const satisfies readonly { key: keyof SocialLinks; Icon: unknown; label: string }[];
 
-const DEFAULT_SOCIAL_LINKS: Partial<Record<keyof SocialLinks, string>> = {
-  facebook: "https://facebook.com/impact.axis",
-  instagram: "https://instagram.com/impact.axis",
-  linkedin: "https://linkedin.com/company/impact-axis",
-  youtube: "https://www.youtube.com/@Impact-Axis",
-};
-
 export function Footer({ socialLinks }: { socialLinks: SocialLinks }) {
   const t = useTranslations("footer");
-  const mergedSocialLinks = {
-    ...DEFAULT_SOCIAL_LINKS,
-    ...socialLinks,
-  };
-  const activeSocials = SOCIALS.filter((social) => Boolean(mergedSocialLinks[social.key])).map((social) => ({
+  const activeSocials = SOCIALS.filter((social) => Boolean(socialLinks?.[social.key])).map((social) => ({
     ...social,
-    url: mergedSocialLinks[social.key]!,
+    url: socialLinks[social.key]!,
   }));
   const tNav = useTranslations("nav");
   const currentYear = new Date().getFullYear();
@@ -98,7 +87,7 @@ export function Footer({ socialLinks }: { socialLinks: SocialLinks }) {
         addressRef.current,
         socialsRef.current,
         legalRef.current,
-      ];
+      ].filter(Boolean);
 
       if (!headlineRef.current) return;
 
@@ -242,20 +231,22 @@ export function Footer({ socialLinks }: { socialLinks: SocialLinks }) {
               </p>
             </div>
 
-            <div ref={socialsRef} className="flex gap-3">
-              {activeSocials.map(({ key, Icon, label, url }) => (
-                <a
-                  key={key}
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="flex h-9 w-9 items-center justify-center bg-white/10 text-white/70 hover:text-white"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
-            </div>
+            {activeSocials.length > 0 && (
+              <div ref={socialsRef} className="flex gap-3">
+                {activeSocials.map(({ key, Icon, label, url }) => (
+                  <a
+                    key={key}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="flex h-9 w-9 items-center justify-center bg-white/10 text-white/70 hover:text-white"
+                  >
+                    <Icon className="h-4 w-4" />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
           <div ref={legalRef} className="flex gap-4 text-sm text-white/70">

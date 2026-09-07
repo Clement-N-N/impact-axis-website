@@ -241,7 +241,7 @@ export function Navbar({ socialLinks }: { socialLinks: SocialLinks }) {
           <div className="hidden h-full items-center xl:flex">
             <LanguageSwitcher />
             <Link
-              href="/work-with-us"
+              href="/contact"
               className="bg-impact-blue h-header flex w-[180px] items-center justify-center px-6 py-3 text-sm font-medium text-white"
             >
               {t("cta")}

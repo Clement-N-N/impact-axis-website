@@ -317,7 +317,7 @@ export function MobileNav() {
             <LanguageSwitcher className="h-10 px-4 border border-border rounded-md text-sm font-medium" />
             <Link
               ref={ctaRef}
-              href="/work-with-us"
+              href="/contact"
               onClick={close}
               onPointerDown={() => press(ctaRef)}
               onPointerUp={() => release(ctaRef)}
