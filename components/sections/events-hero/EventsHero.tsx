@@ -13,6 +13,7 @@ import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { resolveSanityImageUrl } from "@/sanity/image";
 import type { SanityImageValue } from "@/sanity/types";
+import type { ImpactStatItem } from "@/sanity/events";
 import type { EventsHeroContent } from "./types";
 
 if (typeof window !== "undefined") {
@@ -23,10 +24,12 @@ export function EventsHero({
   data,
   locale,
   featuredEvent,
+  impactStat,
 }: {
   data: EventsHeroContent;
   locale: Locale;
   featuredEvent?: EventItem | null;
+  impactStat?: ImpactStatItem | null;
 }) {
   const sectionRef = useRef<HTMLElement>(null);
   const leftColRef = useRef<HTMLDivElement>(null);
@@ -107,9 +110,11 @@ export function EventsHero({
               </div>
             </div>
             <span className="text-xs font-medium text-impact-gray">
-              {locale === "fr"
-                ? "200+ membres à travers le Cameroun"
-                : "200+ fellows across Cameroon"}
+              {impactStat
+                ? `${impactStat.number} ${getLocalizedText(impactStat.label, locale)}`
+                : locale === "fr"
+                  ? "450+ Jeunes atteints"
+                  : "450+ Young people reached"}
             </span>
           </div>
         </div>

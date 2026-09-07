@@ -7,6 +7,7 @@ import type { EventsHeroContent } from "@/components/sections/events-hero/types"
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { EventDetail } from "@/components/sections/event-details/types";
 import { EventDetailsDrawer } from "@/components/sections/event-details/EventDetailsDrawer";
+import type { ImpactStatItem } from "@/sanity/events";
 import { EventsList } from "./EventsList";
 import type { EventItem } from "./types";
 import type { Locale } from "@/i18n/routing";
@@ -16,12 +17,14 @@ export function EventsPageContent({
   events,
   eventDetails,
   featuredEvent,
+  impactStat,
   locale,
 }: {
   heroData: EventsHeroContent;
   events: EventItem[];
   eventDetails: Record<string, EventDetail>;
   featuredEvent?: EventItem | null;
+  impactStat?: ImpactStatItem | null;
   locale: Locale;
 }) {
   const searchParams = useSearchParams();
@@ -50,7 +53,12 @@ export function EventsPageContent({
 
   return (
     <>
-      <EventsHero data={heroData} locale={locale} featuredEvent={featuredEvent} />
+      <EventsHero
+        data={heroData}
+        locale={locale}
+        featuredEvent={featuredEvent}
+        impactStat={impactStat}
+      />
       <EventsList events={events} locale={locale} />
     </>
   );

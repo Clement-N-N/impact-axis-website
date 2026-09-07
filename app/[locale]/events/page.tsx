@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
 import { eventsHeroContent } from "@/components/sections/events-hero/data";
 import { EventsPageContent } from "@/components/sections/events-list";
-import { getEventDetails, getEvents } from "@/sanity/events";
+import { getEventDetails, getEvents, getHomeImpactStat } from "@/sanity/events";
 import type { Locale } from "@/i18n/routing";
 
 type Props = {
@@ -56,7 +56,11 @@ export default async function EventsPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [events, eventDetails] = await Promise.all([getEvents(), getEventDetails()]);
+  const [events, eventDetails, impactStat] = await Promise.all([
+    getEvents(),
+    getEventDetails(),
+    getHomeImpactStat(),
+  ]);
 
   const now = new Date();
   const featuredEvent =
@@ -69,6 +73,7 @@ export default async function EventsPage({
         events={events}
         eventDetails={eventDetails}
         featuredEvent={featuredEvent}
+        impactStat={impactStat}
         locale={locale as Locale}
       />
     </Suspense>
