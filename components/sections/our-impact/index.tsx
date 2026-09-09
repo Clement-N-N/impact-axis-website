@@ -25,7 +25,9 @@ function isSanityImpactData(value: unknown): value is { metrics: ImpactStat[] } 
   return content.metrics.every(isImpactStat);
 }
 
-async function getOurImpactContent(): Promise<OurImpactContent | null> {
+async function getOurImpactContent(
+  customChrome?: typeof ourImpactChrome,
+): Promise<OurImpactContent | null> {
   try {
     const result = await client.fetch(HOME_IMPACT_QUERY, {}, { next: { revalidate: 60 } });
     if (isSanityImpactData(result)) {
@@ -35,7 +37,7 @@ async function getOurImpactContent(): Promise<OurImpactContent | null> {
         ...stat,
         ...IMPACT_CARD_DESIGNS[index % IMPACT_CARD_DESIGNS.length],
       }));
-      return { ...ourImpactChrome, metrics };
+      return { ...(customChrome ?? ourImpactChrome), metrics };
     }
   } catch (error) {
     console.error("Failed to fetch home impact content from Sanity.", error);
@@ -43,8 +45,14 @@ async function getOurImpactContent(): Promise<OurImpactContent | null> {
   return null;
 }
 
-export async function OurImpact({ locale }: { locale: Locale }) {
-  const data = await getOurImpactContent();
+export async function OurImpact({
+  locale,
+  chrome,
+}: {
+  locale: Locale;
+  chrome?: typeof ourImpactChrome;
+}) {
+  const data = await getOurImpactContent(chrome);
   if (!data) return null;
   return <ImpactSection data={data} locale={locale} />;
 }

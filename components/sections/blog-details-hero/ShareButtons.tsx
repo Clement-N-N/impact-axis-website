@@ -18,7 +18,7 @@ function PillButton({ onClick, icon, label }: { onClick: () => void; icon: React
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-2 border border-border px-2 py-1 !text-sm text-black cursor-pointer"
+      className="flex items-center gap-2 border border-border px-3 py-1.5 !text-sm text-black cursor-pointer hover:bg-black/5 active:scale-95 transition-all"
     >
       {icon}
       {label}
@@ -29,43 +29,73 @@ function PillButton({ onClick, icon, label }: { onClick: () => void; icon: React
 export function ShareButtons({ title, locale }: { title: LocalizedText; locale: Locale }) {
   const [copied, setCopied] = useState(false);
 
-  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
-  const shareTitle = getLocalizedText(title, locale);
+  function getShareUrl() {
+    return typeof window !== "undefined" ? window.location.href : "";
+  }
 
-  function openShare(url: string) {
-    window.open(url, "_blank", "noopener,noreferrer");
+  function openShare(platform: "facebook" | "x" | "linkedin") {
+    const url = getShareUrl();
+    const shareTitle = getLocalizedText(title, locale);
+    let shareIntent = "";
+
+    switch (platform) {
+      case "facebook":
+        shareIntent = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        break;
+      case "x":
+        shareIntent = `https://x.com/intent/post?url=${encodeURIComponent(url)}&text=${encodeURIComponent(shareTitle)}`;
+        break;
+      case "linkedin":
+        shareIntent = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+        break;
+    }
+
+    if (shareIntent && typeof window !== "undefined") {
+      window.open(shareIntent, "_blank", "noopener,noreferrer");
+    }
   }
 
   async function handleCopy() {
-    await navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    const url = getShareUrl();
+    if (!url) return;
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = url;
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy link:", err);
+    }
   }
 
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
       <PillButton
         icon={<FacebookLogoIcon weight="fill" className="h-5 w-5 text-[#1877F2]" />}
         label={getLocalizedText(labels.facebook, locale)}
-        onClick={() =>
-          openShare(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`)
-        }
+        onClick={() => openShare("facebook")}
       />
       <PillButton
         icon={<XLogoIcon weight="fill" className="h-5 w-5" />}
         label={getLocalizedText(labels.x, locale)}
-        onClick={() =>
-          openShare(
-            `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`,
-          )
-        }
+        onClick={() => openShare("x")}
       />
       <PillButton
         icon={<LinkedinLogoIcon weight="fill" className="h-5 w-5 text-[#0A66C2]" />}
         label={getLocalizedText(labels.linkedin, locale)}
-        onClick={() =>
-          openShare(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`)
-        }
+        onClick={() => openShare("linkedin")}
       />
       <PillButton
         icon={<CopySimpleIcon weight="bold" className="h-5 w-5" />}

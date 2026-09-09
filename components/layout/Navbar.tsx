@@ -110,6 +110,7 @@ export function Navbar({ socialLinks }: { socialLinks: SocialLinks }) {
     { href: "/what-we-do", label: t("links.whatWeDo") },
   ] as const;
   const NAV_LINKS_AFTER = [
+    { href: "/events", label: t("links.events") },
     { href: "/blog", label: t("links.blog") },
     { href: "/impact", label: t("links.impact") },
   ] as const;
@@ -240,7 +241,7 @@ export function Navbar({ socialLinks }: { socialLinks: SocialLinks }) {
           <div className="hidden h-full items-center xl:flex">
             <LanguageSwitcher />
             <Link
-              href="/work-with-us"
+              href="/contact"
               className="bg-impact-blue h-header flex w-[180px] items-center justify-center px-6 py-3 text-sm font-medium text-white"
             >
               {t("cta")}

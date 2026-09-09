@@ -8,13 +8,20 @@ import { Container } from "@/components/layout/Container";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import { whyWeExistContent } from "./data";
+import type { WhyWeExistContent } from "./types";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, SplitText);
 }
 
-export function WhyWeExist({ locale }: { locale: Locale }) {
-  const data = whyWeExistContent;
+export function WhyWeExist({
+  locale,
+  data: propData,
+}: {
+  locale: Locale;
+  data?: WhyWeExistContent;
+}) {
+  const data = propData ?? whyWeExistContent;
 
   const sectionRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLSpanElement>(null);

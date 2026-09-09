@@ -62,8 +62,10 @@ export function BlogCard({
 
   if (variant === "list") {
     return (
-      <div className="group/card flex gap-6">
-        <div className="relative w-1/3 max-h-[370px] shrink-0 self-stretch overflow-hidden">{image}</div>
+      <div className="group/card flex flex-col sm:flex-row gap-4 sm:gap-6">
+        <div className="relative w-full sm:w-1/3 aspect-[16/10] sm:aspect-auto max-h-[370px] shrink-0 self-stretch overflow-hidden">
+          {image}
+        </div>
         <div className="flex flex-1 flex-col gap-3">
           <span className="text-sm text-impact-gray">{formatBlogDate(post.date, locale)}</span>
           <h3 className={clsx("font-medium text-black", LIST_TITLE_SIZE)}>{titleLink}</h3>
@@ -77,17 +79,17 @@ export function BlogCard({
   const isHorizontal = variant === "horizontal";
 
   return (
-    <div className={clsx("group/card", isHorizontal ? "flex gap-6" : "flex flex-col")}>
+    <div className={clsx("group/card", isHorizontal ? "flex flex-col sm:flex-row gap-4 sm:gap-6" : "flex flex-col")}>
       <div
         className={clsx(
           "relative shrink-0 overflow-hidden",
-          isHorizontal ? "aspect-square w-2/5" : "aspect-[2/1] w-full",
+          isHorizontal ? "aspect-[16/10] sm:aspect-square w-full sm:w-2/5" : "aspect-[2/1] w-full",
         )}
       >
         {image}
       </div>
 
-      <div className={clsx("flex flex-1 flex-col", isHorizontal ? "justify-between" : "gap-6 pt-3")}>
+      <div className={clsx("flex flex-1 flex-col", isHorizontal ? "justify-between gap-4 sm:gap-0" : "gap-6 pt-3")}>
         <div className="flex flex-col gap-2">
           <h3 className={clsx("font-medium text-black", TITLE_SIZE[variant])}>{titleLink}</h3>
           <p className="line-clamp-2 text-impact-gray">{getLocalizedText(post.excerpt, locale)}</p>

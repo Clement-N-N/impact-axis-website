@@ -11,13 +11,20 @@ import { Button } from "@/components/ui/Button";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import { homeSolutionContent } from "./data";
+import type { HomeSolutionContent } from "./types";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, SplitText);
 }
 
-export function HomeSolution({ locale }: { locale: Locale }) {
-  const data = homeSolutionContent;
+export function HomeSolution({
+  locale,
+  data: propData,
+}: {
+  locale: Locale;
+  data?: HomeSolutionContent;
+}) {
+  const data = propData ?? homeSolutionContent;
 
   const sectionRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLSpanElement>(null);

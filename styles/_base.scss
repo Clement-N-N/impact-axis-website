@@ -1,7 +1,12 @@
+html {
+  overflow-x: clip; /* clip (not hidden) preserves sticky positioning */
+}
+
 body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
 }
 
 h1,

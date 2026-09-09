@@ -1,4 +1,5 @@
 import type { LocalizedText } from "@/components/sections/home-hero/types";
+import type { SanityImageValue } from "@/sanity/types";
 
 export type EventItem = {
   slug: string;
@@ -6,13 +7,16 @@ export type EventItem = {
   location: LocalizedText;
   /** ISO date string, e.g. "2026-03-14" */
   date: string;
+  heroImage?: SanityImageValue;
 };
 
 export type EventsListContent = {
   allLabel: LocalizedText;
   pastLabel: LocalizedText;
   upcomingLabel: LocalizedText;
+  searchPlaceholder: LocalizedText;
   tableHeaders: {
+    status: LocalizedText;
     name: LocalizedText;
     location: LocalizedText;
     date: LocalizedText;

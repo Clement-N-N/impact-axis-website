@@ -7,6 +7,7 @@ import { Container } from "@/components/layout/Container";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import { whoWeServeContent } from "./data";
+import type { WhoWeServeContent } from "./types";
 import { WhoWeServeCard } from "./WhoWeServeCard";
 
 if (typeof window !== "undefined") {
@@ -15,8 +16,14 @@ if (typeof window !== "undefined") {
 
 const CARD_COL_STARTS = ["lg:col-start-4", "lg:col-start-7", "lg:col-start-10"];
 
-export function WhoWeServe({ locale }: { locale: Locale }) {
-  const data = whoWeServeContent;
+export function WhoWeServe({
+  locale,
+  data: propData,
+}: {
+  locale: Locale;
+  data?: WhoWeServeContent;
+}) {
+  const data = propData ?? whoWeServeContent;
 
   const sectionRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLSpanElement>(null);

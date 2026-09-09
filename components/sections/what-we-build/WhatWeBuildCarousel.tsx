@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import { whatWeBuildContent } from "./data";
+import type { WhatWeBuildSlide } from "./types";
 import { CarouselImageSwitcher } from "./CarouselImageSwitcher";
 
 if (typeof window !== "undefined") {
@@ -35,8 +36,14 @@ function getReducedMotionServerSnapshot() {
   return false;
 }
 
-export function WhatWeBuildCarousel({ locale }: { locale: Locale }) {
-  const { slides } = whatWeBuildContent;
+export function WhatWeBuildCarousel({
+  locale,
+  slides: propSlides,
+}: {
+  locale: Locale;
+  slides?: WhatWeBuildSlide[];
+}) {
+  const slides = propSlides ?? whatWeBuildContent.slides;
   const [activeIndex, setActiveIndex] = useState(0);
   const prefersReducedMotion = useSyncExternalStore(
     subscribeToReducedMotion,

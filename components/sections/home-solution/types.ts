@@ -4,7 +4,7 @@ export type HomeSolutionContent = {
   eyebrow: LocalizedText;
   headline: LocalizedText;
   button: HeroButton;
-  paragraphs: [LocalizedText, LocalizedText, LocalizedText];
+  paragraphs: LocalizedText[];
   image: string;
   imageAlt: LocalizedText;
 };
