@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import clsx from "clsx";
 import { gsap } from "gsap";
@@ -20,7 +20,12 @@ import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { LocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import type { SocialLinks } from "@/sanity/types";
-import { CameroonFlag } from "./CameroonFlag";
+import {
+  COUNTRIES,
+  DEFAULT_COUNTRY_CODE,
+  FR_ORDER,
+  type Country,
+} from "./countries";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -66,6 +71,18 @@ export function PartnershipContact({
   const fieldId = useId();
   const [errors, setErrors] = useState<Partial<Record<FieldName, string>>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // COUNTRIES ships sorted by English name; FR_ORDER carries the French
+  // collation so "Allemagne" sorts under A rather than wherever "Germany"
+  // landed. Both orders are precomputed, so the option sequence is identical
+  // on server and client.
+  const orderedCountries = useMemo<Country[]>(() => {
+    if (locale !== "fr") return COUNTRIES;
+    const byCode = new Map(COUNTRIES.map((country) => [country.code, country]));
+    return FR_ORDER.map((code) => byCode.get(code)).filter(
+      (country): country is Country => Boolean(country),
+    );
+  }, [locale]);
 
   const activeSocials = SOCIALS.filter((social) =>
     Boolean(socialLinks?.[social.key]),
@@ -317,18 +334,39 @@ export function PartnershipContact({
             {renderError("email")}
           </div>
 
-          <div className="gap-gutter grid grid-cols-[auto_1fr]">
-            <div className="border-border flex items-center gap-2 border px-4 py-3">
-              <CameroonFlag className="h-4 w-6 shrink-0" />
-              <span className="text-black">{t("form.dialCode")}</span>
+          {/* Country select rather than a flag: a flag does not identify a
+              dial code (+1 is the US, Canada and ~20 Caribbean nations; +7 is
+              both Russia and Kazakhstan), it tells a screen reader nothing,
+              and emoji flags render as bare letters on Windows. The name plus
+              code is unambiguous and localized.
+
+              Stacked on mobile: "Cameroon (+237)" and a phone field cannot
+              both fit across a ~320px viewport, and min-w-0 keeps the input
+              from forcing overflow via its intrinsic minimum width once they
+              do sit side by side. */}
+          <div className="gap-gutter grid grid-cols-1 sm:grid-cols-[minmax(0,auto)_1fr]">
+            <div className="flex min-w-0 flex-col">
+              <label htmlFor={`${fieldId}-country`} className="sr-only">
+                {t("form.countryLabel")}
+              </label>
+              <select
+                id={`${fieldId}-country`}
+                name="countryCode"
+                defaultValue={DEFAULT_COUNTRY_CODE}
+                autoComplete="tel-country-code"
+                className={clsx(inputStyles, "w-full")}
+              >
+                {orderedCountries.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {`${locale === "fr" ? country.fr : country.en} (+${country.dial})`}
+                  </option>
+                ))}
+              </select>
             </div>
-            {/* min-w-0 is load-bearing: a `1fr` grid track defaults to
-                min-width:auto, and an <input>'s intrinsic minimum (its
-                default size=20, ~175px) would push this track wider than the
-                container on a ~320px phone, causing horizontal overflow. */}
+
             <div className="flex min-w-0 flex-col">
               <label htmlFor={`${fieldId}-phone`} className="sr-only">
-                {`${t("form.phone")} (${t("form.countryName")} ${t("form.dialCode")})`}
+                {t("form.phone")}
               </label>
               <input
                 id={`${fieldId}-phone`}
