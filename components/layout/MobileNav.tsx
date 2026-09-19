@@ -57,6 +57,7 @@ export function MobileNav() {
   const submenuItemRefs = useRef<(HTMLLIElement | null)[]>([]);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
+  const isFirstBarRender = useRef(true);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -75,31 +76,44 @@ export function MobileNav() {
     setIsWorkOpen(false);
   }
 
-  // Morphing hamburger <-> X
+  // Morphing hamburger <-> X.
+  // On the very first run this must `set`, not `to`: the bars' resting offsets
+  // are declared as inline transforms below so they render correctly before
+  // hydration, and animating to them on mount would make the two bars visibly
+  // splay apart from a single overlapping line on every page load. Same
+  // isFirstRender guard `NavLinkText` in Navbar.tsx already uses.
   useEffect(() => {
-    gsap.to(bar1Ref.current, {
+    const method = isFirstBarRender.current ? gsap.set : gsap.to;
+    method(bar1Ref.current, {
       rotate: isOpen ? 45 : 0,
       y: isOpen ? 2 : -3,
       duration: 0.3,
       ease: "power3.inOut",
     });
-    gsap.to(bar2Ref.current, {
+    method(bar2Ref.current, {
       rotate: isOpen ? -45 : 0,
       y: isOpen ? -2 : 3,
       duration: 0.3,
       ease: "power3.inOut",
     });
+    isFirstBarRender.current = false;
   }, [isOpen]);
 
-  // Panel open/close + staggered link reveal
+  // Panel open/close + staggered link reveal.
+  // `overwrite: true` matters here: without it, toggling faster than the close
+  // tween's 0.3s left the old tween alive, and its onComplete stamped
+  // pointerEvents:"none" onto an already-reopened panel — the menu looked open
+  // but swallowed every tap, so nothing inside it could close it again.
+  // pointerEvents is now driven off React state via className instead of being
+  // written by tween callbacks at all.
   useEffect(() => {
     if (isOpen) {
-      gsap.set(panelRef.current, { pointerEvents: "auto" });
       gsap.to(panelRef.current, {
         autoAlpha: 1,
         y: 0,
         duration: 0.4,
         ease: "power3.out",
+        overwrite: true,
       });
       gsap.fromTo(
         linkRefs.current,
@@ -130,9 +144,7 @@ export function MobileNav() {
         y: -16,
         duration: 0.3,
         ease: "power3.inOut",
-        onComplete: () => {
-          gsap.set(panelRef.current, { pointerEvents: "none" });
-        },
+        overwrite: true,
       });
     }
   }, [isOpen]);
@@ -170,7 +182,7 @@ export function MobileNav() {
   }, [isWorkOpen]);
 
   useEffect(() => {
-    gsap.set(panelRef.current, { autoAlpha: 0, y: -16, pointerEvents: "none" });
+    gsap.set(panelRef.current, { autoAlpha: 0, y: -16 });
     gsap.set(submenuRef.current, { height: 0 });
     gsap.set(submenuItemRefs.current, { opacity: 0, y: 8 });
   }, []);
@@ -183,10 +195,26 @@ export function MobileNav() {
     }
 
     document.addEventListener("keydown", handleKeyDown);
+
+    // iOS Safari ignores `overflow: hidden` on <body>, so the page behind the
+    // open menu still scrolled. Pinning the body with `position: fixed` and a
+    // negative top is the technique that actually holds there; the offset has
+    // to be captured and restored by hand, because fixing the body otherwise
+    // jumps the user back to the top of the page when the menu closes.
+    const scrollY = window.scrollY;
+    const { position, top, width, overflow } = document.body.style;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
     document.body.style.overflow = "hidden";
+
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
+      document.body.style.position = position;
+      document.body.style.top = top;
+      document.body.style.width = width;
+      document.body.style.overflow = overflow;
+      window.scrollTo(0, scrollY);
     };
   }, [isOpen]);
 
@@ -209,25 +237,50 @@ export function MobileNav() {
           onPointerDown={() => press(toggleRef)}
           onPointerUp={() => release(toggleRef)}
           onPointerLeave={() => release(toggleRef)}
+          // Without this the button stayed stuck at scale 0.96: on touch, when
+          // the browser decides a press is really the start of a scroll it
+          // fires pointercancel and neither pointerup nor pointerleave ever
+          // arrive, so the press animation had nothing to release it. A mouse
+          // never hits this path, which is why it only showed up on a phone.
+          onPointerCancel={() => release(toggleRef)}
           aria-label={isOpen ? "Close menu" : "Open menu"}
           aria-expanded={isOpen}
           className="relative flex h-10 w-10 items-center justify-center"
         >
+          {/* Resting offsets live in inline transforms rather than only in the
+              GSAP effect, so the two bars read as a hamburger in the
+              server-rendered markup instead of overlapping into a single line
+              until hydration. GSAP parses inline transforms, so these are also
+              the exact values its `y: -3` / `y: 3` resting state writes back. */}
           <span
             ref={bar1Ref}
+            style={{ transform: "translateY(-3px)" }}
             className="absolute h-0.5 w-6 rounded-full bg-black"
           />
           <span
             ref={bar2Ref}
+            style={{ transform: "translateY(3px)" }}
             className="absolute h-0.5 w-6 rounded-full bg-black"
           />
         </button>
       </Container>
 
+      {/* `invisible opacity-0` is the pre-hydration state and is load-bearing:
+          the panel is full-screen and opaque, and GSAP only hides it from an
+          effect, so without these classes the server-rendered markup painted a
+          white sheet over the whole page until React hydrated — barely visible
+          on desktop, very visible on a phone. GSAP's autoAlpha writes both
+          properties inline afterwards, so it takes over cleanly from here.
+          Height uses dvh, not vh: on mobile `100vh` is measured against the
+          viewport with the browser chrome collapsed, which pushed the language
+          switcher and CTA at the bottom of the panel below the visible area. */}
       <div
         ref={panelRef}
-        className="fixed inset-x-0 top-[var(--header-height)] z-[90] overflow-y-auto bg-white"
-        style={{ height: "calc(100vh - var(--header-height))" }}
+        className={clsx(
+          "invisible fixed inset-x-0 top-[var(--header-height)] z-[90] overflow-y-auto bg-white opacity-0",
+          isOpen ? "pointer-events-auto" : "pointer-events-none",
+        )}
+        style={{ height: "calc(100dvh - var(--header-height))" }}
       >
         <Container className="flex h-full flex-col py-4">
           <nav className="flex flex-1 flex-col overflow-y-auto">
@@ -322,6 +375,7 @@ export function MobileNav() {
               onPointerDown={() => press(ctaRef)}
               onPointerUp={() => release(ctaRef)}
               onPointerLeave={() => release(ctaRef)}
+              onPointerCancel={() => release(ctaRef)}
               className="rounded-full bg-impact-blue px-6 py-3 text-sm font-medium text-white"
             >
               {t("cta")}
