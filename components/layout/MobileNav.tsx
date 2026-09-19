@@ -83,16 +83,22 @@ export function MobileNav() {
   // splay apart from a single overlapping line on every page load. Same
   // isFirstRender guard `NavLinkText` in Navbar.tsx already uses.
   useEffect(() => {
+    // Both bars converge on y: 0 when open. They previously went to +2 and -2,
+    // which left the two strokes 4px apart vertically, so they crossed off
+    // their own midpoints and drew a lopsided X with uneven arms. The centres
+    // have to coincide for the diagonals to intersect cleanly. Measured
+    // identically on Pixel 5, iPhone 13 and Galaxy S9+ before the change, so
+    // this was never device-specific.
     const method = isFirstBarRender.current ? gsap.set : gsap.to;
     method(bar1Ref.current, {
       rotate: isOpen ? 45 : 0,
-      y: isOpen ? 2 : -3,
+      y: isOpen ? 0 : -3,
       duration: 0.3,
       ease: "power3.inOut",
     });
     method(bar2Ref.current, {
       rotate: isOpen ? -45 : 0,
-      y: isOpen ? -2 : 3,
+      y: isOpen ? 0 : 3,
       duration: 0.3,
       ease: "power3.inOut",
     });
