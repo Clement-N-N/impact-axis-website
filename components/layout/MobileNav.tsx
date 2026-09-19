@@ -196,25 +196,25 @@ export function MobileNav() {
 
     document.addEventListener("keydown", handleKeyDown);
 
-    // iOS Safari ignores `overflow: hidden` on <body>, so the page behind the
-    // open menu still scrolled. Pinning the body with `position: fixed` and a
-    // negative top is the technique that actually holds there; the offset has
-    // to be captured and restored by hand, because fixing the body otherwise
-    // jumps the user back to the top of the page when the menu closes.
-    const scrollY = window.scrollY;
-    const { position, top, width, overflow } = document.body.style;
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = "100%";
-    document.body.style.overflow = "hidden";
-
+    // No body/html scroll lock here, on purpose — measured, not assumed.
+    //
+    // This header is `sticky top-0` inside <body>, and sticky positioning
+    // needs a scrolling ancestor to stick within. Every form of scroll lock
+    // takes that away: `position: fixed` on <body> and `overflow: hidden` on
+    // <html>/<body> both stop the viewport scrolling, at which point the
+    // header falls back to its static position. Open the menu part-way down
+    // a page and the header — and with it the close button — renders
+    // hundreds of pixels above the viewport, so the menu opens but cannot be
+    // dismissed. Verified in a real mobile browser: opening at scrollY 900
+    // put the toggle at top -895 and a close click timed out.
+    //
+    // Leaving the page scrollable costs almost nothing: the panel is opaque
+    // and covers the viewport below the header, so there is nothing to see
+    // moving behind it, and `overscroll-contain` on the panel already stops
+    // scrolling inside it from chaining to the page. Keeping the header
+    // reachable matters far more than freezing a background nobody can see.
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.position = position;
-      document.body.style.top = top;
-      document.body.style.width = width;
-      document.body.style.overflow = overflow;
-      window.scrollTo(0, scrollY);
     };
   }, [isOpen]);
 
@@ -277,7 +277,7 @@ export function MobileNav() {
       <div
         ref={panelRef}
         className={clsx(
-          "invisible fixed inset-x-0 top-[var(--header-height)] z-[90] overflow-y-auto bg-white opacity-0",
+          "invisible fixed inset-x-0 top-[var(--header-height)] z-[90] overflow-y-auto overscroll-contain bg-white opacity-0",
           isOpen ? "pointer-events-auto" : "pointer-events-none",
         )}
         style={{ height: "calc(100dvh - var(--header-height))" }}
