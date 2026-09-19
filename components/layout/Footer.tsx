@@ -50,10 +50,10 @@ export function Footer({ socialLinks }: { socialLinks: SocialLinks }) {
   ];
 
   const workWithUsLinks = [
-    { href: "/work-with-us#funders-development-partners", label: tNav("megaMenu.items.partners") },
-    { href: "/work-with-us#employers-corporate-partners", label: tNav("megaMenu.items.funders") },
-    { href: "/work-with-us#education-training-institutions", label: tNav("megaMenu.items.ecosystem") },
-    { href: "/work-with-us#mentors-professionals", label: tNav("megaMenu.items.talented") },
+    { href: "/work-with-us/funders-development-partners", label: tNav("megaMenu.items.partners") },
+    { href: "/work-with-us/employers-corporate-partners", label: tNav("megaMenu.items.funders") },
+    { href: "/work-with-us/education-training-institutions", label: tNav("megaMenu.items.ecosystem") },
+    { href: "/work-with-us/mentors-professionals", label: tNav("megaMenu.items.talented") },
   ];
 
   const legalLinks = [

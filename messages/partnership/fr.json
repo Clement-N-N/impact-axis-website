@@ -1,0 +1,22 @@
+{
+  "getInTouch": "Nous contacter",
+  "contactLabel": "Contact",
+  "socialLabel": "Réseaux sociaux",
+  "backToWorkWithUs": "Travailler avec nous",
+  "form": {
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "E-mail",
+    "dialCode": "+237",
+    "countryName": "Cameroun",
+    "phone": "Numéro de téléphone (facultatif)",
+    "subjectLabel": "Objet :",
+    "message": "Message",
+    "send": "Envoyer le message",
+    "sending": "Envoi en cours…",
+    "required": "Ce champ est obligatoire.",
+    "invalidEmail": "Saisissez une adresse e-mail valide.",
+    "success": "Merci — votre message a bien été reçu. Nous vous recontacterons très prochainement.",
+    "errorSummary": "Veuillez corriger les champs signalés."
+  }
+}

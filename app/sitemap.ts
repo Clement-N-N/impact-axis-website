@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { client } from "@/sanity/client";
 import { BLOG_CATEGORY_SLUGS_QUERY, BLOG_SLUGS_QUERY } from "@/sanity/queries";
+import { PARTNERSHIP_AUDIENCES } from "@/components/sections/partnership";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
@@ -14,6 +15,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/programs",
     "/impact",
     "/work-with-us",
+    // Derived from the audience list so a new partnership page can't be
+    // added to the site without also appearing in the sitemap.
+    ...PARTNERSHIP_AUDIENCES.map((audience) => `/work-with-us/${audience}`),
     "/blog",
     "/events",
     "/contact",
