@@ -3,16 +3,15 @@ import { setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import {
   AboutHero,
+  AboutImageBand,
   WhyWeExistAbout,
   MissionVisionSection,
-  ArchDivider,
+  PhotoStrip,
   OurApproachSection,
-  OurStorySection,
   OurPrinciplesSection,
-  OurPeopleSection,
   PartnershipSection,
+  aboutPageContent,
 } from "@/components/sections/about";
-import { getAboutPageContent } from "@/sanity/about";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -24,8 +23,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = isFr ? "À propos de nous — Impact Axis" : "About Us — Impact Axis";
   const description = isFr
-    ? "Impact Axis est une organisation à but non lucratif qui développe l'employabilité et les compétences des jeunes au Cameroun."
-    : "Impact Axis is a Cameroon-based nonprofit youth workforce development organisation building stronger pathways to meaningful work.";
+    ? "Impact Axis est une organisation à but non lucratif basée au Cameroun qui développe l'employabilité des jeunes et renforce leur passage de l'éducation vers un travail porteur de sens."
+    : "Impact Axis is a Cameroon-based nonprofit youth workforce development organisation building stronger pathways from education to meaningful work.";
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
   const canonical = `${baseUrl}/${locale}/about`;
@@ -51,27 +50,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function AboutPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function AboutPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
   const loc = locale as Locale;
-  const content = await getAboutPageContent();
+  const content = aboutPageContent;
 
   return (
     <div className="w-full bg-white">
       <AboutHero data={content.hero} locale={loc} />
+      <AboutImageBand data={content.imageBand} locale={loc} />
       <WhyWeExistAbout data={content.whyWeExist} locale={loc} />
       <MissionVisionSection data={content.missionVision} locale={loc} />
-      <ArchDivider />
+      <PhotoStrip data={content.photoStrip} locale={loc} />
       <OurApproachSection data={content.ourApproach} locale={loc} />
-      <OurStorySection data={content.ourStory} locale={loc} />
       <OurPrinciplesSection data={content.ourPrinciples} locale={loc} />
-      <OurPeopleSection data={content.ourPeople} locale={loc} />
       <PartnershipSection data={content.partnership} locale={loc} />
     </div>
   );

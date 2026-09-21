@@ -1,28 +1,54 @@
 import type { LocalizedText } from "@/components/sections/home-hero/types";
 
-export type AboutHeroContent = {
-  headline: LocalizedText;
-  paragraph: LocalizedText;
-  ctaPartner: LocalizedText;
-  ctaStory: LocalizedText;
+/**
+ * Shape of the About page content.
+ *
+ * Deliberately flat and one-section-per-key so it can be pushed into Sanity
+ * later without reshaping: each top-level key here becomes one fieldset on an
+ * `aboutPage` singleton, every `LocalizedText` becomes a `localizedString` or
+ * `localizedText` object, and every `image` string becomes a Sanity image
+ * reference. Nothing is nested more deeply than a repeatable array of objects,
+ * which is the one structure Sanity models cleanly as an array field.
+ *
+ * Image values are `cdn.sanity.io` URLs of assets already uploaded to the
+ * dataset, matching the convention the previous version of this file used.
+ * They resolve without any runtime Sanity query, and `next.config.ts` already
+ * allowlists that host in `images.remotePatterns`.
+ */
+
+export type AboutImage = {
+  src: string;
+  alt: LocalizedText;
 };
 
+export type AboutHeroContent = {
+  eyebrow: LocalizedText;
+  headline: LocalizedText;
+  paragraph: LocalizedText;
+};
+
+export type AboutImageBandContent = {
+  caption: LocalizedText;
+  image: AboutImage;
+};
 
 export type WhyWeExistAboutContent = {
   eyebrow: LocalizedText;
-  headline: LocalizedText;
-  paragraph1: LocalizedText;
-  paragraph2: LocalizedText;
-  callout: LocalizedText;
-  imageCaptionHeader: LocalizedText;
-  imageCaptionBody: LocalizedText;
+  tagline: LocalizedText;
+  paragraphs: LocalizedText[];
+  cta: { label: LocalizedText; href: string };
 };
 
 export type MissionVisionContent = {
+  eyebrow: LocalizedText;
   missionTitle: LocalizedText;
   missionBody: LocalizedText;
   visionTitle: LocalizedText;
   visionBody: LocalizedText;
+};
+
+export type PhotoStripContent = {
+  images: AboutImage[];
 };
 
 export type ApproachStep = {
@@ -30,27 +56,16 @@ export type ApproachStep = {
   title: LocalizedText;
   subtitle: LocalizedText;
   description: LocalizedText;
+  image: AboutImage;
 };
 
 export type OurApproachContent = {
   eyebrow: LocalizedText;
+  /** "Learn. Apply. Connect." — the three-word summary of the model. */
+  tagline: LocalizedText;
   headline: LocalizedText;
-  subtitle: LocalizedText;
   steps: ApproachStep[];
-  summaryBanner: LocalizedText;
-};
-
-export type OurStoryContent = {
-  eyebrow: LocalizedText;
-  headline: LocalizedText;
-  photoBadgeTag: LocalizedText;
-  photoBadgeCaption: LocalizedText;
-  paragraph1: LocalizedText;
-  paragraph2: LocalizedText;
-  paragraph3: LocalizedText;
-  paragraph4: LocalizedText;
-  timelineBadge: LocalizedText;
-  timelineText: LocalizedText;
+  closingLine: LocalizedText;
 };
 
 export type PrincipleItem = {
@@ -62,33 +77,7 @@ export type OurPrinciplesContent = {
   eyebrow: LocalizedText;
   headline: LocalizedText;
   principles: PrincipleItem[];
-};
-
-export type CoreTeamMember = {
-  name: string;
-  role: LocalizedText;
-  initials: string;
-  bio: LocalizedText;
-  image?: string;
-};
-
-export type AdvisoryBoardMember = {
-  name: string;
-  initials: string;
-  bio: LocalizedText;
-  image?: string;
-};
-
-export type OurPeopleContent = {
-  eyebrow: LocalizedText;
-  headline: LocalizedText;
-  subtitle: LocalizedText;
-  coreTeamHeader: LocalizedText;
-  coreTeamSubheader: LocalizedText;
-  coreTeam: CoreTeamMember[];
-  advisoryBoardHeader: LocalizedText;
-  advisoryBoardSubheader: LocalizedText;
-  advisoryBoard: AdvisoryBoardMember[];
+  image: AboutImage;
 };
 
 export type PartnerLogo = {
@@ -99,28 +88,20 @@ export type PartnerLogo = {
 export type PartnershipContent = {
   eyebrow: LocalizedText;
   headline: LocalizedText;
-  subtitle: LocalizedText;
-  partnerLogos: PartnerLogo[];
-  leftBanner: {
-    headline: LocalizedText;
-    paragraph: LocalizedText;
-    ctaLabel: LocalizedText;
-  };
-  rightBanner: {
-    headline: LocalizedText;
-    paragraph: LocalizedText;
-    ctaLabel: LocalizedText;
-    email: string;
-  };
+  intro: LocalizedText;
+  logos: PartnerLogo[];
+  ctaHeadline: LocalizedText;
+  ctaParagraph: LocalizedText;
+  cta: { label: LocalizedText; href: string };
 };
 
 export type AboutPageContent = {
   hero: AboutHeroContent;
+  imageBand: AboutImageBandContent;
   whyWeExist: WhyWeExistAboutContent;
   missionVision: MissionVisionContent;
+  photoStrip: PhotoStripContent;
   ourApproach: OurApproachContent;
-  ourStory: OurStoryContent;
   ourPrinciples: OurPrinciplesContent;
-  ourPeople: OurPeopleContent;
   partnership: PartnershipContent;
 };
