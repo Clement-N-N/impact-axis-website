@@ -1,4 +1,3 @@
-import { homeTranslations } from "./(home)";
 import { aboutTranslations } from "./about";
 import { whatWeDoTranslations } from "./what-we-do";
 import { workWithUsTranslations } from "./work-with-us";
@@ -14,7 +13,6 @@ import { contactTranslations } from "./contact";
 const messages = {
   nav: navTranslations.en,
   footer: footerTranslations.en,
-  home: homeTranslations.en,
   about: aboutTranslations.en,
   whatWeDo: whatWeDoTranslations.en,
   workWithUs: workWithUsTranslations.en,
