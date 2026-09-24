@@ -4,14 +4,16 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { EnvelopeIcon } from "@phosphor-icons/react";
+import { SplitText } from "gsap/SplitText";
+import { ArrowRightIcon } from "@phosphor-icons/react";
 import { Container } from "@/components/layout/Container";
+import { Button } from "@/components/ui/Button";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import type { PartnershipContent } from "./types";
 
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, SplitText);
 }
 
 export function PartnershipSection({
@@ -24,209 +26,174 @@ export function PartnershipSection({
   const sectionRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLSpanElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const logosRef = useRef<HTMLDivElement>(null);
-  const bannersRef = useRef<HTMLDivElement>(null);
+  const introRef = useRef<HTMLParagraphElement>(null);
+  const logosRef = useRef<HTMLUListElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
+    let split: SplitText | undefined;
+
     const ctx = gsap.context(() => {
-      const headerTargets = [eyebrowRef.current, headlineRef.current, subtitleRef.current].filter(Boolean);
-      const otherTargets = [logosRef.current, bannersRef.current].filter(Boolean);
+      const logoItems = logosRef.current
+        ? gsap.utils.toArray<HTMLElement>(logosRef.current.children)
+        : [];
+      const fadeTargets = [
+        eyebrowRef.current,
+        introRef.current,
+        ...logoItems,
+        ctaRef.current,
+      ].filter(Boolean);
 
-      if (prefersReducedMotion) {
-        gsap.set([...headerTargets, ...otherTargets], { opacity: 1, y: 0 });
-        return;
-      }
+      if (!headlineRef.current) return;
 
-      gsap.set(headerTargets, { opacity: 0, y: 20 });
-      gsap.to(headerTargets, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: "power3.out",
-        stagger: 0.12,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          once: true,
-        },
-      });
+      split = SplitText.create(headlineRef.current, {
+        type: "lines",
+        mask: "lines",
+        autoSplit: true,
+        onSplit(self) {
+          if (prefersReducedMotion) {
+            gsap.set(fadeTargets, { opacity: 1, y: 0 });
+            gsap.set(self.lines, { yPercent: 0 });
+            return;
+          }
 
-      gsap.set(otherTargets, { opacity: 0, y: 25 });
-      gsap.to(otherTargets, {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        ease: "power3.out",
-        stagger: 0.15,
-        scrollTrigger: {
-          trigger: logosRef.current,
-          start: "top 85%",
-          once: true,
+          gsap.set(fadeTargets, { opacity: 0, y: 20 });
+          gsap.set(self.lines, { yPercent: 100 });
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 80%",
+              once: true,
+            },
+          });
+
+          tl.to(eyebrowRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power3.out",
+          })
+            .to(
+              self.lines,
+              { yPercent: 0, duration: 0.6, ease: "power4.out", stagger: 0.12 },
+              "-=0.3",
+            )
+            .to(introRef.current, {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power3.out",
+            })
+            // Ten logos at the group stagger would take almost a second to
+            // finish, so they get a tighter interval than the 0.08s default.
+            .to(
+              logoItems,
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.4,
+                ease: "power3.out",
+                stagger: 0.04,
+              },
+              "-=0.2",
+            )
+            .to(
+              ctaRef.current,
+              { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+              "-=0.2",
+            );
+
+          return tl;
         },
       });
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      split?.revert();
+    };
   }, []);
 
-  // Double list for smooth infinite mobile marquee loop
-  const marqueeLogos = [...data.partnerLogos, ...data.partnerLogos];
-
   return (
-    <section
-      ref={sectionRef}
-      id="partner-section"
-      className="w-full bg-white py-16 text-black border-b border-border md:py-24 lg:py-28 overflow-hidden"
-    >
-      <Container>
-        {/* NARRATIVE HEADER */}
-        <div className="gap-gutter grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 mb-16 md:mb-20 items-start">
-          <div className="col-span-4 md:col-span-8 lg:col-span-5">
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 bg-black inline-block flex-shrink-0" />
-              <span
-                ref={eyebrowRef}
-                className="text-[clamp(0.875rem,1.3125vw,1.1875rem)] leading-[clamp(1.25rem,3vw,2.75rem)] text-black"
-              >
-                {getLocalizedText(data.eyebrow, locale)}
-              </span>
-            </div>
-          </div>
-
-          <div className="col-span-4 flex flex-col gap-6 md:col-span-8 lg:col-span-7">
-            <h2
-              ref={headlineRef}
-              className="text-[clamp(1.75rem,3vw,2.7rem)] leading-[1.3] font-medium text-black"
-            >
-              {getLocalizedText(data.headline, locale)}
-            </h2>
-            <p
-              ref={subtitleRef}
-              className="text-impact-gray text-[clamp(1rem,1.25vw,1.125rem)] leading-relaxed"
-            >
-              {getLocalizedText(data.subtitle, locale)}
-            </p>
-          </div>
+    <section ref={sectionRef} className="py-section w-full bg-white">
+      <Container className="gap-gutter grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12">
+        <div className="hidden h-full lg:col-span-1 lg:block">
+          <div className="mt-[1vw] h-[8px] w-[8px] bg-black" aria-hidden="true" />
         </div>
 
-        {/* LOGOS SHOWCASE: Full-bleed on Mobile, Clean Tiles on Desktop */}
-        <div
-          ref={logosRef}
-          className="relative mb-20 md:mb-24 -mx-container sm:mx-0 border-y sm:border border-border bg-[#f4f6fa] py-4 sm:p-8 lg:p-10 shadow-xs overflow-hidden"
+        {/* Left column holds the eyebrow and the section heading; the right
+            column leads with the large CTA paragraph, as in the design. */}
+        <div className="col-span-4 flex flex-col gap-8 md:col-span-8 lg:col-span-4">
+          <span
+            ref={eyebrowRef}
+            className="text-impact-gray text-[clamp(0.875rem,1.05vw,1rem)]"
+          >
+            {getLocalizedText(data.eyebrow, locale)}
+          </span>
+          
+        </div>
+
+        <p
+          ref={introRef}
+          className="col-span-4 mt-6 text-[clamp(1.25rem,2.2vw,2rem)] leading-[1.4] text-black md:col-span-8 lg:col-span-7 lg:col-start-6 lg:mt-0"
         >
-          {/* MOBILE MARQUEE (< md) — Edge to edge full screen */}
-          <div className="relative md:hidden w-full overflow-hidden">
-            {/* Minimal edge fade gradients */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-[#f4f6fa] to-transparent z-10" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-3 bg-gradient-to-l from-[#f4f6fa] to-transparent z-10" />
+          {getLocalizedText(data.ctaParagraph, locale)}
+        </p>
 
-            <div className="animate-marquee flex items-center gap-3 py-1">
-              {marqueeLogos.map((partner, idx) => {
-                const isSquare = partner.name === "Canva for Nonprofits";
-
-                return (
-                  <div
-                    key={`${partner.name}-${idx}`}
-                    className="relative h-20 w-36 flex-shrink-0 flex items-center justify-center border border-border/80 bg-white p-2.5 shadow-xs"
-                    title={partner.name}
-                  >
-                    <div className="relative h-14 w-full flex items-center justify-center">
-                      <Image
-                        src={partner.logoUrl}
-                        alt={partner.name}
-                        fill
-                        className={`object-contain ${isSquare ? "scale-125" : ""}`}
-                        sizes="140px"
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* DESKTOP 5×2 OPTICALLY BALANCED TILES (>= md) */}
-          <div className="hidden md:grid md:grid-cols-5 md:gap-4 lg:gap-5">
-            {data.partnerLogos.map((partner) => {
-              const isSquare = partner.name === "Canva for Nonprofits";
-
-              return (
-                <div
-                  key={partner.name}
-                  className="group relative flex h-24 lg:h-28 items-center justify-center border border-border/80 bg-white p-3 lg:p-4 shadow-xs transition-all duration-300 hover:border-[#101b62] hover:shadow-md"
-                  title={partner.name}
-                >
-                  <div className="relative h-16 lg:h-18 w-full max-w-[155px] flex items-center justify-center">
-                    <Image
-                      src={partner.logoUrl}
-                      alt={partner.name}
-                      fill
-                      className={`object-contain transition-transform duration-300 group-hover:scale-105 ${
-                        isSquare ? "scale-130 lg:scale-140" : ""
-                      }`}
-                      sizes="(max-width: 1024px) 20vw, 170px"
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* DUAL SPLIT ACTION BANNERS — Sharp Edges & High Contrast */}
-        <div ref={bannersRef} className="grid grid-cols-1 md:grid-cols-2 shadow-xl border border-border">
-          {/* Left Banner: Dark Navy Theme */}
-          <div className="relative overflow-hidden bg-[#101b62] p-8 sm:p-12 text-white flex flex-col justify-between">
-            <div className="relative z-10">
-              <span className="mb-3 inline-block bg-[#febb09] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#101b62]">
-                {locale === "fr" ? "Organisations" : "Organizations"}
+        {/* Logos are a list of organisations, so they are marked up as one.
+            Three columns at most, per the design. The partner's name sits
+            under its mark rather than living only in the alt attribute, so it
+            reads for everyone — several of these logos are wordless symbols. */}
+        <ul
+          ref={logosRef}
+          className="gap-gutter col-span-4 mt-12 grid grid-cols-1 sm:grid-cols-2 md:col-span-8 md:grid-cols-3 lg:col-span-7 lg:col-start-6"
+        >
+          {data.logos.map((logo) => (
+            <li
+              key={logo.name}
+              className="border-border flex flex-col items-center justify-between gap-4 border p-6"
+            >
+              <div className="relative h-16 w-full">
+                <Image
+                  src={logo.logoUrl}
+                  alt=""
+                  fill
+                  sizes="(min-width: 768px) 25vw, 50vw"
+                  className="object-contain"
+                />
+              </div>
+              <span className="text-impact-gray text-center text-[clamp(0.8125rem,0.95vw,0.9375rem)]">
+                {logo.name}
               </span>
-              <h3 className="mb-4 text-2xl font-medium tracking-tight text-white sm:text-3xl">
-                {getLocalizedText(data.leftBanner.headline, locale)}
-              </h3>
-              <p className="mb-8 text-base text-white/85 sm:text-lg leading-relaxed">
-                {getLocalizedText(data.leftBanner.paragraph, locale)}
-              </p>
-            </div>
+            </li>
+          ))}
+        </ul>
 
-            <div className="relative z-10">
-              <a
-                href={`mailto:${data.rightBanner.email}`}
-                className="inline-flex items-center gap-2 bg-white px-8 py-4 text-base font-bold text-[#101b62] transition-all hover:bg-[#febb09] shadow-md"
-              >
-                {getLocalizedText(data.leftBanner.ctaLabel, locale)}
-              </a>
-            </div>
-          </div>
-
-          {/* Right Banner: Warm Gold / Amber Accent Theme */}
-          <div className="relative overflow-hidden bg-[#febb09] p-8 sm:p-12 text-[#101b62] flex flex-col justify-between">
-            <div className="relative z-10">
-              <span className="mb-3 inline-block bg-[#101b62] px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
-                {locale === "fr" ? "Mentors & Experts" : "Mentors & Experts"}
-              </span>
-              <h3 className="mb-4 text-2xl font-medium tracking-tight text-[#101b62] sm:text-3xl">
-                {getLocalizedText(data.rightBanner.headline, locale)}
-              </h3>
-              <p className="mb-8 text-base text-[#101b62]/90 sm:text-lg leading-relaxed font-normal">
-                {getLocalizedText(data.rightBanner.paragraph, locale)}
-              </p>
-            </div>
-
-            <div className="relative z-10">
-              <a
-                href={`mailto:${data.rightBanner.email}`}
-                className="inline-flex items-center gap-2 bg-[#101b62] px-8 py-4 text-base font-bold text-white transition-all hover:bg-black shadow-md"
-              >
-                <EnvelopeIcon weight="bold" className="h-5 w-5" />
-                <span>{getLocalizedText(data.rightBanner.ctaLabel, locale)}</span>
-              </a>
-            </div>
+        {/* Sits at the bottom of the left column, beside the logo grid, which
+            is where the design puts this block. */}
+        <div
+          ref={ctaRef}
+          className="col-span-4 mt-12 flex flex-col gap-5 md:col-span-8 lg:col-span-4 lg:col-start-2 lg:mt-16"
+        >
+          <h3 className="text-[clamp(1.25rem,1.9vw,1.75rem)] font-medium text-black">
+            {getLocalizedText(data.ctaHeadline, locale)}
+          </h3>
+          <p className="text-impact-gray text-[clamp(0.9375rem,1.05vw,1rem)]">
+            {getLocalizedText(data.intro, locale)}
+          </p>
+          <div className="mt-2">
+            <Button
+              href={data.cta.href}
+              variant="primary"
+              icon={<ArrowRightIcon weight="bold" className="h-5 w-5" />}
+            >
+              {getLocalizedText(data.cta.label, locale)}
+            </Button>
           </div>
         </div>
       </Container>

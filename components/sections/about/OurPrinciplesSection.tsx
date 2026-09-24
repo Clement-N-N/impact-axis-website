@@ -1,15 +1,17 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 import { Container } from "@/components/layout/Container";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import type { OurPrinciplesContent } from "./types";
 
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, SplitText);
 }
 
 export function OurPrinciplesSection({
@@ -20,79 +22,142 @@ export function OurPrinciplesSection({
   locale: Locale;
 }) {
   const sectionRef = useRef<HTMLElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLSpanElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
+    let split: SplitText | undefined;
+
     const ctx = gsap.context(() => {
-      const children = cardsRef.current ? Array.from(cardsRef.current.children) : [];
+      const items = listRef.current
+        ? gsap.utils.toArray<HTMLElement>(listRef.current.children)
+        : [];
+      const fadeTargets = [
+        eyebrowRef.current,
+        ...items,
+        imageRef.current,
+      ].filter(Boolean);
 
-      if (prefersReducedMotion) {
-        gsap.set(children, { opacity: 1, y: 0 });
-        return;
-      }
+      if (!headlineRef.current) return;
 
-      gsap.set(children, { opacity: 0, y: 24 });
-      gsap.to(children, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: "power3.out",
-        stagger: 0.12,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          once: true,
+      split = SplitText.create(headlineRef.current, {
+        type: "lines",
+        mask: "lines",
+        autoSplit: true,
+        onSplit(self) {
+          if (prefersReducedMotion) {
+            gsap.set(fadeTargets, { opacity: 1, y: 0 });
+            gsap.set(self.lines, { yPercent: 0 });
+            return;
+          }
+
+          gsap.set(fadeTargets, { opacity: 0, y: 20 });
+          gsap.set(self.lines, { yPercent: 100 });
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 80%",
+              once: true,
+            },
+          });
+
+          tl.to(eyebrowRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power3.out",
+          })
+            .to(
+              self.lines,
+              { yPercent: 0, duration: 0.6, ease: "power4.out", stagger: 0.12 },
+              "-=0.3",
+            )
+            .to(
+              imageRef.current,
+              { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+              "-=0.3",
+            )
+            .to(
+              items,
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                ease: "power3.out",
+                stagger: 0.1,
+              },
+              "-=0.35",
+            );
+
+          return tl;
         },
       });
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      split?.revert();
+    };
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="w-full bg-white py-16 text-black border-b border-border md:py-24 lg:py-28"
-    >
-      <Container>
-        <div className="mb-16 max-w-3xl">
-          <div className="mb-4 flex items-center gap-2">
-            <span className="h-2 w-2 bg-black inline-block flex-shrink-0" />
-            <span className="text-[clamp(0.875rem,1.3125vw,1.1875rem)] leading-[clamp(1.25rem,3vw,2.75rem)] text-black">
-              {getLocalizedText(data.eyebrow, locale)}
-            </span>
-          </div>
-
-          <h2 className="text-[clamp(1.75rem,3vw,2.7rem)] leading-[1.3] font-medium text-black">
-            {getLocalizedText(data.headline, locale)}
-          </h2>
+    <section ref={sectionRef} className="py-section bg-impact-blue w-full">
+      <Container className="gap-gutter grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12">
+        <div className="hidden h-full lg:col-span-1 lg:block">
+          <div className="mt-[1vw] h-[8px] w-[8px] bg-white" aria-hidden="true" />
         </div>
 
-        <div ref={cardsRef} className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          {data.principles.map((item, index) => (
-            <div
-              key={getLocalizedText(item.title, locale)}
-              className="border border-border border-l-4 border-l-[#101b62] bg-[#f8f9fc] p-8 sm:p-10 shadow-sm transition-all duration-300 hover:shadow-md hover:border-border"
-            >
-              <div className="mb-6 flex items-center justify-between border-b border-black/10 pb-4">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#101b62]">
-                  {`0${index + 1} / PRINCIPLE`}
-                </span>
-                <span className="h-2 w-2 bg-[#febb09] inline-block" />
-              </div>
+        <div className="col-span-4 md:col-span-8 lg:col-span-2">
+          <span
+            ref={eyebrowRef}
+            className="text-[clamp(0.875rem,1.05vw,1rem)] text-white/60"
+          >
+            {getLocalizedText(data.eyebrow, locale)}
+          </span>
+        </div>
 
-              <h3 className="mb-4 text-xl sm:text-2xl font-medium text-black">
-                {getLocalizedText(item.title, locale)}
-              </h3>
-              <p className="text-[clamp(0.9375rem,1.1vw,1rem)] leading-relaxed text-black/85 font-normal">
-                {getLocalizedText(item.description, locale)}
-              </p>
-            </div>
-          ))}
+        <div className="col-span-4 mt-8 flex flex-col gap-10 md:col-span-8 lg:col-span-5 lg:col-start-4 lg:mt-0">
+          <h2 className="text-[clamp(1.5rem,2.4vw,2.125rem)] leading-[1.3] font-medium text-white">
+            <span ref={headlineRef} className="block">
+              {getLocalizedText(data.headline, locale)}
+            </span>
+          </h2>
+
+          <div ref={listRef} className="flex flex-col">
+            {data.principles.map((principle, index) => (
+              <div
+                key={index}
+                className="flex flex-col gap-2 border-t border-white/20 py-6"
+              >
+                <h3 className="text-[clamp(1rem,1.2vw,1.125rem)] font-medium text-white">
+                  {getLocalizedText(principle.title, locale)}
+                </h3>
+                <p className="text-[clamp(0.875rem,1vw,0.9375rem)] text-white/70">
+                  {getLocalizedText(principle.description, locale)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div
+          ref={imageRef}
+          className="relative col-span-4 mt-10 aspect-[4/3] w-full overflow-hidden md:col-span-8 lg:col-span-4 lg:col-start-9 lg:mt-0 lg:aspect-auto lg:h-full"
+        >
+          <Image
+            src={data.image.src}
+            alt={getLocalizedText(data.image.alt, locale)}
+            fill
+            sizes="(min-width: 1024px) 25vw, 100vw"
+            className="object-cover"
+          />
         </div>
       </Container>
     </section>

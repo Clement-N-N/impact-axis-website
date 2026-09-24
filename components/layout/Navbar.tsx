@@ -33,8 +33,8 @@ const navLinkStyles = cva(
 const logoColStyles = cva("", {
   variants: {
     locale: {
-      en: "lg:col-span-4 xxl:col-span-4 2xl:col-span-6",
-      fr: "lg:col-span-3 xxl:col-span-3 2xl:col-span-4",
+      en: "lg:col-span-2 xxl:col-span-2 2xl:col-span-4",
+      fr: "lg:col-span-2 xxl:col-span-2 2xl:col-span-3",
     },
   },
   defaultVariants: { locale: "en" },
@@ -45,8 +45,8 @@ const navColStyles = cva(
   {
     variants: {
       locale: {
-        en: "lg:col-span-8 xxl:col-span-8 2xl:col-span-6",
-        fr: "lg:col-span-9 xxl:col-span-9 2xl:col-span-8",
+        en: "lg:col-span-10 xxl:col-span-10 2xl:col-span-8",
+        fr: "lg:col-span-10 xxl:col-span-10 2xl:col-span-9",
       },
     },
     defaultVariants: { locale: "en" },

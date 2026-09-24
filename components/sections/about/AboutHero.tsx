@@ -2,12 +2,16 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { ArrowRightIcon } from "@phosphor-icons/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 import { Container } from "@/components/layout/Container";
-import { Button } from "@/components/ui/Button";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import type { AboutHeroContent } from "./types";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+}
 
 export function AboutHero({
   data,
@@ -17,113 +21,101 @@ export function AboutHero({
   locale: Locale;
 }) {
   const sectionRef = useRef<HTMLElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-  const mediaRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLSpanElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const paragraphRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
+    let split: SplitText | undefined;
+
     const ctx = gsap.context(() => {
-      const targets = [textRef.current, mediaRef.current];
+      const fadeTargets = [eyebrowRef.current, paragraphRef.current].filter(
+        Boolean,
+      );
+      if (!headlineRef.current) return;
 
-      if (prefersReducedMotion) {
-        gsap.set(targets, { opacity: 1, y: 0 });
-        return;
-      }
+      split = SplitText.create(headlineRef.current, {
+        type: "lines",
+        mask: "lines",
+        autoSplit: true,
+        onSplit(self) {
+          if (prefersReducedMotion) {
+            gsap.set(fadeTargets, { opacity: 1, y: 0 });
+            gsap.set(self.lines, { yPercent: 0 });
+            return;
+          }
 
-      gsap.set(targets, { opacity: 0, y: 24 });
-      gsap.to(targets, {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        ease: "power3.out",
-        stagger: 0.15,
+          gsap.set(fadeTargets, { opacity: 0, y: 20 });
+          gsap.set(self.lines, { yPercent: 100 });
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 80%",
+              once: true,
+            },
+          });
+
+          tl.to(eyebrowRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power3.out",
+          })
+            .to(
+              self.lines,
+              { yPercent: 0, duration: 0.6, ease: "power4.out", stagger: 0.12 },
+              "-=0.3",
+            )
+            .to(
+              paragraphRef.current,
+              { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+              "-=0.2",
+            );
+
+          return tl;
+        },
       });
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      split?.revert();
+    };
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative min-h-[calc(100vh-var(--header-height))] w-full bg-impact-blue"
-    >
-      <div className="absolute inset-0 h-full w-full bg-overlay-dark/45" />
+    <section ref={sectionRef} className="py-section w-full bg-white">
+      <Container className="gap-gutter grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12">
+        <div className="hidden h-full lg:col-span-1 lg:block">
+          <div className="mt-[1vw] h-[8px] w-[8px] bg-black" aria-hidden="true" />
+        </div>
 
-      <Container className="relative z-10 h-full grid grid-cols-1 gap-gutter py-12 lg:grid-cols-12 lg:min-h-[calc(100vh-var(--header-height))]">
-        {/* Left Text Column — matches home hero typography & spacing */}
-        <div
-          ref={textRef}
-          className="grid grid-cols-1 gap-gutter content-between lg:col-span-6 lg:h-full lg:grid-cols-6"
-        >
-          <h1 className="text-5xl !font-medium text-white w-[95%] lg:col-span-6">
+        <div className="col-span-4 flex flex-col gap-6 md:col-span-8 lg:col-span-6">
+          <span
+            ref={eyebrowRef}
+            className="text-impact-gray text-[clamp(0.875rem,1.05vw,1rem)]"
+          >
+            {getLocalizedText(data.eyebrow, locale)}
+          </span>
+          <h1
+            ref={headlineRef}
+            className="text-[clamp(1.75rem,3vw,2.7rem)] leading-[1.3] font-medium text-black"
+          >
             {getLocalizedText(data.headline, locale)}
           </h1>
-
-          <p className="border-l-2 border-white/25 pl-3 text-base text-white lg:col-span-3 lg:col-start-3">
-            {getLocalizedText(data.paragraph, locale)}
-          </p>
-
-          <div className="flex flex-wrap items-center gap-3 lg:col-span-6">
-            <Button
-              href="#partner-section"
-              variant="primary"
-              icon={<ArrowRightIcon weight="bold" className="h-5 w-5" />}
-            >
-              {getLocalizedText(data.ctaPartner, locale)}
-            </Button>
-            <Button href="#why-we-exist" variant="outline-white">
-              {getLocalizedText(data.ctaStory, locale)}
-            </Button>
-          </div>
         </div>
 
-        {/* Right — Impact Axis Logo-shaped 5-bar masked image */}
-        <div
-          ref={mediaRef}
-          className="relative flex items-center justify-center self-center lg:col-span-6 lg:h-full py-4"
+        <p
+          ref={paragraphRef}
+          className="text-impact-gray col-span-4 mt-4 text-[clamp(0.9375rem,1.05vw,1rem)] md:col-span-8 lg:col-span-4 lg:col-start-9 lg:mt-0"
         >
-          {/* Subtle ambient glow behind the logo */}
-          <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-[#febb09]/15 via-blue-400/10 to-transparent blur-2xl pointer-events-none" />
-
-          {/* SVG 5-bar Logo Mask Container */}
-          <div className="relative w-full max-w-[480px] lg:max-w-[520px] aspect-[816/1093] flex items-center justify-center">
-            <svg
-              viewBox="0 0 816 1093"
-              className="w-full h-full filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.45)] transition-transform duration-500 hover:scale-[1.02]"
-              aria-label="Impact Axis logo hero showcase"
-            >
-              <defs>
-                <clipPath id="impactAxisLogoHeroClip">
-                  {/* Bar 0 - Far Left */}
-                  <path d="M 0 265 L 139 328 L 139 648 L 0 764 Z" />
-                  {/* Bar 1 - Inner Left */}
-                  <path d="M 169 220 L 308 135 L 308 958 L 169 873 Z" />
-                  {/* Bar 2 - Center Axis (with top & bottom apex points) */}
-                  <path d="M 338 100 L 408 0 L 478 100 L 478 992 L 408 1092 L 338 992 Z" />
-                  {/* Bar 3 - Inner Right */}
-                  <path d="M 508 135 L 647 220 L 647 873 L 508 958 Z" />
-                  {/* Bar 4 - Far Right */}
-                  <path d="M 677 328 L 816 265 L 816 764 L 677 648 Z" />
-                </clipPath>
-              </defs>
-
-              {/* Seamless Hero Image masked directly inside the 5-bar logo */}
-              <image
-                href="/images/girls-1.jpg"
-                x="0"
-                y="0"
-                width="816"
-                height="1093"
-                preserveAspectRatio="xMidYMid slice"
-                clipPath="url(#impactAxisLogoHeroClip)"
-              />
-            </svg>
-          </div>
-        </div>
+          {getLocalizedText(data.paragraph, locale)}
+        </p>
       </Container>
     </section>
   );

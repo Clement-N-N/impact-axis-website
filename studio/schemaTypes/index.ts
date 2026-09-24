@@ -11,9 +11,6 @@ import { blogPost } from "./blogPost";
 import { eventPerson } from "./eventPerson";
 import { eventPartner } from "./eventPartner";
 import { event } from "./event";
-import { journeyPage } from "./journeyPage";
-import { journeyMilestone } from "./journeyMilestone";
-import { aboutPage } from "./aboutPage";
 import { homePage } from "./homePage";
 import { teamMember } from "./teamMember";
 import { partnerLogo } from "./partnerLogo";
@@ -24,11 +21,8 @@ import { eventPersonRole } from "./objects/eventPersonRole";
 
 export const schemaTypes: SchemaTypeDefinition[] = [
   homePage,
-  aboutPage,
   teamMember,
   partnerLogo,
-  journeyPage,
-  journeyMilestone,
   homeSettings,
   homeFaq,
   homeTestimonials,
