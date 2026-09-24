@@ -52,9 +52,12 @@ type ButtonProps = VariantProps<typeof buttonStyles> & {
   href?: string;
   className?: string;
   onClick?: () => void;
+  /** Only applies when there's no `href`. Defaults to "button" so an
+      instance inside a <form> can't submit it by accident. */
+  type?: "button" | "submit";
 };
 
-export function Button({ children, icon, href, variant, width, className, onClick }: ButtonProps) {
+export function Button({ children, icon, href, variant, width, className, onClick, type = "button" }: ButtonProps) {
   const resolvedVariant = variant ?? "primary";
   const resolvedWidth = width ?? "fit";
 
@@ -178,7 +181,7 @@ export function Button({ children, icon, href, variant, width, className, onClic
   }
 
   return (
-    <button type="button" onClick={onClick} className={clsx(buttonStyles({ variant, width }), className)}>
+    <button type={type} onClick={onClick} className={clsx(buttonStyles({ variant, width }), className)}>
       {content}
     </button>
   );

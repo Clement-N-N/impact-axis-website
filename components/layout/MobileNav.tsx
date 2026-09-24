@@ -20,22 +20,22 @@ const MEGA_ITEMS = [
   {
     key: "partners",
     Icon: PartnersIcon,
-    href: "/work-with-us#partners-institutions",
+    href: "/work-with-us/funders-development-partners",
   },
   {
     key: "funders",
     Icon: FundersIcon,
-    href: "/work-with-us#funders-foundations",
+    href: "/work-with-us/employers-corporate-partners",
   },
   {
     key: "ecosystem",
     Icon: EcosystemIcon,
-    href: "/work-with-us#ecosystem-builders",
+    href: "/work-with-us/education-training-institutions",
   },
   {
     key: "talented",
     Icon: TalentedIcon,
-    href: "/work-with-us#talented-collaborators",
+    href: "/work-with-us/mentors-professionals",
   },
 ] as const;
 

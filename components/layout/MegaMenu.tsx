@@ -30,25 +30,25 @@ const ITEMS = [
     key: "partners",
     Icon: PartnersIcon,
     accent: "text-icon-blue",
-    href: "/work-with-us#funders-development-partners",
+    href: "/work-with-us/funders-development-partners",
   },
   {
     key: "funders",
     Icon: FundersIcon,
     accent: "text-icon-green",
-    href: "/work-with-us#employers-corporate-partners",
+    href: "/work-with-us/employers-corporate-partners",
   },
   {
     key: "ecosystem",
     Icon: EcosystemIcon,
     accent: "text-icon-peach",
-    href: "/work-with-us#education-training-institutions",
+    href: "/work-with-us/education-training-institutions",
   },
   {
     key: "talented",
     Icon: TalentedIcon,
     accent: "text-icon-purple",
-    href: "/work-with-us#mentors-professionals",
+    href: "/work-with-us/mentors-professionals",
   },
 ] as const;
 

@@ -1,0 +1,21 @@
+{
+  "getInTouch": "Get In Touch",
+  "contactLabel": "Contact",
+  "socialLabel": "Social Platforms",
+  "backToWorkWithUs": "Work With Us",
+  "form": {
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "countryLabel": "Country code",
+    "phone": "Phone number (optional)",
+    "subjectLabel": "Subject:",
+    "message": "Message",
+    "send": "Send message",
+    "sending": "Sending…",
+    "required": "This field is required.",
+    "invalidEmail": "Enter a valid email address.",
+    "success": "Thank you — your message has been received. We'll be in touch shortly.",
+    "errorSummary": "Please correct the highlighted fields."
+  }
+}
