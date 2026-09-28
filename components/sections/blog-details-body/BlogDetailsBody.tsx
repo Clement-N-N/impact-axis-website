@@ -1,4 +1,9 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import { BlogCard } from "@/components/ui/BlogCard";
 import type { BlogPost, BlogPostDetail } from "@/components/sections/blog-card/types";
@@ -7,6 +12,10 @@ import { BlogContentLayout } from "@/components/sections/blog-content-layout";
 import { PromoCard } from "@/components/ui/PromoCard";
 import type { Locale } from "@/i18n/routing";
 import { resolveSanityImageUrl } from "@/sanity/image";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const portableTextComponents: PortableTextComponents = {
   block: {
@@ -87,10 +96,42 @@ export function BlogDetailsBody({
   relatedPost: BlogPost | null;
   locale: Locale;
 }) {
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const ctx = gsap.context(() => {
+      if (!bodyRef.current) return;
+
+      if (prefersReducedMotion) {
+        gsap.set(bodyRef.current, { opacity: 1, y: 0 });
+        return;
+      }
+
+      gsap.set(bodyRef.current, { opacity: 0, y: 20 });
+      gsap.to(bodyRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: bodyRef.current,
+          start: "top 80%",
+          once: true,
+        },
+      });
+    }, bodyRef);
+
+    return () => ctx.revert();
+  }, [post]);
+
   return (
     <BlogContentLayout
       main={
-        <div className="flex flex-col gap-6 max-w-[850px]">
+        <div ref={bodyRef} className="flex flex-col gap-6 max-w-[850px]">
           <PortableText value={post.body[locale]} components={portableTextComponents} />
         </div>
       }
