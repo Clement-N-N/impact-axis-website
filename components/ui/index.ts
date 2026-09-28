@@ -4,4 +4,3 @@ export { PromoCard } from "./PromoCard";
 export type { PromoCardContent } from "./PromoCard";
 export { BlogCard } from "./BlogCard";
 export type { BlogCardVariant } from "./BlogCard";
-export { PageLoader } from "./PageLoader";
