@@ -10,6 +10,8 @@ import { termsOfUseTranslations } from "./terms-of-use";
 import { privacyPolicyTranslations } from "./privacy-policy";
 import { contactTranslations } from "./contact";
 import { partnershipTranslations } from "./partnership";
+import { notFoundTranslations } from "./not-found";
+import { errorTranslations } from "./error";
 
 const messages = {
   nav: navTranslations.en,
@@ -24,6 +26,8 @@ const messages = {
   privacyPolicy: privacyPolicyTranslations.en,
   contact: contactTranslations.en,
   partnership: partnershipTranslations.en,
+  notFound: notFoundTranslations.en,
+  error: errorTranslations.en,
 };
 
 export default messages;
