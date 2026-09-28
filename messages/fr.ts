@@ -1,6 +1,5 @@
 import { aboutTranslations } from "./about";
 import { workWithUsTranslations } from "./work-with-us";
-import { programsTranslations } from "./programs";
 import { blogTranslations } from "./blog";
 import { impactTranslations } from "./impact";
 import { navTranslations } from "./nav";
@@ -15,7 +14,6 @@ const messages = {
   footer: footerTranslations.fr,
   about: aboutTranslations.fr,
   workWithUs: workWithUsTranslations.fr,
-  programs: programsTranslations.fr,
   blog: blogTranslations.fr,
   impact: impactTranslations.fr,
   termsOfUse: termsOfUseTranslations.fr,

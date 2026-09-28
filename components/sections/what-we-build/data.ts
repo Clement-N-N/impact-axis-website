@@ -18,7 +18,7 @@ export const whatWeBuildContent: WhatWeBuildContent = {
         fr: "Un apprentissage expérientiel qui développe la communication, la résolution de problèmes, le travail d'équipe, l'aisance numérique et le leadership personnel dont les jeunes ont besoin pour évoluer en milieu professionnel.",
       },
       image: "/images/alumni-3.png",
-      button: { label: { en: "Explore our programmes", fr: "Découvrir nos programmes" }, href: "/programs" },
+      button: { label: { en: "Explore our programmes", fr: "Découvrir nos programmes" }, href: "/events" },
     },
     {
       legendLabel: { en: "Experience That Builds Confidence", fr: "Une expérience qui renforce la confiance" },
@@ -38,7 +38,7 @@ export const whatWeBuildContent: WhatWeBuildContent = {
         fr: "Le mentorat, l'orientation professionnelle, les réseaux professionnels et l'exposition aux employeurs aident les jeunes à comprendre leurs options, à tisser des relations et à accéder à des opportunités porteuses de sens.",
       },
       image: "/images/alumni-5.png",
-      button: { label: { en: "Discover the pathway", fr: "Découvrir le parcours" }, href: "/programs" },
+      button: { label: { en: "Discover the pathway", fr: "Découvrir le parcours" }, href: "/events" },
     },
   ],
 };
