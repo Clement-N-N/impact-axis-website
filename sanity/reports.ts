@@ -2,11 +2,7 @@ import type { LocalizedText } from "@/components/sections/home-hero/types";
 import { client } from "./client";
 import { REPORTS_QUERY } from "./queries";
 
-export type ReportCategory =
-  | "annual"
-  | "midYear"
-  | "programme"
-  | "financial";
+export type ReportCategory = "annual" | "midYear" | "financial";
 
 export type Report = {
   id: string;
@@ -21,12 +17,7 @@ export type Report = {
   coverImage?: string;
 };
 
-const CATEGORIES = new Set<string>([
-  "annual",
-  "midYear",
-  "programme",
-  "financial",
-]);
+const CATEGORIES = new Set<string>(["annual", "midYear", "financial"]);
 
 function isLocalizedText(value: unknown): value is LocalizedText {
   if (typeof value !== "object" || value === null) return false;

@@ -106,14 +106,6 @@ export const impactPageContent: ImpactPageContent = {
         },
       },
       {
-        category: "programme",
-        title: { en: "Programme reports", fr: "Rapports de programme" },
-        description: {
-          en: "A closer look at a single programme: how it ran, who took part and what changed for them.",
-          fr: "Un regard détaillé sur un programme : son déroulement, ses participants et ce qui a changé pour eux.",
-        },
-      },
-      {
         category: "midYear",
         title: { en: "Mid-year progress reports", fr: "Rapports de mi-parcours" },
         description: {
