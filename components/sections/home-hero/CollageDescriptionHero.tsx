@@ -16,7 +16,23 @@ const COLLAGE_BACKGROUNDS = [
 ];
 // Each box shows a slice of one shared image, scaled to the middle box's own
 // height (not the full row) so the slices line up into a single seamless photo.
-const COLLAGE_IMAGE_SCALES = ["120%", "100%", "83.33%"];
+//
+// From `lg` that height is pinned to the wrapper's own width instead. The
+// wrapper's width comes from the container while its height came from the
+// viewport, so its aspect ratio was free to be anything, and `object-cover`
+// re-cropped the photo at every size: roughly a fifth of its width was cut at
+// 1440, a third by 1240, and more still approaching 1024. 11/10 is the ratio a
+// maximised 1440 window produced, so that crop now holds at every desktop
+// width and height rather than only at one.
+//
+// Below `lg` the collage is a strip barely 150px tall. Pinning the ratio there
+// would make the wrapper several times its box's height and the boxes would
+// clip it to torsos, so the per-box percentages still apply.
+const COLLAGE_IMAGE_SCALES = [
+  "h-[120%] lg:h-auto",
+  "h-[100%] lg:h-auto",
+  "h-[83.33%] lg:h-auto",
+];
 // Boxes are equal width but separated by gap-gutter, so the virtual image
 // (spanning all 3 boxes + the 2 gaps between them) and each box's offset into
 // it must account for that gap in px, not just box-width percentages.
@@ -60,14 +76,22 @@ export function CollageDescriptionHero({
                 className={`relative w-full flex-1 overflow-hidden ${height} ${COLLAGE_BACKGROUNDS[index]}`}
               >
                 <div
-                  className="absolute bottom-0 overflow-hidden"
+                  className={`absolute bottom-0 overflow-hidden lg:aspect-[11/10] ${COLLAGE_IMAGE_SCALES[index]}`}
                   style={{
                     left: COLLAGE_IMAGE_LEFTS[index],
                     width: COLLAGE_IMAGE_WIDTH,
-                    height: COLLAGE_IMAGE_SCALES[index],
                   }}
                 >
-                  <Image src={COLLAGE_IMAGE_SRC} alt="" fill className="object-cover" />
+                  {/* Below `lg` the strip is far wider than it is tall, so the
+                      crop is vertical and centring it lands on waists. Biasing
+                      it upwards keeps faces in the band. At `lg` and above the
+                      crop is horizontal, so this has no effect there. */}
+                  <Image
+                    src={COLLAGE_IMAGE_SRC}
+                    alt=""
+                    fill
+                    className="object-cover object-[center_22%]"
+                  />
                 </div>
               </div>
             ))}
