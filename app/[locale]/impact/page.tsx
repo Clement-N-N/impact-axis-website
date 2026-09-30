@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { getReports } from "@/sanity/reports";
+import { getImpactStats } from "@/sanity/home";
 import {
-  ImpactHero,
-  ImpactStatsBand,
+  ImpactStatsHero,
   LatestReport,
   ReportsList,
   CommitmentSection,
@@ -56,7 +56,17 @@ export default async function ImpactPage({ params }: Props) {
 
   const loc = locale as Locale;
   const content = impactPageContent;
-  const reports = await getReports();
+  const [reports, liveStats] = await Promise.all([
+    getReports(),
+    getImpactStats(),
+  ]);
+
+  // The figures live in the `homeImpact` singleton so this page and the home
+  // page cannot disagree. The static copy stays as a fallback for when Sanity
+  // is unreachable, matching how the home page sections behave.
+  const stats = liveStats.length
+    ? { ...content.stats, stats: liveStats }
+    : content.stats;
 
   // An explicitly featured report wins; otherwise the most recently published
   // one, since the query already returns them newest first.
@@ -64,8 +74,7 @@ export default async function ImpactPage({ params }: Props) {
 
   return (
     <div className="w-full bg-white">
-      <ImpactHero data={content.hero} locale={loc} />
-      <ImpactStatsBand data={content.stats} locale={loc} />
+      <ImpactStatsHero hero={content.hero} stats={stats} locale={loc} />
       <LatestReport data={content.latest} report={latest} locale={loc} />
       <ReportsList data={content.reports} reports={reports} locale={loc} />
       <CommitmentSection data={content.commitment} locale={loc} />

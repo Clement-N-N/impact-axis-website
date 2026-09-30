@@ -1,5 +1,5 @@
 import { client } from "./client";
-import { HOME_PAGE_QUERY } from "./queries";
+import { HOME_IMPACT_QUERY, HOME_PAGE_QUERY } from "./queries";
 import type { LocalizedText } from "@/components/sections/home-hero/types";
 import { whyWeExistContent as defaultWhyWeExist } from "@/components/sections/why-we-exist/data";
 import { homeSolutionContent as defaultSolution } from "@/components/sections/home-solution/data";
@@ -161,4 +161,39 @@ export async function getHomePageContent(): Promise<HomePageData> {
     console.error("Failed to fetch Home page content from Sanity:", error);
     return fallback;
   }
+}
+
+export type ImpactStatEntry = {
+  value: string;
+  label: LocalizedText;
+};
+
+/**
+ * The impact figures, read from the same `homeImpact` singleton the home page
+ * uses, so the numbers cannot drift between the two pages that show them.
+ * Returns an empty array when nothing is published; callers fall back to their
+ * own static copy, as the rest of this module does.
+ */
+export async function getImpactStats(): Promise<ImpactStatEntry[]> {
+  try {
+    const result = await client.fetch(
+      HOME_IMPACT_QUERY,
+      {},
+      { next: { revalidate: 300 } },
+    );
+    const metrics = result?.metrics;
+    if (Array.isArray(metrics)) {
+      return metrics
+        .filter(
+          (metric): metric is { number: string; label: LocalizedText } =>
+            typeof metric?.number === "string" &&
+            typeof metric?.label?.en === "string" &&
+            typeof metric?.label?.fr === "string",
+        )
+        .map((metric) => ({ value: metric.number, label: metric.label }));
+    }
+  } catch (error) {
+    console.error("Failed to fetch impact stats from Sanity.", error);
+  }
+  return [];
 }

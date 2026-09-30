@@ -167,46 +167,51 @@ export function ReportsList({
                 {getLocalizedText(copy.description, locale)}
               </p>
 
-              <ul className="mt-4 flex flex-col">
+              {/* Cards in the same language as the highlighted report above.
+                  A thin full-width row put the title and its two links at
+                  opposite ends of a very wide column, which read as a table
+                  rather than as something published. */}
+              <ul className="gap-gutter mt-5 grid grid-cols-1 lg:grid-cols-2">
                 {items.map((report) => {
                   const size = formatFileSize(report.fileSize);
                   return (
                     <li
                       key={report.id}
-                      className="border-border flex flex-col gap-3 border-t py-5 sm:flex-row sm:items-center sm:justify-between"
+                      className="flex flex-col gap-3 bg-[#F5F5F5] p-6"
                     >
-                      <div className="flex flex-col gap-1">
-                        <span className="text-[clamp(0.9375rem,1.1vw,1rem)] font-medium text-black">
-                          {getLocalizedText(report.title, locale)}
-                        </span>
-                        {report.periodLabel ? (
-                          <span className="text-impact-gray text-[0.8125rem]">
-                            {getLocalizedText(report.periodLabel, locale)}
-                            {size ? ` · ${size}` : ""}
-                          </span>
-                        ) : size ? (
-                          <span className="text-impact-gray text-[0.8125rem]">
-                            {size}
-                          </span>
-                        ) : null}
-                      </div>
+                      <h4 className="text-[clamp(1.0625rem,1.3vw,1.1875rem)] font-medium text-black">
+                        {getLocalizedText(report.title, locale)}
+                      </h4>
 
-                      <div className="flex shrink-0 items-center gap-4">
+                      {report.periodLabel || size ? (
+                        <span className="text-impact-blue text-[0.8125rem]">
+                          {report.periodLabel
+                            ? getLocalizedText(report.periodLabel, locale)
+                            : null}
+                          {report.periodLabel && size ? " · " : null}
+                          {size}
+                        </span>
+                      ) : null}
+
+                      {report.summary ? (
+                        <p className="text-[clamp(0.875rem,1vw,0.9375rem)] leading-[1.65] text-black">
+                          {getLocalizedText(report.summary, locale)}
+                        </p>
+                      ) : null}
+
+                      <div className="mt-auto flex flex-wrap items-center gap-3 pt-3">
                         <a
                           href={report.fileUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-impact-blue inline-flex items-center gap-1.5 text-[0.875rem] font-medium"
+                          className="bg-impact-blue inline-flex items-center gap-2 px-4 py-2.5 text-[0.875rem] font-medium text-white"
                         >
-                          {getLocalizedText(
-                            { en: "Read", fr: "Lire" },
-                            locale,
-                          )}
+                          {getLocalizedText({ en: "Read", fr: "Lire" }, locale)}
                           <ArrowSquareOutIcon weight="bold" className="h-4 w-4" />
                         </a>
                         <a
                           href={downloadUrl(report, locale)}
-                          className="text-impact-blue inline-flex items-center gap-1.5 text-[0.875rem] font-medium"
+                          className="border-border inline-flex items-center gap-2 border bg-white px-4 py-2.5 text-[0.875rem] font-medium text-black"
                         >
                           {getLocalizedText(
                             { en: "Download", fr: "Télécharger" },
