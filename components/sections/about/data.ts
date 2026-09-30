@@ -95,7 +95,7 @@ export const aboutPageContent: AboutPageContent = {
       },
     ],
     image: {
-      src: "/images/why-we-exist-career-fair.webp",
+      src: "/images/why-we-exist-career-fair-hd.webp",
       alt: {
         en: "A young man reads a sheet of paper with his hand on his head in a busy queue at a career event",
         fr: "Un jeune homme lit une feuille, la main sur la tête, dans une file animée lors d’un événement carrière",
