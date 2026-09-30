@@ -141,3 +141,18 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "homePage"][0]{
   bottomCtaTitle{en, fr},
   bottomCtaButtonLabel{en, fr}
 }`);
+
+export const REPORTS_QUERY = defineQuery(`*[
+  _type == "report" && defined(file.asset)
+] | order(publishedAt desc){
+  "id": _id,
+  title{en, fr},
+  category,
+  publishedAt,
+  periodLabel{en, fr},
+  summary{en, fr},
+  featured,
+  "fileUrl": file.asset->url,
+  "fileSize": file.asset->size,
+  "coverImage": coverImage.asset->url
+}`);

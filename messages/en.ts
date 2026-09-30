@@ -3,7 +3,6 @@ import { whatWeDoTranslations } from "./what-we-do";
 import { workWithUsTranslations } from "./work-with-us";
 import { programsTranslations } from "./programs";
 import { blogTranslations } from "./blog";
-import { impactTranslations } from "./impact";
 import { navTranslations } from "./nav";
 import { footerTranslations } from "./footer";
 import { termsOfUseTranslations } from "./terms-of-use";
@@ -19,7 +18,6 @@ const messages = {
   workWithUs: workWithUsTranslations.en,
   programs: programsTranslations.en,
   blog: blogTranslations.en,
-  impact: impactTranslations.en,
   termsOfUse: termsOfUseTranslations.en,
   privacyPolicy: privacyPolicyTranslations.en,
   contact: contactTranslations.en,
