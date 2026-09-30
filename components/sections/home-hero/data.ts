@@ -27,11 +27,11 @@ export const heroConfig: HeroConfig = {
         },
         applyButton: {
           label: { en: "Apply now", fr: "Postuler" },
-          href: "/events",
+          href: "/what-we-do#goodwill-fellowship",
         },
         learnMoreButton: {
           label: { en: "Learn more", fr: "En savoir plus" },
-          href: "/events",
+          href: "/what-we-do#goodwill-fellowship",
         },
       },
     },
