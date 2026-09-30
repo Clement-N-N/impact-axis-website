@@ -22,9 +22,12 @@ export type AboutImage = {
 };
 
 export type AboutHeroContent = {
-  eyebrow: LocalizedText;
+  /** `*phrase*` marks a highlighted phrase. */
   headline: LocalizedText;
   paragraph: LocalizedText;
+  cta: { label: LocalizedText; href: string };
+  /** Cut-out photo with a transparent background. */
+  image: AboutImage;
 };
 
 export type AboutImageBandContent = {
