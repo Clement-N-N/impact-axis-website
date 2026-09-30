@@ -14,26 +14,6 @@ export const heroConfig: HeroConfig = {
         label: { en: "See all stories", fr: "Voir toutes les histoires" },
         href: "/blog",
       },
-      card: {
-        badgeLabel: { en: "📢 Applications open", fr: "📢 Candidatures ouvertes" },
-        image: "/images/alumni-1.jpg",
-        title: {
-          en: "Apply for the 4th cohort of the goodwill fellowship program",
-          fr: "Postulez pour la 4e cohorte du programme de bourses goodwill",
-        },
-        dateLine: {
-          en: "Applications end on june 25th, 2026",
-          fr: "Les candidatures se terminent le 25 juin 2026",
-        },
-        applyButton: {
-          label: { en: "Apply now", fr: "Postuler" },
-          href: "/what-we-do#goodwill-fellowship",
-        },
-        learnMoreButton: {
-          label: { en: "Learn more", fr: "En savoir plus" },
-          href: "/what-we-do#goodwill-fellowship",
-        },
-      },
     },
     "overlay-welcome": {
       type: "overlay-welcome",

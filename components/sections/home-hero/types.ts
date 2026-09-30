@@ -20,14 +20,6 @@ export type PromoCardHeroContent = {
   backgroundImages: [string, string, string];
   headline: LocalizedText;
   seeAllStoriesButton: HeroButton;
-  card: {
-    badgeLabel: LocalizedText;
-    image: string;
-    title: LocalizedText;
-    dateLine: LocalizedText;
-    applyButton: HeroButton;
-    learnMoreButton: HeroButton;
-  };
 };
 
 export type OverlayWelcomeHeroContent = {

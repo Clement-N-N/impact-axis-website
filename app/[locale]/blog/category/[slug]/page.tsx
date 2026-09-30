@@ -5,6 +5,7 @@ import { BlogCategoryHero } from "@/components/sections/blog-category-hero";
 import { BlogBody } from "@/components/sections/blog-body";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
+import { getOpenCallPromo } from "@/sanity/openCall";
 import { client } from "@/sanity/client";
 import { BLOG_CATEGORY_SLUGS_QUERY } from "@/sanity/queries";
 import { getBlogCategories, getBlogCategoryBySlug, getBlogPosts } from "@/sanity/blog";
@@ -62,6 +63,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BlogCategoryPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+  const promoCard = await getOpenCallPromo();
 
   const category = await getBlogCategoryBySlug(slug);
   if (!category) notFound();
@@ -71,7 +73,7 @@ export default async function BlogCategoryPage({ params }: Props) {
   return (
     <>
       <BlogCategoryHero category={category} locale={locale as Locale} />
-      <BlogBody posts={posts} categories={categories} activeCategory={slug} locale={locale as Locale} />
+      <BlogBody posts={posts} categories={categories} activeCategory={slug} locale={locale as Locale} promoCard={promoCard} />
     </>
   );
 }
