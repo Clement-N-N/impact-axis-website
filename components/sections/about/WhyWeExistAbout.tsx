@@ -38,9 +38,10 @@ const headlineStyles = cva(
  *    keeps going as a route that runs down between the photo and the cards,
  *    touching each card with a node. Drawn with the scroll (scrubbed).
  * 2. The frame locks together: four corner pieces of the yellow photo frame
- *    slide in and meet while the photo settles from 1.15x to 1x.
+ *    slide in and meet while the photo fades in (never scaled, so it stays
+ *    at full resolution).
  * 3. On desktop with a fine pointer, the navy cards tilt toward the cursor
- *    with a soft highlight, and the photo drifts the opposite way.
+ *    with a soft highlight.
  *
  * Under prefers-reduced-motion everything renders in its final state: the
  * strike and route drawn, the frame assembled, no tilt.
@@ -216,7 +217,7 @@ export function WhyWeExistAbout({
       frameCorners.forEach((corner, i) =>
         gsap.set(corner, { ...offsets[i], opacity: 0 }),
       );
-      gsap.set(photoRef.current, { scale: 1.15 });
+      gsap.set(photoRef.current, { opacity: 0 });
       const frameTl = gsap.timeline({
         scrollTrigger: {
           trigger: frameRef.current,
@@ -233,7 +234,11 @@ export function WhyWeExistAbout({
           ease: "expo.out",
           stagger: 0.06,
         })
-        .to(photoRef.current, { scale: 1, duration: 1.4, ease: "expo.out" }, 0);
+        .to(
+          photoRef.current,
+          { opacity: 1, duration: 0.8, ease: "power2.out" },
+          0.1,
+        );
 
       // Cards enter one after the other.
       gsap.set(cards, { opacity: 0, y: 32 });
@@ -278,18 +283,10 @@ export function WhyWeExistAbout({
           );
       });
 
-      // Fine pointers only: cards tilt toward the cursor, photo drifts away.
+      // Fine pointers only: cards tilt toward the cursor.
       mm.add(
         "(min-width: 1024px) and (hover: hover) and (pointer: fine)",
         () => {
-          const photoX = gsap.quickTo(photoRef.current, "x", {
-            duration: 0.8,
-            ease: "power3.out",
-          });
-          const photoY = gsap.quickTo(photoRef.current, "y", {
-            duration: 0.8,
-            ease: "power3.out",
-          });
           const tilts = cards.map((card) => ({
             card,
             rx: gsap.quickTo(card, "rotationX", {
@@ -304,9 +301,6 @@ export function WhyWeExistAbout({
           gsap.set(cards, { transformPerspective: 900 });
 
           const onMove = (e: PointerEvent) => {
-            const r = section.getBoundingClientRect();
-            photoX(-((e.clientX - r.left) / r.width - 0.5) * 14);
-            photoY(-((e.clientY - r.top) / r.height - 0.5) * 10);
             for (const { card, rx, ry } of tilts) {
               const c = card.getBoundingClientRect();
               const inside =
@@ -330,8 +324,6 @@ export function WhyWeExistAbout({
             }
           };
           const onLeave = () => {
-            photoX(0);
-            photoY(0);
             for (const { card, rx, ry } of tilts) {
               rx(0);
               ry(0);
@@ -459,7 +451,7 @@ export function WhyWeExistAbout({
             radius 20px = 12px photo radius + 8px frame (concentric). */}
         <div
           ref={frameRef}
-          className="relative aspect-[3/2] p-2 lg:col-span-7 lg:row-start-2 lg:aspect-auto lg:min-h-[26rem]"
+          className="relative p-2 lg:col-span-7 lg:row-start-2 lg:self-center"
         >
           {[
             "top-0 left-0 rounded-tl-[20px] border-t-8 border-l-8",
@@ -474,16 +466,21 @@ export function WhyWeExistAbout({
               className={`border-impact-yellow pointer-events-none absolute h-1/2 w-1/2 ${pos}`}
             />
           ))}
-          <div className="relative h-full w-full overflow-hidden rounded-[12px] outline outline-1 -outline-offset-1 outline-black/10">
-            <div ref={photoRef} className="absolute -inset-3">
-              <Image
-                src={data.image.src}
-                alt={getLocalizedText(data.image.alt, locale)}
-                fill
-                sizes="(min-width: 1024px) 58vw, 100vw"
-                className="object-cover object-[40%_35%]"
-              />
-            </div>
+          {/* The whole photo at its own 3:2 shape: never cropped, zoomed or
+              moved, so it renders at full resolution. */}
+          <div
+            ref={photoRef}
+            className="overflow-hidden rounded-[12px] outline outline-1 -outline-offset-1 outline-black/10"
+          >
+            <Image
+              src={data.image.src}
+              alt={getLocalizedText(data.image.alt, locale)}
+              width={2000}
+              height={1333}
+              quality={90}
+              sizes="(min-width: 1536px) 900px, (min-width: 1024px) 58vw, 100vw"
+              className="block h-auto w-full"
+            />
           </div>
         </div>
 
