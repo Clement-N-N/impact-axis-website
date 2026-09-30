@@ -154,24 +154,41 @@ export function WhyImpactAxisSection({
           </p>
         </div>
 
+        {/* The Impact page already sets these five out as an equal band.
+            Here the first figure carries the claim at display size and the
+            rest support it, so the same numbers do not arrive twice in the
+            same shape. */}
         {stats.length > 0 ? (
           <div
             ref={statsRef}
-            className="gap-gutter col-span-4 mt-12 grid grid-cols-2 md:col-span-8 md:grid-cols-3 lg:col-span-12 lg:mt-16 lg:grid-cols-5"
+            className="col-span-4 mt-14 md:col-span-8 lg:col-span-12 lg:mt-20"
           >
-            {stats.map((stat, index) => (
-              <div
-                key={index}
-                className="border-border flex flex-col gap-2 border-t pt-4 last:col-span-2 md:last:col-span-1"
-              >
-                <span className="text-impact-blue text-[clamp(1.75rem,3.2vw,2.75rem)] leading-none font-medium tabular-nums">
-                  {stat.value}
+            <div className="gap-gutter grid grid-cols-1 lg:grid-cols-12">
+              <div className="border-impact-blue flex flex-col gap-2 border-t-2 pt-5 lg:col-span-5">
+                <span className="text-impact-blue text-[clamp(3.5rem,7vw,6rem)] leading-[0.9] font-medium tabular-nums">
+                  {stats[0].value}
                 </span>
-                <span className="text-impact-gray text-[clamp(0.8125rem,0.95vw,0.9375rem)] leading-[1.5]">
-                  {getLocalizedText(stat.label, locale)}
+                <span className="text-[clamp(0.9375rem,1.2vw,1.125rem)] leading-[1.4] text-black">
+                  {getLocalizedText(stats[0].label, locale)}
                 </span>
               </div>
-            ))}
+
+              <ul className="gap-gutter grid grid-cols-2 lg:col-span-6 lg:col-start-7 lg:grid-cols-2 lg:self-end">
+                {stats.slice(1).map((stat, index) => (
+                  <li
+                    key={index}
+                    className="border-border flex flex-col gap-1 border-t pt-4"
+                  >
+                    <span className="text-[clamp(1.25rem,2vw,1.75rem)] leading-none font-medium tabular-nums text-black">
+                      {stat.value}
+                    </span>
+                    <span className="text-impact-gray text-[clamp(0.75rem,0.9vw,0.875rem)] leading-[1.45]">
+                      {getLocalizedText(stat.label, locale)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         ) : null}
 

@@ -131,9 +131,12 @@ export function WaysToWorkSection({
           </h2>
         </div>
 
+        {/* Numerals at display size are the layout, not decoration. Each
+            audience is a full-width row rather than a card in a grid, so the
+            set reads as a numbered index and the type does the work. */}
         <ol
           ref={listRef}
-          className="gap-gutter col-span-4 mt-12 grid grid-cols-1 md:col-span-8 lg:col-span-12 lg:mt-16 lg:grid-cols-2"
+          className="col-span-4 mt-12 flex flex-col md:col-span-8 lg:col-span-12 lg:mt-16"
         >
           {PARTNERSHIP_AUDIENCES.map((slug, index) => {
             const audience = partnershipContent.audiences[slug];
@@ -141,19 +144,24 @@ export function WaysToWorkSection({
               <li key={slug}>
                 <Link
                   href={`/work-with-us/${slug}`}
-                  className="group hover:bg-impact-yellow/10 flex h-full flex-col gap-3 bg-[#F5F5F5] p-6 transition-colors duration-300 lg:p-8"
+                  className="group border-border hover:border-impact-blue flex flex-col gap-3 border-t py-8 transition-colors duration-300 lg:grid lg:grid-cols-12 lg:items-baseline lg:gap-6 lg:py-10"
                 >
-                  <span className="text-impact-gray text-[0.8125rem] tabular-nums">
+                  <span className="text-impact-gray/35 group-hover:text-impact-yellow text-[clamp(2.5rem,6vw,5rem)] leading-[0.85] font-medium tabular-nums transition-colors duration-300 lg:col-span-2">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="text-[clamp(1.125rem,1.4vw,1.25rem)] font-medium text-black">
+
+                  <h3 className="text-[clamp(1.125rem,1.6vw,1.5rem)] font-medium text-black lg:col-span-4">
                     {getLocalizedText(audience.name, locale)}
                   </h3>
-                  <p className="text-impact-gray text-[clamp(0.9375rem,1.1vw,1rem)] leading-[1.6]">
+
+                  <p className="text-impact-gray text-[clamp(0.9375rem,1.1vw,1rem)] leading-[1.6] lg:col-span-5">
                     {getLocalizedText(audience.headline, locale)}
                   </p>
-                  <span className="text-impact-blue mt-auto inline-flex items-center gap-2 pt-3 text-[0.875rem] font-medium">
-                    {getLocalizedText(data.cardCtaLabel, locale)}
+
+                  <span className="text-impact-blue inline-flex items-center gap-2 text-[0.875rem] font-medium lg:col-span-1 lg:justify-end">
+                    <span className="lg:sr-only">
+                      {getLocalizedText(data.cardCtaLabel, locale)}
+                    </span>
                     <ArrowRightIcon
                       weight="bold"
                       className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
