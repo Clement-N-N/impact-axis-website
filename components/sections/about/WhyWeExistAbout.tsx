@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { cva } from "class-variance-authority";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Container } from "@/components/layout/Container";
@@ -18,25 +17,12 @@ if (typeof window !== "undefined") {
 const YELLOW = "#f4c600"; // impact-yellow
 
 /**
- * French runs ~25% longer, so on desktop its headline steps down one size:
- * that keeps the struck phrase ending before the gutter, where the pathway
- * turns its corner cleanly.
- */
-const headlineStyles = cva(
-  "text-impact-blue text-5xl leading-[1.08]! font-light! tracking-[-0.02em] text-balance",
-  {
-    variants: { locale: { en: "", fr: "lg:text-4xl" } },
-    defaultVariants: { locale: "en" },
-  },
-);
-
-/**
  * "Why we exist". Three pieces of motion, all driven by GSAP like the rest of
  * the About page:
  *
- * 1. The pathway: a hand-drawn yellow line strikes through "is not", then
- *    keeps going as a route that runs down between the photo and the cards,
- *    touching each card with a node. Drawn with the scroll (scrubbed).
+ * 1. The pathway: a yellow line draws slowly down the gutter between the
+ *    photo and the cards as you scroll (scrubbed), dropping a node beside
+ *    each card. Desktop only.
  * 2. The frame locks together: four corner pieces of the yellow photo frame
  *    slide in and meet while the photo fades in (never scaled, so it stays
  *    at full resolution).
@@ -44,7 +30,7 @@ const headlineStyles = cva(
  *    with a soft highlight.
  *
  * Under prefers-reduced-motion everything renders in its final state: the
- * strike and route drawn, the frame assembled, no tilt.
+ * route drawn, the frame assembled, no tilt.
  */
 export function WhyWeExistAbout({
   data,
@@ -55,9 +41,6 @@ export function WhyWeExistAbout({
 }) {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const strikeRef = useRef<SVGPathElement>(null);
-  const strikeOverlayRef = useRef<SVGPathElement>(null);
-  const strikeWrapRef = useRef<HTMLSpanElement>(null);
   const routeRef = useRef<SVGPathElement>(null);
   const routeSvgRef = useRef<SVGSVGElement>(null);
   const nodeRefs = useRef<(SVGCircleElement | null)[]>([]);
@@ -73,23 +56,22 @@ export function WhyWeExistAbout({
     ).matches;
 
     /**
-     * Lays the route out from element layout positions: from the end of the
-     * strike, curving down into the gap between photo and cards, then
-     * straight down past both cards, with a node beside each card.
+     * Lays the route out from element layout positions: a straight line
+     * down the centre of the gutter between photo and cards, from the top
+     * of that row to its bottom, with a node level with each card's centre.
+     * Returns where each node sits along the line (0–1), so the nodes pop in
+     * exactly as the line reaches them.
      *
      * Uses offsetLeft/offsetTop (which ignore transforms) rather than
-     * getBoundingClientRect, so the headline and cards can be mid-entrance,
-     * still translated, when this runs.
+     * getBoundingClientRect, so the cards can be mid-entrance, still
+     * translated, when this runs.
      */
-    const layoutRoute = () => {
+    const layoutRoute = (): number[] => {
       const svg = routeSvgRef.current;
       const route = routeRef.current;
-      const strikeOverlay = strikeOverlayRef.current;
-      const strike = strikeWrapRef.current;
       const frame = frameRef.current;
       const [c1, c2] = cardRefs.current;
-      if (!svg || !route || !strikeOverlay || !strike || !frame || !c1 || !c2)
-        return;
+      if (!svg || !route || !frame || !c1 || !c2) return [];
 
       const box = (el: HTMLElement) => {
         let left = 0;
@@ -107,7 +89,6 @@ export function WhyWeExistAbout({
           bottom: top + el.offsetHeight,
         };
       };
-      const s = box(strike);
       const f = box(frame);
       const a = box(c1);
       const b = box(c2);
@@ -116,58 +97,25 @@ export function WhyWeExistAbout({
         "viewBox",
         `0 0 ${section.offsetWidth} ${section.offsetHeight}`,
       );
-      // One continuous stroke in section coordinates. The strike wobbles
-      // gently across "is not" and ends flat (horizontal tangent) at P; the
-      // route leaves P along that same tangent, so there is no kink.
-      const w = s.right - s.left;
-      const x0 = s.left - w * 0.04;
-      const x1 = s.right + w * 0.02; // P
-      const y = s.top + (s.bottom - s.top) * 0.56;
-      const gx = (f.right + a.left) / 2; // centre of the gutter
-      const n1 = a.top + (a.bottom - a.top) / 2;
-      const n2 = b.top + (b.bottom - b.top) / 2;
-      const end = b.bottom - 12;
+      const x = (f.right + a.left) / 2; // centre of the gutter
+      const top = Math.min(f.top, a.top) + 8;
+      const bottom = Math.max(f.bottom, b.bottom) - 8;
+      const nodesY = [(a.top + a.bottom) / 2, (b.top + b.bottom) / 2];
 
-      strikeOverlay.setAttribute(
-        "d",
-        `M ${x0} ${y + 2} C ${x0 + w * 0.22} ${y - 3}, ${x0 + w * 0.45} ${y + 4}, ${x0 + w * 0.68} ${y} S ${x1 - w * 0.12} ${y}, ${x1} ${y}`,
-      );
-
-      const R = Math.max(12, Math.min(40, (f.top - y) / 2));
-      let d: string;
-      // The corner radius shrinks to fit when the gutter sits close to the
-      // end of the strike (narrow desktops), so it is always one clean turn.
-      // If the strike ends at or past the gutter's centre (narrow desktops,
-      // longer French), nudge the vertical line right, but keep it inside
-      // the gutter, clear of the card.
-      const lineX = gx - x1 >= 12 ? gx : Math.min(x1 + 12, a.left - 12);
-      const Rc = Math.min(R, lineX - x1);
-      if (Rc >= 8) {
-        // Gutter is to the right: run level, round the corner, drop down.
-        d = `M ${x1} ${y} L ${lineX - Rc} ${y} C ${lineX - Rc * 0.45} ${y}, ${lineX} ${y + Rc * 0.55}, ${lineX} ${y + Rc} L ${lineX} ${end}`;
-      } else {
-        // Strike ends past the gutter (longer French): turn down right
-        // after it, then S-curve back into the gutter above the photo.
-        const xd = x1 + R;
-        const y1 = y + R;
-        const y2 = f.top - 6;
-        const ym = (y1 + y2) / 2;
-        d = `M ${x1} ${y} C ${x1 + R * 0.55} ${y}, ${xd} ${y + R * 0.45}, ${xd} ${y1} C ${xd} ${ym}, ${gx} ${ym}, ${gx} ${y2} L ${gx} ${end}`;
-      }
-      route.setAttribute("d", d);
-      [n1, n2].forEach((ny, i) => {
+      route.setAttribute("d", `M ${x} ${top} L ${x} ${bottom}`);
+      nodesY.forEach((ny, i) => {
         const node = nodeRefs.current[i];
         if (node) {
-          node.setAttribute("cx", String(lineX));
+          node.setAttribute("cx", String(x));
           node.setAttribute("cy", String(ny));
         }
       });
+      return nodesY.map((ny) => (ny - top) / (bottom - top));
     };
 
     const mm = gsap.matchMedia();
 
     const ctx = gsap.context(() => {
-      const strike = strikeRef.current;
       const frameCorners = frameRef.current
         ? gsap.utils.toArray<HTMLElement>("[data-corner]", frameRef.current)
         : [];
@@ -190,22 +138,6 @@ export function WhyWeExistAbout({
         stagger: 0.14,
         scrollTrigger: { trigger: section, start: "top 75%", once: true },
       });
-
-      // The strike through "is not" draws once the headline has landed.
-      // Mobile draws the inline strike; desktop draws the overlay strike,
-      // which the route continues from. Both use pathLength=1.
-      const drawStrike = (el: SVGPathElement | null) => {
-        if (!el) return;
-        gsap.set(el, { strokeDasharray: 1, strokeDashoffset: 1 });
-        gsap.to(el, {
-          strokeDashoffset: 0,
-          duration: 0.6,
-          delay: 0.7,
-          ease: "power2.inOut",
-          scrollTrigger: { trigger: section, start: "top 75%", once: true },
-        });
-      };
-      mm.add("(max-width: 1023px)", () => drawStrike(strike));
 
       // Frame corners slide in from the outside and lock together.
       const offsets = [
@@ -251,36 +183,36 @@ export function WhyWeExistAbout({
         scrollTrigger: { trigger: cards[0], start: "top 85%", once: true },
       });
 
-      // Desktop only: the route and its nodes draw with the scroll.
+      // Desktop only: the route and its nodes draw with the scroll. The
+      // scroll range spans the whole photo-and-cards row plus some runway,
+      // and the scrub eases over 1.5s, so the line draws slowly and smoothly.
       mm.add("(min-width: 1024px)", () => {
-        layoutRoute();
-        drawStrike(strikeOverlayRef.current);
+        const at = layoutRoute();
         const route = routeRef.current;
         const nodes = nodeRefs.current.filter(Boolean) as SVGCircleElement[];
         if (!route) return;
-        gsap.set(route, { strokeDasharray: 1, strokeDashoffset: 1 });
+        // pathLength=1000 rather than 1: GSAP rounds px values, which would
+        // snap a 1 -> 0 dash offset instead of drawing it.
+        gsap.set(route, { strokeDasharray: 1000, strokeDashoffset: 1000 });
         gsap.set(nodes, { scale: 0, transformOrigin: "50% 50%" });
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: frameRef.current,
-            start: "top 70%",
-            end: "bottom 60%",
-            scrub: 0.6,
+            start: "top 85%",
+            end: "bottom 35%",
+            scrub: 1.5,
             invalidateOnRefresh: true,
             onRefresh: layoutRoute,
           },
         });
-        tl.to(route, { strokeDashoffset: 0, ease: "none", duration: 1 })
-          .to(
-            nodes[0] ?? {},
-            { scale: 1, duration: 0.08, ease: "back.out(3)" },
-            0.45,
-          )
-          .to(
-            nodes[1] ?? {},
-            { scale: 1, duration: 0.08, ease: "back.out(3)" },
-            0.85,
-          );
+        tl.to(route, { strokeDashoffset: 0, ease: "none", duration: 1 });
+        nodes.forEach((node, i) =>
+          tl.to(
+            node,
+            { scale: 1, duration: 0.06, ease: "back.out(3)" },
+            Math.max(0, (at[i] ?? 0.5) - 0.03),
+          ),
+        );
       });
 
       // Fine pointers only: cards tilt toward the cursor.
@@ -352,9 +284,6 @@ export function WhyWeExistAbout({
     };
   }, []);
 
-  const turn = getLocalizedText(data.tagline.turn, locale);
-  const [before, struck = "", after = ""] = turn.split(/\*([^*]+)\*/);
-
   return (
     <section
       ref={sectionRef}
@@ -367,16 +296,8 @@ export function WhyWeExistAbout({
         className="pointer-events-none absolute inset-0 z-10 hidden h-full w-full lg:block"
       >
         <path
-          ref={strikeOverlayRef}
-          pathLength={1}
-          fill="none"
-          stroke={YELLOW}
-          strokeWidth={5}
-          strokeLinecap="round"
-        />
-        <path
           ref={routeRef}
-          pathLength={1}
+          pathLength={1000}
           fill="none"
           stroke={YELLOW}
           strokeWidth={5}
@@ -406,9 +327,7 @@ export function WhyWeExistAbout({
               otherwise beat Tailwind's utilities. */}
           <h2
             ref={headingRef}
-            className={headlineStyles({
-              locale: locale === "fr" ? "fr" : "en",
-            })}
+            className="text-impact-blue text-5xl leading-[1.08]! font-light! tracking-[-0.02em] text-balance"
           >
             <span className="block overflow-hidden pb-[0.08em]">
               <span data-line className="block font-bold">
@@ -417,31 +336,7 @@ export function WhyWeExistAbout({
             </span>{" "}
             <span className="block overflow-hidden pb-[0.12em]">
               <span data-line className="block">
-                {before}
-                <span
-                  ref={strikeWrapRef}
-                  className="relative inline-block whitespace-nowrap"
-                >
-                  {struck}
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 200 24"
-                    preserveAspectRatio="none"
-                    className="pointer-events-none absolute top-[55%] -left-[4%] h-[0.45em] w-[108%] -translate-y-1/2 overflow-visible lg:hidden"
-                  >
-                    <path
-                      ref={strikeRef}
-                      pathLength={1}
-                      d="M3 15 C 40 9, 90 18, 140 11 S 190 8, 197 10"
-                      fill="none"
-                      stroke={YELLOW}
-                      strokeWidth={5}
-                      strokeLinecap="round"
-                      vectorEffect="non-scaling-stroke"
-                    />
-                  </svg>
-                </span>
-                {after}
+                {getLocalizedText(data.tagline.turn, locale)}
               </span>
             </span>
           </h2>

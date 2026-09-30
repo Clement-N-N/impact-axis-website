@@ -37,8 +37,7 @@ export type AboutImageBandContent = {
 
 export type WhyWeExistAboutContent = {
   eyebrow: LocalizedText;
-  /** Two-weight headline: `lead` is set bold, `turn` light. In `turn`,
-      `*phrase*` marks the words that get struck through. */
+  /** Two-weight headline: `lead` is set bold, `turn` light. */
   tagline: { lead: LocalizedText; turn: LocalizedText };
   /** Shown in the first card. */
   intro: LocalizedText;

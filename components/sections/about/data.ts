@@ -76,8 +76,8 @@ export const aboutPageContent: AboutPageContent = {
     tagline: {
       lead: { en: "Talent is everywhere.", fr: "Le talent est partout." },
       turn: {
-        en: "Access to opportunity *is not*.",
-        fr: "L’accès aux opportunités *ne l’est pas*.",
+        en: "Access to opportunity is not.",
+        fr: "L’accès aux opportunités ne l’est pas.",
       },
     },
     intro: {
