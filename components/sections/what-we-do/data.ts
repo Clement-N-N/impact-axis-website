@@ -31,10 +31,6 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
       en: "Building what young people need to navigate work.",
       fr: "Développer ce dont les jeunes ont besoin pour évoluer dans le monde du travail.",
     },
-    intro: {
-      en: "Rather than treating employability as a single skill-building challenge, our programmes address several factors that shape how young people prepare for and transition into the world of work.",
-      fr: "Plutôt que de réduire l'employabilité au seul développement de compétences, nos programmes agissent sur plusieurs facteurs qui déterminent la manière dont les jeunes se préparent au monde du travail et y accèdent.",
-    },
     areas: [
       {
         title: {
@@ -48,6 +44,13 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
         description: {
           en: "Communication, critical thinking, problem-solving, collaboration, self-leadership and adaptability help young people perform across different roles, industries and stages of their careers.",
           fr: "La communication, l'esprit critique, la résolution de problèmes, la collaboration, le leadership personnel et l'adaptabilité permettent aux jeunes de réussir dans différents postes, secteurs et étapes de carrière.",
+        },
+        image: {
+          src: "/images/alumni-3.png",
+          alt: {
+            en: "Participants practising communication in a workshop",
+            fr: "Des participants pratiquant la communication lors d'un atelier",
+          },
         },
       },
       {
@@ -63,6 +66,13 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
           en: "Projects, simulations and practical challenges give young people opportunities to apply what they know, receive feedback and build confidence navigating professional environments.",
           fr: "Des projets, des simulations et des mises en situation donnent aux jeunes l'occasion d'appliquer leurs connaissances, de recevoir des retours et de gagner en assurance dans un cadre professionnel.",
         },
+        image: {
+          src: "/images/alumni-5.png",
+          alt: {
+            en: "A team working through an applied challenge",
+            fr: "Une équipe travaillant sur un défi appliqué",
+          },
+        },
       },
       {
         title: {
@@ -76,6 +86,13 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
         description: {
           en: "Mentorship, career guidance and professional networks help young people make informed decisions, understand their options and build relationships that can open pathways to opportunity.",
           fr: "Le mentorat, l'orientation professionnelle et les réseaux aident les jeunes à décider en connaissance de cause, à comprendre leurs options et à nouer des relations qui ouvrent des portes.",
+        },
+        image: {
+          src: "/images/team-1.jpg",
+          alt: {
+            en: "A mentor in conversation with a participant",
+            fr: "Un mentor en conversation avec un participant",
+          },
         },
       },
       {
@@ -91,15 +108,15 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
           en: "Practical digital and AI capabilities help young people use emerging technologies responsibly, work more effectively and remain adaptable as workplaces evolve.",
           fr: "Des compétences numériques et en IA concrètes permettent aux jeunes d'utiliser les technologies émergentes de façon responsable, de travailler plus efficacement et de rester adaptables.",
         },
+        image: {
+          src: "/images/alumni-2.png",
+          alt: {
+            en: "Participants working on laptops during a digital skills session",
+            fr: "Des participants travaillant sur ordinateur lors d'une session numérique",
+          },
+        },
       },
     ],
-    image: {
-      src: "/images/alumni-3.png",
-      alt: {
-        en: "Participants working together during an Impact Axis session",
-        fr: "Des participants travaillant ensemble lors d'une session Impact Axis",
-      },
-    },
   },
 
   programmes: {
@@ -196,6 +213,7 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
           en: "Learning happens through doing, feedback and reflection.",
           fr: "L'apprentissage passe par la pratique, les retours et la réflexion.",
         },
+        icon: "/icons/experiential.svg",
       },
       {
         title: { en: "Practical", fr: "Pratique" },
@@ -203,6 +221,7 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
           en: "Activities are designed around real decisions, challenges and professional contexts.",
           fr: "Les activités sont conçues autour de décisions, de défis et de contextes professionnels réels.",
         },
+        icon: "/icons/practical.svg",
       },
       {
         title: { en: "Outcome-focused", fr: "Orienté résultats" },
@@ -210,6 +229,7 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
           en: "We increasingly track what young people can do and access after participating.",
           fr: "Nous suivons de plus en plus ce que les jeunes savent faire et ce à quoi ils accèdent après leur participation.",
         },
+        icon: "/icons/outcome-focused.svg",
       },
     ],
   },
@@ -224,36 +244,10 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
       en: "From simulations and team challenges to mentorship and professional conversations, our programmes create spaces where young people can practise, experiment, connect and grow.",
       fr: "Des simulations et défis d'équipe au mentorat et aux échanges professionnels, nos programmes créent des espaces où les jeunes peuvent s'exercer, expérimenter, se connecter et grandir.",
     },
-    images: [
-      {
-        src: "/images/alumni-6.png",
-        alt: {
-          en: "Participants presenting their work",
-          fr: "Des participants présentant leur travail",
-        },
-      },
-      {
-        src: "/images/girls-1.jpg",
-        alt: {
-          en: "A group challenge in progress",
-          fr: "Un défi de groupe en cours",
-        },
-      },
-      {
-        src: "/images/team-1.jpg",
-        alt: {
-          en: "A mentoring conversation",
-          fr: "Une conversation de mentorat",
-        },
-      },
-      {
-        src: "/images/collage-image-1.png",
-        alt: {
-          en: "Moments from Impact Axis workshops",
-          fr: "Moments des ateliers Impact Axis",
-        },
-      },
-    ],
+    image: {
+      src: "/images/collage-image-1.png",
+      alt: { en: "", fr: "" },
+    },
     cta: {
       label: { en: "See our stories", fr: "Voir nos histoires" },
       href: "/blog",

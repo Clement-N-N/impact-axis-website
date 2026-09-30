@@ -30,14 +30,14 @@ export type FocusArea = {
   /** The short "Building capabilities that travel with you:" lead-in. */
   lead: LocalizedText;
   description: LocalizedText;
+  /** Swapped in as the area is selected, as on the homepage carousel. */
+  image: WhatWeDoImage;
 };
 
 export type OurFocusContent = {
   eyebrow: LocalizedText;
   headline: LocalizedText;
-  intro: LocalizedText;
   areas: FocusArea[];
-  image: WhatWeDoImage;
 };
 
 export type Programme = {
@@ -68,6 +68,8 @@ export type OurProgrammesContent = {
 export type DifferentiatorTrait = {
   title: LocalizedText;
   description: LocalizedText;
+  /** Path under `public/icons`, following the `who-we-serve` convention. */
+  icon: string;
 };
 
 export type WhatMakesDifferentContent = {
@@ -81,7 +83,8 @@ export type WorkInActionContent = {
   eyebrow: LocalizedText;
   headline: LocalizedText;
   caption: LocalizedText;
-  images: WhatWeDoImage[];
+  /** Rendered as a full-bleed parallax band; decorative, so alt is empty. */
+  image: WhatWeDoImage;
   cta: WhatWeDoCta;
 };
 
