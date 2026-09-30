@@ -52,9 +52,12 @@ export function TestimonialsCarousel({
     getReducedMotionServerSnapshot,
   );
 
-  const goToNext = () => setActiveIndex((current) => (current + 1) % testimonials.length);
+  const goToNext = () =>
+    setActiveIndex((current) => (current + 1) % testimonials.length);
   const goToPrev = () =>
-    setActiveIndex((current) => (current - 1 + testimonials.length) % testimonials.length);
+    setActiveIndex(
+      (current) => (current - 1 + testimonials.length) % testimonials.length,
+    );
 
   const sectionRef = useRef<HTMLElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
@@ -63,7 +66,9 @@ export function TestimonialsCarousel({
   const ctaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
     let split: SplitText | undefined;
 
@@ -96,7 +101,12 @@ export function TestimonialsCarousel({
             },
           });
 
-          tl.to(self.lines, { yPercent: 0, duration: 0.6, ease: "power4.out", stagger: 0.12 })
+          tl.to(self.lines, {
+            yPercent: 0,
+            duration: 0.6,
+            ease: "power4.out",
+            stagger: 0.12,
+          })
             .to(
               carouselWrapperRef.current,
               { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
@@ -107,7 +117,11 @@ export function TestimonialsCarousel({
               { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
               "-=0.3",
             )
-            .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, "-=0.2");
+            .to(
+              ctaRef.current,
+              { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+              "-=0.2",
+            );
 
           return tl;
         },
@@ -121,10 +135,13 @@ export function TestimonialsCarousel({
   }, []);
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#090E35] py-section">
-      <Container className="grid grid-cols-4 gap-gutter md:grid-cols-8 lg:grid-cols-12">
+    <section ref={sectionRef} className="py-section w-full bg-[#090E35]">
+      <Container className="gap-gutter grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12">
         <div className="col-span-4 flex flex-col justify-between gap-10 md:col-span-8 lg:col-span-3 lg:h-full">
-          <h2 ref={headlineRef} className="text-[clamp(1.75rem,3vw,2.7rem)] font-medium leading-[1.3] text-[#99CCFF]">
+          <h2
+            ref={headlineRef}
+            className="text-[clamp(1.75rem,3vw,2.7rem)] leading-[1.3] font-medium text-[#99CCFF]"
+          >
             {getLocalizedText(title, locale)}
           </h2>
 
@@ -154,7 +171,10 @@ export function TestimonialsCarousel({
                   key={activeIndex}
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}
-                  transition={{ duration: SLIDE_DURATION_SECONDS, ease: "linear" }}
+                  transition={{
+                    duration: SLIDE_DURATION_SECONDS,
+                    ease: "linear",
+                  }}
                   onAnimationComplete={goToNext}
                   className="absolute inset-y-0 left-0 bg-[#99CCFF]"
                 />
@@ -171,9 +191,12 @@ export function TestimonialsCarousel({
           className="col-span-4 overflow-hidden md:col-span-8 lg:col-span-9 lg:col-start-4"
         >
           <motion.div
-            className="flex gap-gutter"
+            className="gap-gutter flex"
             animate={{ x: `-${activeIndex * CARD_STEP_PERCENT}%` }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.5, ease: "easeInOut" }}
+            transition={{
+              duration: prefersReducedMotion ? 0 : 0.5,
+              ease: "easeInOut",
+            }}
           >
             {testimonials.map((testimonial, index) => (
               <div key={index} className="w-[92%] shrink-0">
@@ -181,13 +204,17 @@ export function TestimonialsCarousel({
                   testimonial={testimonial}
                   locale={locale}
                   isActive={index === activeIndex}
+                  prefersReducedMotion={prefersReducedMotion}
                 />
               </div>
             ))}
           </motion.div>
         </div>
 
-        <div ref={ctaRef} className="col-span-4 flex justify-center pt-section md:col-span-8 lg:col-span-12">
+        <div
+          ref={ctaRef}
+          className="pt-section col-span-4 flex justify-center md:col-span-8 lg:col-span-12"
+        >
           <Link
             href={seeAllStoriesButton.href}
             className="border border-white/30 px-8 py-3 text-sm text-white"
