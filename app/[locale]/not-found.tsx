@@ -9,7 +9,7 @@ export default async function NotFound() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-6 py-32 text-center">
       <Image
-        src="/logos/impact_axis_symbol_blue_transparent.png"
+        src="/logos/impact_axis_symbol_black_transparent.png"
         alt=""
         width={512}
         height={512}
