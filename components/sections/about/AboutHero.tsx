@@ -60,7 +60,10 @@ export function AboutHero({
           alt={getLocalizedText(data.image.alt, locale)}
           fill
           preload
-          sizes="(min-width: 1024px) 90vw, 150vw"
+          // Lossless PNG source served once-compressed at q90 (allowed in
+          // next.config); sizes mirror the box widths below.
+          quality={90}
+          sizes="(min-width: 1024px) min(84rem, 90vw), (min-width: 768px) 110vw, 150vw"
           className="object-contain object-bottom"
         />
       </HeroSubjectMotion>
