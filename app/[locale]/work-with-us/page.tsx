@@ -1,5 +1,16 @@
 import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
+import type { Locale } from "@/i18n/routing";
+import { getImpactStats } from "@/sanity/home";
+import {
+  HubHero,
+  WhyPartnerSection,
+  WaysToWorkSection,
+  HowWePartnerSection,
+  WhyImpactAxisSection,
+  OpportunitiesSection,
+  workWithUsPageContent,
+} from "@/components/sections/work-with-us";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -7,14 +18,21 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "workWithUs" });
+  const isFr = locale === "fr";
 
-  const title = t("title") || (locale === "fr" ? "Travailler avec nous" : "Work With Us");
+  const title = isFr
+    ? "Travailler avec nous — Impact Axis"
+    : "Work With Us — Impact Axis";
+  const description = isFr
+    ? "Impact Axis collabore avec des financeurs, des employeurs, des établissements d'enseignement et des professionnels pour élargir l'accès des jeunes aux compétences, à l'expérience et aux opportunités au Cameroun."
+    : "Impact Axis partners with funders, employers, education institutions and professionals to expand young people's access to skills, experience and meaningful opportunities in Cameroon.";
+
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
   const canonical = `${baseUrl}/${locale}/work-with-us`;
 
   return {
     title,
+    description,
     alternates: {
       canonical,
       languages: {
@@ -22,22 +40,40 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         fr: `${baseUrl}/fr/work-with-us`,
       },
     },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      siteName: "Impact Axis",
+      locale: isFr ? "fr_FR" : "en_US",
+      type: "website",
+    },
   };
 }
 
-export default async function WorkWithUsPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function WorkWithUsPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t = await getTranslations("workWithUs");
+  const loc = locale as Locale;
+  const content = workWithUsPageContent;
+
+  // The same `homeImpact` singleton the home and Impact pages read, so the
+  // figures cannot disagree between the three places that show them.
+  const stats = await getImpactStats();
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center py-32">
-      <h1 className="text-3xl font-semibold">{t("title")}</h1>
+    <div className="w-full bg-white">
+      <HubHero data={content.hero} locale={loc} />
+      <WhyPartnerSection data={content.whyPartner} locale={loc} />
+      <WaysToWorkSection data={content.waysToWork} locale={loc} />
+      <HowWePartnerSection data={content.howWePartner} locale={loc} />
+      <WhyImpactAxisSection
+        data={content.whyImpactAxis}
+        stats={stats}
+        locale={loc}
+      />
+      <OpportunitiesSection data={content.opportunities} locale={loc} />
     </div>
   );
 }

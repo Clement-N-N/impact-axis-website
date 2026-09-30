@@ -331,6 +331,18 @@ export function MobileNav() {
                   />
                 </button>
                 <ul ref={submenuRef} className="overflow-hidden">
+                  {/* The hub itself. The desktop trigger opens the mega menu on
+                      hover, which touch has no equivalent for, so without this
+                      entry the page would be unreachable on a phone. */}
+                  <li>
+                    <Link
+                      href="/work-with-us"
+                      onClick={close}
+                      className="text-impact-gray block py-3 text-[0.9375rem]"
+                    >
+                      {t("megaMenu.overview")}
+                    </Link>
+                  </li>
                   {MEGA_ITEMS.map(({ key, Icon, href }, index) => (
                     <li
                       key={key}
