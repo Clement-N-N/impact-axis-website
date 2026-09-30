@@ -251,12 +251,20 @@ export function MegaMenu({
               audiences are a deliberate set, and the trigger cannot double as
               the link because hovering has no equivalent on touch. */}
           <li>
-            <Link
-              href="/work-with-us"
-              className="text-impact-gray hover:text-black border-border inline-flex items-center gap-2 border-b pb-3 text-[clamp(0.875rem,1vw,0.9375rem)] transition-colors duration-300"
-            >
-              {t("megaMenu.overview")}
-              <ArrowRightIcon weight="bold" className="h-3.5 w-3.5" />
+            <Link href="/work-with-us" className="flex w-fit items-center gap-4">
+              {/* The four audiences have bespoke marks and there is no generic
+                  one, so the hub takes the brand symbol — it stands for the
+                  whole rather than any single audience. */}
+              <Image
+                src="/logos/impact_axis_symbol_black_transparent.png"
+                alt=""
+                width={64}
+                height={64}
+                className="h-[32px] w-[32px] shrink-0 object-contain"
+              />
+              <span className="text-xl text-black">
+                {t("megaMenu.overview")}
+              </span>
             </Link>
           </li>
 

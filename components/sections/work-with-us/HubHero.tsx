@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
+import Image from "next/image";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
@@ -15,10 +16,16 @@ if (typeof window !== "undefined") {
 }
 
 /**
- * The headline runs the full width and the two paragraphs sit beneath it in
- * two columns, rather than the eyebrow-left/stack-right arrangement About, Our
- * Work and Impact all open with. Same furniture, different structure, so the
- * page does not read as the fourth copy of one template.
+ * A full-bleed photograph with the headline over it.
+ *
+ * About, Our Work and Impact all open on white text, so a fourth would have
+ * been the fourth copy of one template — and this page had no image above the
+ * fold at all. The treatment is not invented: the home page's hero already has
+ * full-bleed overlay variants, down to the `#0D0D0D`/65 scrim. No interior page
+ * uses one, which is what makes it read as this page's own opening.
+ *
+ * The supporting paragraphs and the call to action sit below the image on
+ * white, where they are read rather than fought against by the photograph.
  */
 export function HubHero({
   data,
@@ -97,26 +104,41 @@ export function HubHero({
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-section w-full bg-white">
-      <Container className="gap-gutter grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12">
-        <div className="col-span-4 md:col-span-8 lg:col-span-12">
-          <span
-            ref={eyebrowRef}
-            className="text-impact-gray text-[clamp(0.875rem,1.05vw,1rem)]"
-          >
-            {getLocalizedText(data.eyebrow, locale)}
-          </span>
+    <section ref={sectionRef} className="w-full bg-white">
+      <div className="relative h-[62vh] min-h-[420px] w-full overflow-hidden lg:h-[72vh]">
+        <Image
+          src="/images/girls-1.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[center_28%]"
+        />
+        <div className="absolute inset-0 bg-[#0D0D0D]/65" />
 
-          <h1 className="mt-6 text-[clamp(2rem,4.4vw,3.75rem)] leading-[1.1] font-medium text-black lg:mt-8">
-            <span ref={headlineRef} className="block">
-              {getLocalizedText(data.headline, locale)}
-            </span>
-          </h1>
+        <div className="absolute inset-0 flex items-end pb-12 lg:pb-16">
+          <Container className="gap-gutter grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12">
+            <div className="col-span-4 md:col-span-8 lg:col-span-10">
+              <span
+                ref={eyebrowRef}
+                className="text-[clamp(0.875rem,1.05vw,1rem)] text-white/70"
+              >
+                {getLocalizedText(data.eyebrow, locale)}
+              </span>
+              <h1 className="mt-5 text-[clamp(1.875rem,4.2vw,3.5rem)] leading-[1.1] font-medium text-white lg:mt-6">
+                <span ref={headlineRef} className="block">
+                  {getLocalizedText(data.headline, locale)}
+                </span>
+              </h1>
+            </div>
+          </Container>
         </div>
+      </div>
 
+      <Container className="gap-gutter pt-section grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12">
         <div
           ref={bodyRef}
-          className="gap-gutter col-span-4 mt-10 grid grid-cols-1 md:col-span-8 lg:col-span-10 lg:col-start-3 lg:mt-14 lg:grid-cols-2"
+          className="gap-gutter col-span-4 grid grid-cols-1 md:col-span-8 lg:col-span-10 lg:col-start-3 lg:grid-cols-2"
         >
           {data.paragraphs.map((paragraph, index) => (
             <p

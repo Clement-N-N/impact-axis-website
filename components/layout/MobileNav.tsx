@@ -12,6 +12,7 @@ import {
   PartnersIcon,
   TalentedIcon,
 } from "@/components/icons";
+import Image from "next/image";
 import { Container } from "./Container";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Logo } from "./Logo";
@@ -338,8 +339,15 @@ export function MobileNav() {
                     <Link
                       href="/work-with-us"
                       onClick={close}
-                      className="text-impact-gray block py-3 text-[0.9375rem]"
+                      className="flex items-center gap-4 py-3 pl-1 text-base font-normal text-black"
                     >
+                      <Image
+                        src="/logos/impact_axis_symbol_black_transparent.png"
+                        alt=""
+                        width={48}
+                        height={48}
+                        className="h-6 w-6 shrink-0 object-contain"
+                      />
                       {t("megaMenu.overview")}
                     </Link>
                   </li>

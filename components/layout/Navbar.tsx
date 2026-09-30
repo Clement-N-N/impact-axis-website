@@ -159,7 +159,11 @@ export function Navbar({ socialLinks }: { socialLinks: SocialLinks }) {
         const toggleEl = linkRefs.current[MEGA_MENU_ID];
         if (toggleEl && toggleEl.contains(e.target as Node)) return;
         const menuEl = document.getElementById(MEGA_MENU_ID);
-        if (menuEl && menuEl.contains(e.target as Node)) return;
+        // Clicks inside the menu normally leave it open — but a link is the one
+        // exception: following it should close the menu, or it stays open over
+        // the page that was just navigated to.
+        const followedLink = (e.target as HTMLElement).closest("a");
+        if (menuEl && menuEl.contains(e.target as Node) && !followedLink) return;
         setIsMegaMenuOpen(false);
       }}
       className="border-border sticky top-0 z-50 hidden border-b bg-white xl:block"

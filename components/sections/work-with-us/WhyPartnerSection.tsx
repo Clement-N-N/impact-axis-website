@@ -84,6 +84,9 @@ export function WhyPartnerSection({
           gsap.set(fadeTargets, { opacity: 0, y: 20 });
           gsap.set(self.lines, { yPercent: 100 });
           // Drawn by stroke offset rather than DrawSVG, which is a paid plugin.
+          // One dash the length of the path. Offset +L is blank, 0 is fully
+          // drawn, -L is blank again — so a cycle that draws then keeps going
+          // to -L both starts and ends blank, and the repeat has no seam.
           curves.forEach((path) => {
             const length = path.getTotalLength();
             gsap.set(path, {
@@ -123,6 +126,8 @@ export function WhyPartnerSection({
               },
               "-=0.3",
             )
+            // The draw runs on its own looping timeline rather than inside
+            // this one, so it can keep cycling after the entrance is done.
             .to(
               curves,
               {
@@ -157,12 +162,16 @@ export function WhyPartnerSection({
   }, []);
 
   // Four starts down the left edge, all meeting one point on the right.
+  // Four starts, one per label row, easing into a common point at x=150. The
+  // fifth path carries that single line the rest of the way, so the merge is
+  // an actual line rather than four strokes stopping at the same coordinate.
   const CURVES = [
-    "M0 12 C 70 12, 110 50, 200 50",
-    "M0 38 C 70 38, 120 50, 200 50",
-    "M0 62 C 70 62, 120 50, 200 50",
-    "M0 88 C 70 88, 110 50, 200 50",
+    "M0 12.5 C 65 12.5, 105 50, 150 50",
+    "M0 37.5 C 65 37.5, 115 50, 150 50",
+    "M0 62.5 C 65 62.5, 115 50, 150 50",
+    "M0 87.5 C 65 87.5, 105 50, 150 50",
   ];
+  const MERGED = "M150 50 L200 50";
 
   return (
     <section ref={sectionRef} className="pb-section w-full bg-white">
@@ -184,7 +193,7 @@ export function WhyPartnerSection({
         {/* many → */}
         <ul
           ref={listRef}
-          className="col-span-4 mt-12 flex flex-col gap-4 md:col-span-8 lg:col-span-3 lg:mt-20 lg:justify-between lg:gap-0"
+          className="col-span-4 mt-12 flex flex-col gap-4 md:col-span-8 lg:col-span-3 lg:mt-20 lg:h-[260px] lg:justify-around lg:gap-0"
         >
           {PARTNERSHIP_AUDIENCES.map((slug) => (
             <li
@@ -200,21 +209,24 @@ export function WhyPartnerSection({
         </ul>
 
         {/* the convergence itself, wide screens only */}
-        <div className="hidden lg:col-span-2 lg:mt-20 lg:flex lg:items-center">
+        {/* Pulled out by a gutter on each side so the strokes meet the label
+            column and the paragraph column instead of floating between them. */}
+        <div className="hidden lg:col-span-2 lg:-mx-[var(--spacing-gutter)] lg:mt-20 lg:block">
           <svg
             ref={pathsRef}
             viewBox="0 0 200 100"
             preserveAspectRatio="none"
             aria-hidden="true"
-            className="h-[150px] w-full"
+            className="h-full w-full"
           >
-            {CURVES.map((d, index) => (
+            {[...CURVES, MERGED].map((d, index) => (
               <path
                 key={index}
                 d={d}
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1"
+                strokeWidth="1.25"
+                strokeLinecap="round"
                 className="text-impact-yellow opacity-0"
                 vectorEffect="non-scaling-stroke"
               />

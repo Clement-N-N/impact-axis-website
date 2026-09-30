@@ -194,21 +194,31 @@ export function WhyImpactAxisSection({
 
         <div
           ref={logosRef}
-          className="col-span-4 mt-16 flex flex-col gap-8 md:col-span-8 lg:col-span-12 lg:mt-20"
+          className="col-span-4 mt-16 md:col-span-8 lg:col-span-12 lg:mt-20"
         >
-          <p className="text-impact-gray text-[clamp(0.875rem,1vw,0.9375rem)]">
+          <p className="text-impact-gray pb-8 text-[clamp(0.875rem,1vw,0.9375rem)] lg:pb-10">
             {getLocalizedText(data.logosCaption, locale)}
           </p>
-          <ul className="flex flex-wrap items-center gap-x-12 gap-y-8">
+
+          {/* Centred only below lg. The marks are fixed width, so on a narrow
+              screen they pack from the left and leave the remainder empty, as
+              though a column were missing. Desktop and tablet keep the
+              left-aligned row they already had. */}
+          <ul className="gap-gutter flex flex-wrap items-center justify-center lg:justify-start">
             {logos.map((logo) => (
-              <li key={logo.name} className="relative h-10 w-24 lg:h-12 lg:w-28">
-                <Image
-                  src={logo.logoUrl}
-                  alt={logo.name}
-                  fill
-                  sizes="112px"
-                  className="object-contain"
-                />
+              <li
+                key={logo.name}
+                className="border-border flex items-center justify-center border p-5"
+              >
+                <div className="relative h-10 w-24 lg:h-12 lg:w-28">
+                  <Image
+                    src={logo.logoUrl}
+                    alt={logo.name}
+                    fill
+                    sizes="112px"
+                    className="object-contain"
+                  />
+                </div>
               </li>
             ))}
           </ul>
