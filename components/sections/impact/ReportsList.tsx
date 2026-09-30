@@ -171,35 +171,40 @@ export function ReportsList({
                   A thin full-width row put the title and its two links at
                   opposite ends of a very wide column, which read as a table
                   rather than as something published. */}
-              <ul className="gap-gutter mt-5 grid grid-cols-1 lg:grid-cols-2">
+              {/* One report per row at every width. The card spreads into two
+                  columns from lg — copy on the left, actions on the right —
+                  rather than being set side by side with another report. */}
+              <ul className="mt-5 flex flex-col gap-4">
                 {items.map((report) => {
                   const size = formatFileSize(report.fileSize);
                   return (
                     <li
                       key={report.id}
-                      className="flex flex-col gap-3 bg-[#F5F5F5] p-6"
+                      className="flex flex-col gap-4 bg-[#F5F5F5] p-6 lg:flex-row lg:items-start lg:justify-between lg:gap-10 lg:p-7"
                     >
-                      <h4 className="text-[clamp(1.0625rem,1.3vw,1.1875rem)] font-medium text-black">
-                        {getLocalizedText(report.title, locale)}
-                      </h4>
+                      <div className="flex flex-col gap-2 lg:max-w-2xl">
+                        <h4 className="text-[clamp(1.0625rem,1.3vw,1.1875rem)] font-medium text-black">
+                          {getLocalizedText(report.title, locale)}
+                        </h4>
 
-                      {report.periodLabel || size ? (
-                        <span className="text-impact-blue text-[0.8125rem]">
-                          {report.periodLabel
-                            ? getLocalizedText(report.periodLabel, locale)
-                            : null}
-                          {report.periodLabel && size ? " · " : null}
-                          {size}
-                        </span>
-                      ) : null}
+                        {report.periodLabel || size ? (
+                          <span className="text-impact-blue text-[0.8125rem]">
+                            {report.periodLabel
+                              ? getLocalizedText(report.periodLabel, locale)
+                              : null}
+                            {report.periodLabel && size ? " · " : null}
+                            {size}
+                          </span>
+                        ) : null}
 
-                      {report.summary ? (
-                        <p className="text-[clamp(0.875rem,1vw,0.9375rem)] leading-[1.65] text-black">
-                          {getLocalizedText(report.summary, locale)}
-                        </p>
-                      ) : null}
+                        {report.summary ? (
+                          <p className="mt-1 text-[clamp(0.875rem,1vw,0.9375rem)] leading-[1.65] text-black">
+                            {getLocalizedText(report.summary, locale)}
+                          </p>
+                        ) : null}
+                      </div>
 
-                      <div className="mt-auto flex flex-wrap items-center gap-3 pt-3">
+                      <div className="flex shrink-0 flex-wrap items-center gap-3">
                         <a
                           href={report.fileUrl}
                           target="_blank"
