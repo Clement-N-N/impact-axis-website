@@ -10,7 +10,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { Container } from "@/components/layout/Container";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
-import { downloadUrl, formatFileSize, type Report } from "@/sanity/reports";
+import { downloadUrl, type Report } from "@/sanity/reports";
 import type { Locale } from "@/i18n/routing";
 import type { ReportsListContent } from "./types";
 
@@ -176,7 +176,6 @@ export function ReportsList({
                   rather than being set side by side with another report. */}
               <ul className="mt-5 flex flex-col gap-4">
                 {items.map((report) => {
-                  const size = formatFileSize(report.fileSize);
                   return (
                     <li
                       key={report.id}
@@ -187,13 +186,9 @@ export function ReportsList({
                           {getLocalizedText(report.title, locale)}
                         </h4>
 
-                        {report.periodLabel || size ? (
+                        {report.periodLabel ? (
                           <span className="text-impact-blue text-[0.8125rem]">
-                            {report.periodLabel
-                              ? getLocalizedText(report.periodLabel, locale)
-                              : null}
-                            {report.periodLabel && size ? " · " : null}
-                            {size}
+                            {getLocalizedText(report.periodLabel, locale)}
                           </span>
                         ) : null}
 

@@ -153,6 +153,5 @@ export const REPORTS_QUERY = defineQuery(`*[
   summary{en, fr},
   featured,
   "fileUrl": file.asset->url,
-  "fileSize": file.asset->size,
   "coverImage": coverImage.asset->url
 }`);

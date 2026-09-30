@@ -13,7 +13,6 @@ export type Report = {
   summary?: LocalizedText;
   featured?: boolean;
   fileUrl: string;
-  fileSize?: number;
   coverImage?: string;
 };
 
@@ -72,10 +71,4 @@ export function downloadUrl(report: Report, locale: "en" | "fr"): string {
     .replace(/[^a-z0-9]+/gi, "-")
     .replace(/^-|-$/g, "");
   return `${report.fileUrl}?dl=${name}.pdf`;
-}
-
-export function formatFileSize(bytes?: number): string | null {
-  if (!bytes) return null;
-  const mb = bytes / 1_048_576;
-  return mb >= 1 ? `${mb.toFixed(1)} MB` : `${Math.round(bytes / 1024)} KB`;
 }

@@ -11,7 +11,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { Container } from "@/components/layout/Container";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
-import { downloadUrl, formatFileSize, type Report } from "@/sanity/reports";
+import { downloadUrl, type Report } from "@/sanity/reports";
 import type { Locale } from "@/i18n/routing";
 import type { LatestReportContent } from "./types";
 
@@ -102,8 +102,6 @@ export function LatestReport({
     };
   }, []);
 
-  const size = report ? formatFileSize(report.fileSize) : null;
-
   return (
     <section
       ref={sectionRef}
@@ -181,11 +179,6 @@ export function LatestReport({
                     >
                       {getLocalizedText(data.downloadLabel, locale)}
                       <DownloadSimpleIcon weight="bold" className="h-4 w-4" />
-                      {size ? (
-                        <span className="text-impact-gray font-normal">
-                          {size}
-                        </span>
-                      ) : null}
                     </a>
                   </div>
                 </div>
