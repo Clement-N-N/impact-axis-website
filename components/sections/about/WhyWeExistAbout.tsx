@@ -403,7 +403,7 @@ export function WhyWeExistAbout({
             radius 20px = 12px photo radius + 8px frame (concentric). */}
         <div
           ref={frameRef}
-          className="relative aspect-[790/414] p-2 lg:col-span-7 lg:row-start-2 lg:aspect-auto lg:min-h-[26rem]"
+          className="relative aspect-[3/2] p-2 lg:col-span-7 lg:row-start-2 lg:aspect-auto lg:min-h-[26rem]"
         >
           {[
             "top-0 left-0 rounded-tl-[20px] border-t-8 border-l-8",
@@ -425,7 +425,7 @@ export function WhyWeExistAbout({
                 alt={getLocalizedText(data.image.alt, locale)}
                 fill
                 sizes="(min-width: 1024px) 58vw, 100vw"
-                className="object-cover object-[42%_center]"
+                className="object-cover object-[40%_35%]"
               />
             </div>
           </div>
