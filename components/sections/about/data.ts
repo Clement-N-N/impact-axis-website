@@ -39,14 +39,27 @@ const GROUP_PHOTO_ALT = {
 
 export const aboutPageContent: AboutPageContent = {
   hero: {
-    eyebrow: { en: "About Impact Axis", fr: "À propos d'Impact Axis" },
     headline: {
-      en: "We are building stronger pathways from education to meaningful work.",
-      fr: "Nous construisons des passerelles plus solides entre l'éducation et un travail porteur de sens.",
+      en: "We are *building stronger* pathways from education to *meaningful work*.",
+      fr: "Nous construisons des *passerelles plus solides* entre l’éducation et un *travail porteur de sens*.",
     },
     paragraph: {
       en: "Impact Axis is a Cameroon-based nonprofit youth workforce development organisation. We help young people build the capabilities, experience and connections they need to navigate the transition from education into meaningful and dignified work.",
-      fr: "Impact Axis est une organisation à but non lucratif basée au Cameroun, dédiée au développement de l'employabilité des jeunes. Nous aidons les jeunes à acquérir les compétences, l'expérience et les relations dont ils ont besoin pour réussir la transition de l'éducation vers un travail porteur de sens et digne.",
+      fr: "Impact Axis est une organisation à but non lucratif basée au Cameroun, dédiée au développement de l’employabilité des jeunes. Nous aidons les jeunes à acquérir les compétences, l’expérience et les relations dont ils ont besoin pour réussir la transition de l’éducation vers un travail porteur de sens et digne.",
+    },
+    cta: {
+      label: { en: "Discover our impact", fr: "Découvrir notre impact" },
+      href: "/impact",
+    },
+    // Cut-out of the 2026 Goodwill Fellowship cohort (transparent
+    // background), layered over the hero's navy floor. A local file rather
+    // than the Sanity CDN because it is the page's LCP image.
+    image: {
+      src: "/images/about-hero-cohort-2026.webp",
+      alt: {
+        en: "The 2026 Goodwill Fellowship cohort in blue and white Impact Axis T-shirts, smiling with arms raised and making peace signs",
+        fr: "La promotion 2026 de la Goodwill Fellowship en T-shirts Impact Axis bleus et blancs, souriante, bras levés et faisant le signe de la paix",
+      },
     },
   },
 

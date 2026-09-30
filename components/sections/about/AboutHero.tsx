@@ -1,18 +1,22 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
+import Image from "next/image";
 import { Container } from "@/components/layout/Container";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import type { AboutHeroContent } from "./types";
+import {
+  HeroStagger,
+  HeroStaggerItem,
+  HeroSubjectMotion,
+} from "./AboutHeroMotion";
+import { HeroCta, HighlightedText } from "./AboutHeroParts";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, SplitText);
-}
-
+/**
+ * About page hero: a centred headline whose key
+ * phrases warm to brand yellow, the paragraph and CTA beneath, and the
+ * cohort cut-out rising up from the bottom edge over a navy-to-slate floor.
+ *
+ * Server component; motion comes from `AboutHeroMotion`.
+ */
 export function AboutHero({
   data,
   locale,
@@ -20,103 +24,46 @@ export function AboutHero({
   data: AboutHeroContent;
   locale: Locale;
 }) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const eyebrowRef = useRef<HTMLSpanElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const paragraphRef = useRef<HTMLParagraphElement>(null);
-
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    let split: SplitText | undefined;
-
-    const ctx = gsap.context(() => {
-      const fadeTargets = [eyebrowRef.current, paragraphRef.current].filter(
-        Boolean,
-      );
-      if (!headlineRef.current) return;
-
-      split = SplitText.create(headlineRef.current, {
-        type: "lines",
-        mask: "lines",
-        autoSplit: true,
-        onSplit(self) {
-          if (prefersReducedMotion) {
-            gsap.set(fadeTargets, { opacity: 1, y: 0 });
-            gsap.set(self.lines, { yPercent: 0 });
-            return;
-          }
-
-          gsap.set(fadeTargets, { opacity: 0, y: 20 });
-          gsap.set(self.lines, { yPercent: 100 });
-
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 80%",
-              once: true,
-            },
-          });
-
-          tl.to(eyebrowRef.current, {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            ease: "power3.out",
-          })
-            .to(
-              self.lines,
-              { yPercent: 0, duration: 0.6, ease: "power4.out", stagger: 0.12 },
-              "-=0.3",
-            )
-            .to(
-              paragraphRef.current,
-              { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
-              "-=0.2",
-            );
-
-          return tl;
-        },
-      });
-    }, sectionRef);
-
-    return () => {
-      ctx.revert();
-      split?.revert();
-    };
-  }, []);
-
   return (
-    <section ref={sectionRef} className="py-section w-full bg-white">
-      <Container className="gap-gutter grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12">
-        <div className="hidden h-full lg:col-span-1 lg:block">
-          <div className="mt-[1vw] h-[8px] w-[8px] bg-black" aria-hidden="true" />
-        </div>
-
-        <div className="col-span-4 flex flex-col gap-6 md:col-span-8 lg:col-span-6">
-          <span
-            ref={eyebrowRef}
-            className="text-impact-gray text-[clamp(0.875rem,1.05vw,1rem)]"
-          >
-            {getLocalizedText(data.eyebrow, locale)}
-          </span>
-          <h1
-            ref={headlineRef}
-            className="text-[clamp(1.75rem,3vw,2.7rem)] leading-[1.3] font-medium text-black"
-          >
-            {getLocalizedText(data.headline, locale)}
-          </h1>
-        </div>
-
-        <p
-          ref={paragraphRef}
-          className="text-impact-gray col-span-4 mt-4 text-[clamp(0.9375rem,1.05vw,1rem)] md:col-span-8 lg:col-span-4 lg:col-start-9 lg:mt-0"
-        >
-          {getLocalizedText(data.paragraph, locale)}
-        </p>
+    <section className="relative isolate flex w-full flex-col overflow-hidden bg-[linear-gradient(to_bottom,#101b62_55%,#47486c_88%)] lg:min-h-[calc(100svh-var(--header-height))]">
+      <Container className="relative z-10 pt-14 md:pt-20 lg:pt-16">
+        <HeroStagger className="mx-auto flex max-w-[62rem] flex-col items-center gap-6 text-center">
+          <HeroStaggerItem>
+            <h1 className="text-5xl leading-[1.1]! font-light! tracking-[-0.02em] text-balance text-white">
+              <HighlightedText text={getLocalizedText(data.headline, locale)} />
+            </h1>
+          </HeroStaggerItem>
+          <HeroStaggerItem>
+            <p className="mx-auto max-w-[60ch] text-lg text-pretty text-white/85">
+              {getLocalizedText(data.paragraph, locale)}
+            </p>
+          </HeroStaggerItem>
+          <HeroStaggerItem className="pt-2">
+            <HeroCta
+              href={data.cta.href}
+              label={getLocalizedText(data.cta.label, locale)}
+            />
+          </HeroStaggerItem>
+        </HeroStagger>
       </Container>
+
+      {/* Cohort: cut-out along the floor, cropped at chest height as in the
+          design, its raised hands reaching up towards the CTA. Wider than the
+          viewport on small screens so faces stay a readable size (sides crop). */}
+      <HeroSubjectMotion
+        delay={0.5}
+        rise={80}
+        className="relative mx-auto mt-auto aspect-[1848/665] w-[150%] max-w-none shrink-0 self-center pt-10 md:w-[110%] lg:w-[min(84rem,90%)] lg:pt-6"
+      >
+        <Image
+          src={data.image.src}
+          alt={getLocalizedText(data.image.alt, locale)}
+          fill
+          preload
+          sizes="(min-width: 1024px) 90vw, 150vw"
+          className="object-contain object-bottom"
+        />
+      </HeroSubjectMotion>
     </section>
   );
 }
