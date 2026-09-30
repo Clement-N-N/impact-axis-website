@@ -158,10 +158,8 @@ export function WaysToWorkSection({
                     {getLocalizedText(audience.headline, locale)}
                   </p>
 
-                  <span className="text-impact-blue inline-flex items-center gap-2 text-[0.875rem] font-medium lg:col-span-1 lg:justify-end">
-                    <span className="lg:sr-only">
-                      {getLocalizedText(data.cardCtaLabel, locale)}
-                    </span>
+                  <span className="text-impact-blue inline-flex items-center gap-2 text-[clamp(0.875rem,1vw,0.9375rem)] font-medium lg:col-span-1 lg:justify-end">
+                    {getLocalizedText(data.cardCtaLabel, locale)}
                     <ArrowRightIcon
                       weight="bold"
                       className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { getImpactStats } from "@/sanity/home";
+import { ParallaxImage } from "@/components/sections/parallax-image";
 import {
   HubHero,
   WhyPartnerSection,
@@ -66,6 +67,14 @@ export default async function WorkWithUsPage({ params }: Props) {
     <div className="w-full bg-white">
       <HubHero data={content.hero} locale={loc} />
       <WhyPartnerSection data={content.whyPartner} locale={loc} />
+      {/* The page was wall-to-wall text. Every other page breaks its reading
+          with photography, and this component already exists for it. */}
+      <ParallaxImage
+        src="/images/alumni-2.png"
+        heightClass="h-[38vh] sm:h-[48vh] lg:h-[62vh]"
+        padded={false}
+        reveal
+      />
       <WaysToWorkSection data={content.waysToWork} locale={loc} />
       <HowWePartnerSection data={content.howWePartner} locale={loc} />
       <WhyImpactAxisSection
