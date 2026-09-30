@@ -17,6 +17,9 @@ const nextConfig: NextConfig = {
     root: import.meta.dirname,
   },
   images: {
+    // 75 is the default; 90 is for photos shown large, such as the About
+    // page "Why we exist" photo. Next 16 only serves listed qualities.
+    qualities: [75, 90],
     remotePatterns: [
       {
         protocol: "https",
