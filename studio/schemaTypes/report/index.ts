@@ -38,7 +38,6 @@ export const report = defineType({
         list: [
           { title: "Annual report", value: "annual" },
           { title: "Mid-year progress report", value: "midYear" },
-          { title: "Programme report", value: "programme" },
           { title: "Financial report", value: "financial" },
         ],
         layout: "radio",
@@ -110,7 +109,6 @@ export const report = defineType({
       const labels: Record<string, string> = {
         annual: "Annual",
         midYear: "Mid-year",
-        programme: "Programme",
         financial: "Financial",
       };
       const year = publishedAt ? String(publishedAt).slice(0, 4) : "no date";
