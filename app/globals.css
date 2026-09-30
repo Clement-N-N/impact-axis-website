@@ -122,7 +122,41 @@
   animation-play-state: paused;
 }
 
+/* About hero: outline around the cohort cut-out. The mask is generated
+   from the cut-out's alpha, so the glow only shows along the silhouette. */
+.cohort-outline {
+  -webkit-mask-image: url("/images/about-hero-cohort-outline.png");
+  mask-image: url("/images/about-hero-cohort-outline.png");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center bottom;
+  mask-position: center bottom;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* The glow crosses west to east over ~7s, then rests ~3s before the next
+   pass. Starts once the cohort has risen into place. */
+@keyframes cohort-outline-run {
+  0% {
+    transform: translateX(-100%);
+  }
+  70%,
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+.cohort-outline-glow {
+  transform: translateX(-100%);
+  animation: cohort-outline-run 10s cubic-bezier(0.45, 0, 0.55, 1) 1.6s infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .cohort-outline-glow {
+    animation: none;
+    opacity: 0;
+  }
   .animate-sunlight-sweep {
     animation: none;
   }

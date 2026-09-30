@@ -53,7 +53,7 @@ export function AboutHero({
       <HeroSubjectMotion
         delay={0.5}
         rise={80}
-        className="relative mx-auto mt-auto aspect-[1848/665] w-[150%] max-w-none shrink-0 self-center pt-10 md:w-[110%] lg:w-[min(84rem,90%)] lg:pt-6"
+        className="relative mx-auto mt-auto aspect-[1844/760] w-[150%] max-w-none shrink-0 self-center pt-10 md:w-[110%] lg:w-[min(84rem,90%)] lg:pt-6"
       >
         <Image
           src={data.image.src}
@@ -66,6 +66,17 @@ export function AboutHero({
           sizes="(min-width: 1024px) min(84rem, 90vw), (min-width: 768px) 110vw, 150vw"
           className="object-contain object-bottom"
         />
+        {/* Outline: a faint white rim around the group's silhouette, with a
+            brighter glow that travels along it from west to east. Both are
+            masked by an outline image generated from the cut-out, sized and
+            positioned exactly like the photo (contain, bottom). */}
+        <div
+          aria-hidden="true"
+          className="cohort-outline pointer-events-none absolute inset-0"
+        >
+          <div className="absolute inset-0 bg-white/25" />
+          <div className="cohort-outline-glow absolute inset-y-0 left-0 w-1/3 bg-[linear-gradient(90deg,transparent,#f4c600_40%,#fff6c2_50%,#f4c600_60%,transparent)]" />
+        </div>
       </HeroSubjectMotion>
     </section>
   );

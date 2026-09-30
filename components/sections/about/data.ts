@@ -55,10 +55,10 @@ export const aboutPageContent: AboutPageContent = {
     // background), layered over the hero's navy floor. A local file rather
     // than the Sanity CDN because it is the page's LCP image.
     image: {
-      src: "/images/about-hero-cohort-2026.png",
+      src: "/images/about-hero-cohort-posed.png",
       alt: {
-        en: "The 2026 Goodwill Fellowship cohort in blue and white Impact Axis T-shirts, smiling with arms raised and making peace signs",
-        fr: "La promotion 2026 de la Goodwill Fellowship en T-shirts Impact Axis bleus et blancs, souriante, bras levés et faisant le signe de la paix",
+        en: "The 2026 Goodwill Fellowship cohort in blue and white Impact Axis T-shirts, smiling together, two of them holding their phones up high",
+        fr: "La promotion 2026 de la Goodwill Fellowship en T-shirts Impact Axis bleus et blancs, souriante, dont deux membres brandissent leur téléphone",
       },
     },
   },
