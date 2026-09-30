@@ -72,25 +72,35 @@ export const aboutPageContent: AboutPageContent = {
   },
 
   whyWeExist: {
-    eyebrow: { en: "Why We Exist", fr: "Notre raison d'être" },
+    eyebrow: { en: "Why we exist", fr: "Notre raison d’être" },
     tagline: {
-      en: "Talent is everywhere. Access to opportunity is not.",
-      fr: "Le talent est partout. L'accès aux opportunités ne l'est pas.",
+      lead: { en: "Talent is everywhere.", fr: "Le talent est partout." },
+      turn: {
+        en: "Access to opportunity *is not*.",
+        fr: "L’accès aux opportunités *ne l’est pas*.",
+      },
+    },
+    intro: {
+      en: "Across Cameroon, many young people complete their education with ambition and potential, yet enter the world of work without enough practical experience, career guidance, professional networks or exposure to opportunity.",
+      fr: "Partout au Cameroun, de nombreux jeunes terminent leurs études avec de l’ambition et du potentiel, mais entrent dans le monde du travail sans expérience pratique suffisante, sans orientation professionnelle, sans réseaux professionnels ni exposition aux opportunités.",
     },
     paragraphs: [
       {
-        en: "Across Cameroon, many young people complete their education with ambition and potential, yet enter the world of work without enough practical experience, career guidance, professional networks or exposure to opportunity.",
-        fr: "Partout au Cameroun, de nombreux jeunes terminent leurs études avec de l'ambition et du potentiel, mais entrent dans le monde du travail sans expérience pratique suffisante, sans orientation professionnelle, sans réseaux professionnels ni exposition aux opportunités.",
-      },
-      {
         en: "We do not see employability as a training problem alone. Young people need opportunities to learn, practise, build relationships and navigate what comes next.",
-        fr: "Nous ne considérons pas l'employabilité comme un simple problème de formation. Les jeunes ont besoin d'occasions d'apprendre, de pratiquer, de nouer des relations et de s'orienter vers la suite.",
+        fr: "Nous ne considérons pas l’employabilité comme un simple problème de formation. Les jeunes ont besoin d’occasions d’apprendre, de pratiquer, de nouer des relations et de s’orienter vers la suite.",
       },
       {
         en: "Impact Axis exists to strengthen this transition, making the path from education to meaningful work more practical, supported and equitable.",
-        fr: "Impact Axis existe pour renforcer cette transition, en rendant le chemin de l'éducation vers un travail porteur de sens plus concret, mieux accompagné et plus équitable.",
+        fr: "Impact Axis existe pour renforcer cette transition, en rendant le chemin de l’éducation vers un travail porteur de sens plus concret, mieux accompagné et plus équitable.",
       },
     ],
+    image: {
+      src: "/images/why-we-exist-career-fair.webp",
+      alt: {
+        en: "A young man reads a sheet of paper with his hand on his head in a busy queue at a career event",
+        fr: "Un jeune homme lit une feuille, la main sur la tête, dans une file animée lors d’un événement carrière",
+      },
+    },
     cta: {
       label: { en: "Partner with us", fr: "Devenir partenaire" },
       href: "/work-with-us",
