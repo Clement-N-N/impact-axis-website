@@ -1,5 +1,15 @@
 import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
+import type { Locale } from "@/i18n/routing";
+import {
+  OurWorkHero,
+  OurFocusSection,
+  OurProgrammesSection,
+  WhatMakesDifferentSection,
+  WorkInActionSection,
+  OurWorkClosingCta,
+  whatWeDoPageContent,
+} from "@/components/sections/what-we-do";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -7,14 +17,19 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "whatWeDo" });
+  const isFr = locale === "fr";
 
-  const title = t("title") || (locale === "fr" ? "Ce que nous faisons" : "What We Do");
+  const title = isFr ? "Notre travail — Impact Axis" : "Our Work — Impact Axis";
+  const description = isFr
+    ? "Impact Axis conçoit et met en œuvre au Cameroun des programmes de développement de l'employabilité des jeunes : compétences pratiques, expérience concrète et accès aux opportunités."
+    : "Impact Axis designs and delivers youth workforce development programmes in Cameroon, building practical skills, real-world experience and access to opportunity.";
+
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
   const canonical = `${baseUrl}/${locale}/what-we-do`;
 
   return {
     title,
+    description,
     alternates: {
       canonical,
       languages: {
@@ -22,22 +37,32 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         fr: `${baseUrl}/fr/what-we-do`,
       },
     },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      siteName: "Impact Axis",
+      locale: isFr ? "fr_FR" : "en_US",
+      type: "website",
+    },
   };
 }
 
-export default async function WhatWeDoPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function WhatWeDoPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t = await getTranslations("whatWeDo");
+  const loc = locale as Locale;
+  const content = whatWeDoPageContent;
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center py-32">
-      <h1 className="text-3xl font-semibold">{t("title")}</h1>
+    <div className="w-full bg-white">
+      <OurWorkHero data={content.hero} locale={loc} />
+      <OurFocusSection data={content.focus} locale={loc} />
+      <OurProgrammesSection data={content.programmes} locale={loc} />
+      <WhatMakesDifferentSection data={content.different} locale={loc} />
+      <WorkInActionSection data={content.workInAction} locale={loc} />
+      <OurWorkClosingCta data={content.closing} locale={loc} />
     </div>
   );
 }
