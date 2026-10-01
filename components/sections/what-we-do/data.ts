@@ -20,12 +20,13 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
           fr: "Doter les jeunes de compétences techniques et professionnelles recherchées, que la théorie en classe laisse de côté.",
         },
         image: {
-          src: "/images/wwd-skills.jpg",
+          src: "/images/wwd-skills-discussion.jpg",
           alt: {
-            en: "Two young participants working through a worksheet together at an Impact Axis workshop",
-            fr: "Deux jeunes participants remplissent ensemble une fiche d’exercice lors d’un atelier Impact Axis",
+            en: "A young woman in red glasses and a name sticker explains a point to a peer during an Impact Axis session",
+            fr: "Une jeune femme aux lunettes rouges, portant un badge à son nom, explique un point à une camarade lors d’une session Impact Axis",
           },
         },
+        imagePosition: "58% 30%",
         href: "#focus",
       },
       {
@@ -35,12 +36,13 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
           fr: "Créer un écosystème de confiance et de soutien où des pairs ambitieux collaborent, partagent leurs ressources et grandissent ensemble.",
         },
         image: {
-          src: "/images/wwd-community.jpg",
+          src: "/images/wwd-community-networking.jpg",
           alt: {
-            en: "Goodwill Fellowship participants in matching blue T-shirts smiling and making peace signs",
-            fr: "Des participantes de la Goodwill Fellowship en T-shirts bleus assortis, souriantes, font le signe de la paix",
+            en: "A smiling young man in a white shirt bumps fists with another attendee at a busy networking event",
+            fr: "Un jeune homme souriant, en chemise blanche, échange un check avec une autre participante lors d’un événement de networking animé",
           },
         },
+        imagePosition: "62% 35%",
         href: "/work-with-us",
       },
       {
@@ -50,12 +52,13 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
           fr: "Mettre les talents en relation directe avec des professionnels confirmés pour s’orienter dans leur carrière et accéder au marché caché de l’emploi.",
         },
         image: {
-          src: "/images/wwd-mentorship.jpg",
+          src: "/images/wwd-mentorship-laptop.jpg",
           alt: {
-            en: "A mentor shows a young woman something on his laptop during a session",
-            fr: "Un mentor montre quelque chose sur son ordinateur portable à une jeune femme pendant une séance",
+            en: "A mentor in an Impact Axis T-shirt guides a young woman through something on his laptop",
+            fr: "Un mentor en T-shirt Impact Axis guide une jeune femme sur son ordinateur portable",
           },
         },
+        imagePosition: "50% 30%",
         href: "#programmes",
       },
     ],
