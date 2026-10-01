@@ -72,7 +72,7 @@ export function PromoCard({
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <h2 className="text-[1.1rem] !font-medium text-black !leading-[120%]">
+            <h2 className="text-[1.1rem] font-medium text-black leading-[120%]">
               {getLocalizedText(content.title, locale)}
             </h2>
             <p className="text-black text-sm">

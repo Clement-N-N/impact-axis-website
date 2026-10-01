@@ -67,7 +67,7 @@ export function EventDetailsDrawer({
               {getLocalizedText(eventsHeroContent.eyebrow, locale)}
             </span>
           </div>
-          <h1 className="text-[clamp(2.25rem,4vw,3.5rem)] font-extrabold leading-[1.15] text-black tracking-tight">
+          <h1 className="text-[clamp(2.25rem,4vw,3.5rem)] font-medium leading-[1.15] text-black tracking-tight">
             {getLocalizedText(event.title, locale)}
           </h1>
         </div>

@@ -87,7 +87,7 @@ export function EventsHero({
             <span>{getLocalizedText(data.eyebrow, locale)}</span>
           </div>
 
-          <h1 className="text-[clamp(2.25rem,4vw,3.25rem)] font-extrabold leading-[1.12] tracking-tight text-black">
+          <h1 className="text-[clamp(2.25rem,4vw,3.25rem)] font-medium leading-[1.12] tracking-tight text-black">
             {getLocalizedText(data.title, locale)}
           </h1>
 
