@@ -123,7 +123,10 @@ export function PartnershipSection({
     <section ref={sectionRef} className="py-section w-full bg-white">
       <Container className="gap-gutter grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12">
         <div className="hidden h-full lg:col-span-1 lg:block">
-          <div className="mt-[1vw] h-[8px] w-[8px] bg-black" aria-hidden="true" />
+          <div
+            className="mt-[1vw] h-[8px] w-[8px] bg-black"
+            aria-hidden="true"
+          />
         </div>
 
         {/* Left column holds the eyebrow and the section heading; the right
@@ -135,7 +138,6 @@ export function PartnershipSection({
           >
             {getLocalizedText(data.eyebrow, locale)}
           </span>
-          
         </div>
 
         <p

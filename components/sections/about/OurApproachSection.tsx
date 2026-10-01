@@ -113,7 +113,10 @@ export function OurApproachSection({
     <section ref={sectionRef} className="py-section w-full bg-white">
       <Container className="gap-gutter grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12">
         <div className="hidden h-full lg:col-span-1 lg:block">
-          <div className="mt-[1vw] h-[8px] w-[8px] bg-black" aria-hidden="true" />
+          <div
+            className="mt-[1vw] h-[8px] w-[8px] bg-black"
+            aria-hidden="true"
+          />
         </div>
 
         <div className="col-span-4 flex flex-col gap-2 md:col-span-8 lg:col-span-3">

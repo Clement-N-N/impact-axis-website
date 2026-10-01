@@ -124,11 +124,45 @@ export const aboutPageContent: AboutPageContent = {
   },
 
   photoStrip: {
+    kicker: { en: "How we work", fr: "Notre façon de faire" },
+    headlineLead: { en: "Talent,", fr: "Le talent," },
+    headlineAccent: { en: "put to work.", fr: "mis à l'œuvre." },
     images: [
-      { src: PHOTO.portrait, alt: GROUP_PHOTO_ALT },
-      { src: PHOTO.fellowshipGroup, alt: GROUP_PHOTO_ALT },
-      { src: PHOTO.workshop, alt: GROUP_PHOTO_ALT },
-      { src: PHOTO.cohort2024, alt: GROUP_PHOTO_ALT },
+      {
+        src: "/images/gallery/gwf-2025-39.jpg",
+        alt: {
+          en: "Fellows in yellow t-shirts planning together around a table covered in sticky notes",
+          fr: "Des fellows en t-shirts jaunes planifiant ensemble autour d'une table couverte de post-it",
+        },
+      },
+      {
+        src: "/images/gallery/gwf-2026-32.jpg",
+        alt: {
+          en: "Two fellows presenting their group's work",
+          fr: "Deux fellows présentant le travail de leur groupe",
+        },
+      },
+      {
+        src: "/images/gallery/nsai-heroes-49.jpg",
+        alt: {
+          en: "Two pupils wiring a solar device together",
+          fr: "Deux élèves câblant ensemble un dispositif solaire",
+        },
+      },
+      {
+        src: "/images/gallery/hive-001-30.jpg",
+        alt: {
+          en: "Participants in a group discussion outdoors",
+          fr: "Des participants en discussion de groupe en plein air",
+        },
+      },
+      {
+        src: "/images/gallery/gwf-2024-43.jpg",
+        alt: {
+          en: "Six fellows smiling side by side",
+          fr: "Six fellows souriants côte à côte",
+        },
+      },
     ],
   },
 

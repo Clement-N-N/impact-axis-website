@@ -57,6 +57,11 @@ export type MissionVisionContent = {
 };
 
 export type PhotoStripContent = {
+  kicker: LocalizedText;
+  /** Headline over the full-bleed photo: a white lead, then a yellow accent. */
+  headlineLead: LocalizedText;
+  headlineAccent: LocalizedText;
+  /** First image opens to full bleed; the rest frame it and drift away. */
   images: AboutImage[];
 };
 
