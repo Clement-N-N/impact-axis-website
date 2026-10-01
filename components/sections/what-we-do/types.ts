@@ -37,16 +37,18 @@ export type WhatWeDoHeroContent = {
 
 export type FocusArea = {
   title: LocalizedText;
-  /** The short "Building capabilities that travel with you:" lead-in. */
-  lead: LocalizedText;
   description: LocalizedText;
-  /** Swapped in as the area is selected, as on the homepage carousel. */
+  /** Optional skills shown as chips under the description. */
+  chips?: LocalizedText[];
   image: WhatWeDoImage;
+  /** CSS object-position keeping the subject in the 4:3 frame. */
+  imagePosition?: string;
 };
 
 export type OurFocusContent = {
   eyebrow: LocalizedText;
   headline: LocalizedText;
+  intro: LocalizedText;
   areas: FocusArea[];
 };
 
