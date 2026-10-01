@@ -251,6 +251,10 @@ export const aboutPageContent: AboutPageContent = {
       en: "How we build matters.",
       fr: "Notre manière de construire compte.",
     },
+    beamLine: {
+      en: "Four principles hold up everything we do.",
+      fr: "Quatre principes soutiennent tout ce que nous faisons.",
+    },
     principles: [
       {
         title: { en: "Youth at the centre", fr: "Les jeunes au centre" },
