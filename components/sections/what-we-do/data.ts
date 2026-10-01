@@ -70,90 +70,90 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
       en: "Building what young people need to navigate work.",
       fr: "Développer ce dont les jeunes ont besoin pour évoluer dans le monde du travail.",
     },
+    intro: {
+      en: "We focus on the skills, experiences, relationships and tools that help young people move from learning into meaningful work.",
+      fr: "Nous nous concentrons sur les compétences, les expériences, les relations et les outils qui aident les jeunes à passer de l’apprentissage à un travail porteur de sens.",
+    },
     areas: [
       {
         title: {
           en: "Employability & Durable Skills",
           fr: "Employabilité et compétences durables",
         },
-        lead: {
-          en: "Building capabilities that travel with you",
-          fr: "Développer des compétences qui vous suivent partout",
-        },
         description: {
-          en: "Communication, critical thinking, problem-solving, collaboration, self-leadership and adaptability help young people perform across different roles, industries and stages of their careers.",
-          fr: "La communication, l'esprit critique, la résolution de problèmes, la collaboration, le leadership personnel et l'adaptabilité permettent aux jeunes de réussir dans différents postes, secteurs et étapes de carrière.",
+          en: "Build the capabilities that travel across careers:",
+          fr: "Développer des compétences qui vous suivent d’un métier à l’autre :",
         },
+        chips: [
+          { en: "Communication", fr: "Communication" },
+          { en: "Critical thinking", fr: "Esprit critique" },
+          { en: "Problem-solving", fr: "Résolution de problèmes" },
+          { en: "Collaboration", fr: "Collaboration" },
+          { en: "Self-leadership", fr: "Leadership personnel" },
+          { en: "Adaptability", fr: "Adaptabilité" },
+        ],
         image: {
-          src: "/images/alumni-3.png",
+          src: "/images/focus-durable-skills.jpg",
           alt: {
-            en: "Participants practising communication in a workshop",
-            fr: "Des participants pratiquant la communication lors d'un atelier",
+            en: "A young woman takes notes while talking with a peer at a networking session",
+            fr: "Une jeune femme prend des notes en discutant avec un pair lors d’une session de networking",
           },
         },
+        imagePosition: "48% 40%",
       },
       {
         title: {
           en: "Applied Learning & Career Readiness",
           fr: "Apprentissage appliqué et préparation à la carrière",
         },
-        lead: {
-          en: "Turning knowledge into experience",
-          fr: "Transformer les connaissances en expérience",
-        },
         description: {
-          en: "Projects, simulations and practical challenges give young people opportunities to apply what they know, receive feedback and build confidence navigating professional environments.",
-          fr: "Des projets, des simulations et des mises en situation donnent aux jeunes l'occasion d'appliquer leurs connaissances, de recevoir des retours et de gagner en assurance dans un cadre professionnel.",
+          en: "Turn knowledge into experience through real projects, simulations, feedback and practical challenges.",
+          fr: "Transformer les connaissances en expérience grâce à des projets concrets, des simulations, des retours et des défis pratiques.",
         },
         image: {
-          src: "/images/alumni-5.png",
+          src: "/images/focus-applied-learning.jpg",
           alt: {
-            en: "A team working through an applied challenge",
-            fr: "Une équipe travaillant sur un défi appliqué",
+            en: "A smiling participant builds a tower from paper and cups during a hands-on team challenge",
+            fr: "Un participant souriant construit une tour en papier et en gobelets lors d’un défi d’équipe pratique",
           },
         },
+        imagePosition: "45% 35%",
       },
       {
         title: {
           en: "Mentorship & Professional Networks",
           fr: "Mentorat et réseaux professionnels",
         },
-        lead: {
-          en: "Making guidance and relationships more accessible",
-          fr: "Rendre l'accompagnement et les relations plus accessibles",
-        },
         description: {
-          en: "Mentorship, career guidance and professional networks help young people make informed decisions, understand their options and build relationships that can open pathways to opportunity.",
-          fr: "Le mentorat, l'orientation professionnelle et les réseaux aident les jeunes à décider en connaissance de cause, à comprendre leurs options et à nouer des relations qui ouvrent des portes.",
+          en: "Connect young people to the guidance, relationships and networks that help them make better career decisions and access opportunities.",
+          fr: "Relier les jeunes à l’accompagnement, aux relations et aux réseaux qui les aident à mieux orienter leur carrière et à accéder aux opportunités.",
         },
         image: {
-          src: "/images/team-1.jpg",
+          src: "/images/focus-mentorship-networks.jpg",
           alt: {
-            en: "A mentor in conversation with a participant",
-            fr: "Un mentor en conversation avec un participant",
+            en: "A speaker addresses a packed lecture hall of young people at a career event",
+            fr: "Un intervenant s’adresse à un amphithéâtre rempli de jeunes lors d’un événement carrière",
           },
         },
+        imagePosition: "60% 60%",
       },
       {
         title: {
           en: "Digital & AI Readiness",
-          fr: "Préparation au numérique et à l'IA",
-        },
-        lead: {
-          en: "Preparing for a changing world of work",
-          fr: "Se préparer à un monde du travail en mutation",
+          fr: "Préparation au numérique et à l’IA",
         },
         description: {
-          en: "Practical digital and AI capabilities help young people use emerging technologies responsibly, work more effectively and remain adaptable as workplaces evolve.",
-          fr: "Des compétences numériques et en IA concrètes permettent aux jeunes d'utiliser les technologies émergentes de façon responsable, de travailler plus efficacement et de rester adaptables.",
+          en: "Build practical digital and AI skills to work effectively, adapt quickly and thrive as work evolves.",
+          fr: "Acquérir des compétences numériques et en IA concrètes pour travailler efficacement, s’adapter vite et réussir dans un monde du travail en évolution.",
         },
         image: {
-          src: "/images/alumni-2.png",
+          src: "/images/focus-digital-ai.jpg",
           alt: {
-            en: "Participants working on laptops during a digital skills session",
-            fr: "Des participants travaillant sur ordinateur lors d'une session numérique",
+            en: "Two young people work through something together on a laptop",
+            fr: "Deux jeunes travaillent ensemble sur un ordinateur portable",
           },
         },
+        imagePosition: "62% 45%",
       },
     ],
   },
