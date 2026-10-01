@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import {
-  OurWorkHero,
+  WhatWeDoHero,
   OurFocusSection,
   OurProgrammesSection,
   WhatMakesDifferentSection,
@@ -57,7 +57,7 @@ export default async function WhatWeDoPage({ params }: Props) {
 
   return (
     <div className="w-full bg-white">
-      <OurWorkHero data={content.hero} locale={loc} />
+      <WhatWeDoHero data={content.hero} locale={loc} />
       <OurFocusSection data={content.focus} locale={loc} />
       <OurProgrammesSection data={content.programmes} locale={loc} />
       <WhatMakesDifferentSection data={content.different} locale={loc} />

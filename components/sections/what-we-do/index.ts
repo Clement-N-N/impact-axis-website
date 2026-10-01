@@ -1,4 +1,4 @@
-export { OurWorkHero } from "./OurWorkHero";
+export { WhatWeDoHero } from "./WhatWeDoHero";
 export { OurFocusSection } from "./OurFocusSection";
 export { OurProgrammesSection } from "./OurProgrammesSection";
 export { WhatMakesDifferentSection } from "./WhatMakesDifferentSection";

@@ -18,11 +18,19 @@ export type WhatWeDoCta = {
   href: string;
 };
 
-export type OurWorkHeroContent = {
-  eyebrow: LocalizedText;
+/** One of the three coloured "directions" cards in the hero. */
+export type WhatWeDoDirection = {
+  title: LocalizedText;
+  body: LocalizedText;
+  image: WhatWeDoImage;
+  /** Internal route or in-page anchor (e.g. "#focus"). */
+  href: string;
+};
+
+export type WhatWeDoHeroContent = {
   headline: LocalizedText;
-  paragraphs: LocalizedText[];
-  cta: WhatWeDoCta;
+  intro: LocalizedText;
+  directions: WhatWeDoDirection[];
 };
 
 export type FocusArea = {
@@ -100,7 +108,7 @@ export type OurWorkClosingContent = {
 };
 
 export type WhatWeDoPageContent = {
-  hero: OurWorkHeroContent;
+  hero: WhatWeDoHeroContent;
   focus: OurFocusContent;
   programmes: OurProgrammesContent;
   different: WhatMakesDifferentContent;

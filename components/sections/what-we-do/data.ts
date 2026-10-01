@@ -4,25 +4,61 @@ import type { WhatWeDoPageContent } from "./types";
 // native review before launch, matching the note already on `blog-body/data.ts`.
 export const whatWeDoPageContent: WhatWeDoPageContent = {
   hero: {
-    eyebrow: { en: "Our Work", fr: "Notre travail" },
     headline: {
-      en: "Helping young people move from learning to meaningful work.",
-      fr: "Aider les jeunes à passer de l'apprentissage à un travail porteur de sens.",
+      en: "Helping Cameroon’s youth move from learning to meaningful work.",
+      fr: "Aider la jeunesse camerounaise à passer de l’apprentissage à un travail porteur de sens.",
     },
-    paragraphs: [
+    intro: {
+      en: "Traditional education leaves youth unprepared for the job market. Impact Axis changes that by delivering demand-driven programmes that empower the next generation.",
+      fr: "L’enseignement traditionnel laisse les jeunes mal préparés au marché du travail. Impact Axis change la donne en proposant des programmes adaptés aux besoins réels, qui donnent les moyens d’agir à la prochaine génération.",
+    },
+    directions: [
       {
-        en: "Impact Axis designs and delivers youth workforce development programmes in Cameroon that help young people build practical skills, gain real-world experience and develop the connections needed to navigate a changing world of work.",
-        fr: "Impact Axis conçoit et met en œuvre au Cameroun des programmes de développement de l'employabilité des jeunes, qui les aident à acquérir des compétences pratiques, une expérience concrète et les relations nécessaires pour évoluer dans un monde du travail en mutation.",
+        title: { en: "Practical Skills", fr: "Compétences pratiques" },
+        body: {
+          en: "Equipping young people with demand-driven technical and professional capabilities that classroom theory leaves behind.",
+          fr: "Doter les jeunes de compétences techniques et professionnelles recherchées, que la théorie en classe laisse de côté.",
+        },
+        image: {
+          src: "/images/wwd-skills.jpg",
+          alt: {
+            en: "Two young participants working through a worksheet together at an Impact Axis workshop",
+            fr: "Deux jeunes participants remplissent ensemble une fiche d’exercice lors d’un atelier Impact Axis",
+          },
+        },
+        href: "#focus",
       },
       {
-        en: "Our work spans employability development, applied learning, mentorship, career readiness and access to opportunity.",
-        fr: "Notre travail couvre le développement de l'employabilité, l'apprentissage appliqué, le mentorat, la préparation à la carrière et l'accès aux opportunités.",
+        title: { en: "Vibrant Community", fr: "Une communauté dynamique" },
+        body: {
+          en: "Creating a trusted, supportive ecosystem where ambitious peers collaborate, share resources, and grow together.",
+          fr: "Créer un écosystème de confiance et de soutien où des pairs ambitieux collaborent, partagent leurs ressources et grandissent ensemble.",
+        },
+        image: {
+          src: "/images/wwd-community.jpg",
+          alt: {
+            en: "Goodwill Fellowship participants in matching blue T-shirts smiling and making peace signs",
+            fr: "Des participantes de la Goodwill Fellowship en T-shirts bleus assortis, souriantes, font le signe de la paix",
+          },
+        },
+        href: "/work-with-us",
+      },
+      {
+        title: { en: "Industry Mentorship", fr: "Mentorat professionnel" },
+        body: {
+          en: "Connecting talent directly with established professionals to navigate career paths and unlock hidden job markets.",
+          fr: "Mettre les talents en relation directe avec des professionnels confirmés pour s’orienter dans leur carrière et accéder au marché caché de l’emploi.",
+        },
+        image: {
+          src: "/images/wwd-mentorship.jpg",
+          alt: {
+            en: "A mentor shows a young woman something on his laptop during a session",
+            fr: "Un mentor montre quelque chose sur son ordinateur portable à une jeune femme pendant une séance",
+          },
+        },
+        href: "#programmes",
       },
     ],
-    cta: {
-      label: { en: "Explore our programmes", fr: "Découvrir nos programmes" },
-      href: "#programmes",
-    },
   },
 
   focus: {
