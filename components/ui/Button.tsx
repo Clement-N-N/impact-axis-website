@@ -172,6 +172,17 @@ export function Button({ children, icon, href, variant, width, className, onClic
       </>
     );
 
+  // An in-page anchor is not a route: next-intl's Link would prefix the active
+  // locale and turn "#section" into "/en#section", sending the reader to the
+  // home page. Same-page targets render as a plain anchor instead.
+  if (href?.startsWith("#")) {
+    return (
+      <a href={href} className={clsx(buttonStyles({ variant, width }), className)}>
+        {content}
+      </a>
+    );
+  }
+
   if (href) {
     return (
       <Link href={href} className={clsx(buttonStyles({ variant, width }), className)}>

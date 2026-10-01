@@ -2,7 +2,6 @@ import { aboutTranslations } from "./about";
 import { workWithUsTranslations } from "./work-with-us";
 import { programsTranslations } from "./programs";
 import { blogTranslations } from "./blog";
-import { impactTranslations } from "./impact";
 import { navTranslations } from "./nav";
 import { footerTranslations } from "./footer";
 import { termsOfUseTranslations } from "./terms-of-use";
@@ -17,7 +16,6 @@ const messages = {
   workWithUs: workWithUsTranslations.fr,
   programs: programsTranslations.fr,
   blog: blogTranslations.fr,
-  impact: impactTranslations.fr,
   termsOfUse: termsOfUseTranslations.fr,
   privacyPolicy: privacyPolicyTranslations.fr,
   contact: contactTranslations.fr,
