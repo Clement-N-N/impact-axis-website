@@ -14,6 +14,7 @@ import { event } from "./event";
 import { homePage } from "./homePage";
 import { teamMember } from "./teamMember";
 import { partnerLogo } from "./partnerLogo";
+import { openCall } from "./openCall";
 import { localizedString } from "./objects/localizedString";
 import { localizedText } from "./objects/localizedText";
 import { localizedPortableText } from "./objects/localizedPortableText";
@@ -23,6 +24,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   homePage,
   teamMember,
   partnerLogo,
+  openCall,
   homeSettings,
   homeFaq,
   homeTestimonials,

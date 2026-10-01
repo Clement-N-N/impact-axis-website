@@ -12,7 +12,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "",
     "/about",
     "/what-we-do",
-    "/programs",
     "/impact",
     "/work-with-us",
     // Derived from the audience list so a new partnership page can't be

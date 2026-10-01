@@ -2,7 +2,7 @@ import { cva } from "class-variance-authority";
 import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
-import { PromoCard } from "@/components/ui/PromoCard";
+import { PromoCard, type PromoCardContent } from "@/components/ui/PromoCard";
 import { HeroBackgroundSlideshow } from "./HeroBackgroundSlideshow";
 import {
   getLocalizedText,
@@ -23,7 +23,11 @@ const headlineColStyles = cva("flex flex-col gap-6 self-end", {
 export function PromoCardHero({
   data,
   locale,
-}: HeroVariantProps<PromoCardHeroContent>) {
+  promoCard,
+}: HeroVariantProps<PromoCardHeroContent> & {
+  /** The open call, when one is running. Absent means no card is shown. */
+  promoCard?: PromoCardContent | null;
+}) {
   return (
     <section className="relative w-full overflow-hidden lg:min-h-[calc(100vh-60px)] 2xl:min-h-[calc(100vh-70px)]">
       <HeroBackgroundSlideshow images={data.backgroundImages} />
@@ -43,7 +47,9 @@ export function PromoCardHero({
             </Button>
           </div>
 
-          <PromoCard content={data.card} locale={locale} />
+          {promoCard ? (
+            <PromoCard content={promoCard} locale={locale} />
+          ) : null}
         </Container>
       </div>
     </section>

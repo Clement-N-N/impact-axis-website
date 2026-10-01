@@ -12,6 +12,7 @@ import { BLOG_POST_TYPE } from "./schemaTypes/blogPost";
 import { BLOG_AUTHOR_TYPE } from "./schemaTypes/blogAuthor";
 import { BLOG_CATEGORY_TYPE } from "./schemaTypes/blogCategory";
 import { EVENT_TYPE } from "./schemaTypes/event";
+import { OPEN_CALL_TYPE } from "./schemaTypes/openCall";
 import { EVENT_PERSON_TYPE } from "./schemaTypes/eventPerson";
 import { EVENT_PARTNER_TYPE } from "./schemaTypes/eventPartner";
 
@@ -31,6 +32,7 @@ const EXPLICITLY_PLACED_TYPES = new Set([
   BLOG_AUTHOR_TYPE,
   BLOG_CATEGORY_TYPE,
   EVENT_TYPE,
+  OPEN_CALL_TYPE,
   EVENT_PERSON_TYPE,
   EVENT_PARTNER_TYPE,
 ]);
@@ -126,6 +128,16 @@ export const structure: StructureResolver = (S) =>
               S.documentTypeListItem(EVENT_PERSON_TYPE).title("Speakers & Guests"),
               S.documentTypeListItem(EVENT_PARTNER_TYPE).title("Partners"),
             ]),
+        ),
+
+      // ── Open calls ──
+      S.listItem()
+        .id("openCallsGroup")
+        .title("Open Calls")
+        .child(
+          S.documentTypeList(OPEN_CALL_TYPE)
+            .title("Open Calls")
+            .defaultOrdering([{ field: "applicationsCloseAt", direction: "desc" }]),
         ),
 
       // ── Testimonials ──
