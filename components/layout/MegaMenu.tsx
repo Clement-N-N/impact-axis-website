@@ -247,6 +247,27 @@ export function MegaMenu({
             !itemsReady && "pointer-events-none"
           )}
         >
+          {/* The hub itself. Deliberately not a fifth icon card: the four
+              audiences are a deliberate set, and the trigger cannot double as
+              the link because hovering has no equivalent on touch. */}
+          <li>
+            <Link href="/work-with-us" className="flex w-fit items-center gap-4">
+              {/* The four audiences have bespoke marks and there is no generic
+                  one, so the hub takes the brand symbol — it stands for the
+                  whole rather than any single audience. */}
+              <Image
+                src="/logos/impact_axis_symbol_black_transparent.png"
+                alt=""
+                width={64}
+                height={64}
+                className="h-[32px] w-[32px] shrink-0 object-contain"
+              />
+              <span className="text-xl text-black">
+                {t("megaMenu.overview")}
+              </span>
+            </Link>
+          </li>
+
           {ITEMS.map(({ key, Icon, accent, href }, index) => {
             const isHovered = hoveredIndex === index;
             return (
