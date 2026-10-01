@@ -77,7 +77,13 @@ export type OurApproachContent = {
   eyebrow: LocalizedText;
   /** "Learn. Apply. Connect." — the three-word summary of the model. */
   tagline: LocalizedText;
+  /** Section heading. */
+  title: LocalizedText;
+  /** Intro paragraph under the heading. */
   headline: LocalizedText;
+  /** The two ends of the bridge line under the step cards. */
+  bridgeStart: LocalizedText;
+  bridgeEnd: LocalizedText;
   steps: ApproachStep[];
   closingLine: LocalizedText;
 };

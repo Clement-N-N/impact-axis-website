@@ -172,6 +172,12 @@ export const aboutPageContent: AboutPageContent = {
       en: "Learn. Apply. Connect.",
       fr: "Apprendre. Appliquer. Connecter.",
     },
+    title: {
+      en: "Building the bridge, plank by plank.",
+      fr: "Construire la passerelle, planche par planche.",
+    },
+    bridgeStart: { en: "Education", fr: "Éducation" },
+    bridgeEnd: { en: "Meaningful work", fr: "Travail porteur de sens" },
     headline: {
       en: "Our youth workforce development model brings together three things young people need to move more confidently from learning into opportunity.",
       fr: "Notre modèle de développement de l'employabilité des jeunes réunit trois éléments dont les jeunes ont besoin pour passer avec plus d'assurance de l'apprentissage à l'opportunité.",
@@ -188,7 +194,13 @@ export const aboutPageContent: AboutPageContent = {
           en: "Through experiential learning, young people strengthen communication, problem-solving, teamwork, self-leadership, digital fluency and other durable skills needed to navigate a changing world of work.",
           fr: "Grâce à l'apprentissage par l'expérience, les jeunes renforcent leur communication, leur résolution de problèmes, leur travail d'équipe, leur autonomie, leur aisance numérique et d'autres compétences durables nécessaires pour évoluer dans un monde du travail en mutation.",
         },
-        image: { src: PHOTO.fellowshipGroup, alt: GROUP_PHOTO_ALT },
+        image: {
+          src: "/images/gallery/gwf-2025-37.jpg",
+          alt: {
+            en: "Two fellows smiling as they take notes together at a table",
+            fr: "Deux fellows souriantes prenant des notes ensemble à une table",
+          },
+        },
       },
       {
         stepNumber: "02",
@@ -201,7 +213,13 @@ export const aboutPageContent: AboutPageContent = {
           en: "Projects, simulations and real-world challenges give young people opportunities to practise what they learn, solve problems and demonstrate what they can do.",
           fr: "Des projets, des simulations et des défis concrets donnent aux jeunes l'occasion de mettre en pratique ce qu'ils apprennent, de résoudre des problèmes et de démontrer ce dont ils sont capables.",
         },
-        image: { src: PHOTO.workshop, alt: GROUP_PHOTO_ALT },
+        image: {
+          src: "/images/gallery/nsai-heroes-51.jpg",
+          alt: {
+            en: "Two pupils examining a small robot car they are working on",
+            fr: "Deux élèves examinant une petite voiture robot sur laquelle elles travaillent",
+          },
+        },
       },
       {
         stepNumber: "03",
@@ -214,7 +232,13 @@ export const aboutPageContent: AboutPageContent = {
           en: "Mentorship, career guidance, professional networks and exposure to opportunities help young people navigate their next steps and build relationships that support their progression.",
           fr: "Le mentorat, l'orientation professionnelle, les réseaux professionnels et l'exposition aux opportunités aident les jeunes à préparer leurs prochaines étapes et à nouer des relations qui soutiennent leur progression.",
         },
-        image: { src: PHOTO.cohort2024, alt: GROUP_PHOTO_ALT },
+        image: {
+          src: "/images/gallery/gwf-2026-35.jpg",
+          alt: {
+            en: "Two fellows in discussion, one gesturing as he explains an idea",
+            fr: "Deux fellows en discussion, l'un gesticulant pour expliquer une idée",
+          },
+        },
       },
     ],
     closingLine: {
