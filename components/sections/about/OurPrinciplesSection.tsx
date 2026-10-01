@@ -111,7 +111,10 @@ export function OurPrinciplesSection({
     <section ref={sectionRef} className="py-section bg-impact-blue w-full">
       <Container className="gap-gutter grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12">
         <div className="hidden h-full lg:col-span-1 lg:block">
-          <div className="mt-[1vw] h-[8px] w-[8px] bg-white" aria-hidden="true" />
+          <div
+            className="mt-[1vw] h-[8px] w-[8px] bg-white"
+            aria-hidden="true"
+          />
         </div>
 
         <div className="col-span-4 md:col-span-8 lg:col-span-2">

@@ -102,7 +102,10 @@ export function AboutImageBand({
       <div className="relative h-[38vh] w-full overflow-hidden lg:h-[52vh]">
         {/* Overflows the frame top and bottom by the same 18% ParallaxImage
             uses, so the scrubbed travel never exposes an edge. */}
-        <div ref={imageRef} className="absolute inset-x-0 -top-[18%] -bottom-[18%]">
+        <div
+          ref={imageRef}
+          className="absolute inset-x-0 -top-[18%] -bottom-[18%]"
+        >
           <Image
             src={data.image.src}
             alt={getLocalizedText(data.image.alt, locale)}
