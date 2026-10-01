@@ -93,7 +93,10 @@ export type PrincipleItem = {
 export type OurPrinciplesContent = {
   eyebrow: LocalizedText;
   headline: LocalizedText;
+  /** Appears on the beam once all the principle pillars are in place. */
+  beamLine: LocalizedText;
   principles: PrincipleItem[];
+  /** Not shown by the pillars design; kept for the Sanity fieldset. */
   image: AboutImage;
 };
 
