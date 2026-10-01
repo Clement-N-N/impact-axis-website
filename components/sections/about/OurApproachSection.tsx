@@ -14,36 +14,31 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, SplitText);
 }
 
-/** One brand gradient per step card: yellow, blue, peach. */
-const CARD_THEMES = [
-  "bg-[linear-gradient(160deg,#ffeaa7_0%,#ffde75_55%,#f4c600_100%)]",
-  "bg-[linear-gradient(160deg,#cfe6ff_0%,#a9d3ff_50%,#74b9ff_100%)]",
-  "bg-[linear-gradient(160deg,#ffe0d6_0%,#fab1a0_55%,#f7886e_100%)]",
-];
+/** Ring geometry, in the SVG's 600×600 box. */
+const C = 300;
+const R = 250;
+/** Node i sits i/n of the way round, clockwise from the top. */
+const nodePos = (i: number, n: number) => {
+  const a = -Math.PI / 2 + (i / n) * Math.PI * 2;
+  return {
+    left: ((C + R * Math.cos(a)) / 600) * 100,
+    top: ((C + R * Math.sin(a)) / 600) * 100,
+  };
+};
 
 /**
- * The bridge: a shallow arc drawn as a quadratic curve in a 1000×80 box,
- * from (0, 64) up through the control point (500, -16) and back down to
- * (1000, 64). x is linear in t, so a point at fraction t sits at
- * left: t·100% and top: y(t)/80.
- */
-const ARC = "M0 64 Q500 -16 1000 64";
-const arcY = (t: number) =>
-  (1 - t) ** 2 * 64 + 2 * (1 - t) * t * -16 + t ** 2 * 64;
-/** Where the three steps sit along the bridge. */
-const STOPS = [0.15, 0.5, 0.85];
-
-/**
- * Our Approach: "building the bridge".
+ * Our Approach as "the loop".
  *
- * A navy section with the three steps as wide cards on a track. On desktop
- * the section pins and scrolling slides the cards sideways, one step at a
- * time, while a glowing yellow arc underneath fills from Education towards
- * Meaningful work. Each step's point on the arc lights up as its card locks
- * in, and the closing line lands as the arc reaches the far end.
+ * A navy section: on the left the heading and the active step's details, on
+ * the right a ring joining Learn → Apply → Connect around a circular photo.
+ * The section pins while you scroll: a yellow arc sweeps round the ring,
+ * each step's node lights up as the arc reaches it, the centre photo and
+ * the step details switch to match, and when the arc closes the loop back
+ * at Learn the closing line lands.
  *
- * Below lg, and under prefers-reduced-motion, nothing pins: the cards are a
- * sideways swipe, and the same bridge fills as you swipe through them.
+ * Phones pin just the ring and step details (the heading scrolls above).
+ * Under prefers-reduced-motion nothing pins: the ring shows complete and
+ * all three steps are listed.
  */
 export function OurApproachSection({
   data,
@@ -53,56 +48,32 @@ export function OurApproachSection({
   locale: Locale;
 }) {
   const sectionRef = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLOListElement>(null);
+  const n = data.steps.length;
 
   useEffect(() => {
     const section = sectionRef.current;
-    const scroller = scrollerRef.current;
-    const track = trackRef.current;
-    if (!section || !scroller || !track) return;
+    const stage = stageRef.current;
+    if (!section || !stage) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const cards = gsap.utils.toArray<HTMLElement>("[data-step-card]", section);
-    const nodes = gsap.utils.toArray<HTMLElement>("[data-node]", section);
-    const fillPath = section.querySelector<SVGPathElement>("[data-fill]");
+    const arc = section.querySelector<SVGCircleElement>("[data-arc]");
+    const marked = gsap.utils.toArray<HTMLElement>("[data-step]", section);
     const closing = section.querySelector<HTMLElement>("[data-closing]");
-    const n = cards.length;
 
-    /**
-     * Paint the bridge for overall progress q (0–1). The first 80% moves
-     * through the steps; the last 20% carries the arc on to the far end.
-     */
+    /** Paint the loop for progress q (0–1): arc, nodes, photo, details. */
     const paint = (q: number) => {
-      const steps = Math.min(q / 0.8, 1);
-      const fill =
-        q < 0.8
-          ? STOPS[0] + (STOPS[n - 1] - STOPS[0]) * steps
-          : STOPS[n - 1] + (1 - STOPS[n - 1]) * ((q - 0.8) / 0.2);
-      if (fillPath) fillPath.style.strokeDashoffset = String(1000 * (1 - fill));
-      const active = Math.round(steps * (n - 1));
-      cards.forEach((c, i) => (c.dataset.active = String(i === active)));
-      nodes.forEach((node, i) => (node.dataset.lit = String(i <= active)));
-      if (closing) closing.dataset.shown = String(q > 0.9);
+      const fill = Math.min(q / 0.9, 1);
+      if (arc) arc.style.strokeDashoffset = String(1000 * (1 - fill));
+      const active = Math.min(Math.floor(fill * n), n - 1);
+      marked.forEach((el) => {
+        const i = Number(el.dataset.step);
+        el.dataset.active = String(i === active);
+        el.dataset.lit = String(i <= active);
+      });
+      if (closing) closing.dataset.shown = String(fill >= 0.995);
     };
-
-    // Swipe mode (mobile / reduced motion): progress follows the scroller.
-    const onScroll = () => {
-      const max = scroller.scrollWidth - scroller.clientWidth;
-      if (max <= 0) return paint(1);
-      const f = scroller.scrollLeft / max;
-      paint(f > 0.98 ? 1 : f * 0.8);
-    };
-    scroller.addEventListener("scroll", onScroll, { passive: true });
-    paint(0);
-
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (reduced) {
-      onScroll();
-      return () => scroller.removeEventListener("scroll", onScroll);
-    }
 
     let split: SplitText | undefined;
     const mm = gsap.matchMedia();
@@ -122,55 +93,41 @@ export function OurApproachSection({
         });
       }
 
-      // Desktop: pin and drive the track sideways with vertical scroll.
-      mm.add("(min-width: 1024px)", () => {
-        scroller.removeEventListener("scroll", onScroll);
-        const distance = () => {
-          // From the first card left-aligned to the last card right-aligned.
-          const first = cards[0];
-          const last = cards[n - 1];
-          return (
-            last.offsetLeft +
-            last.offsetWidth -
-            first.offsetLeft -
-            scroller.clientWidth
-          );
-        };
-        const tl = gsap.timeline({
-          defaults: { ease: "none" },
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: () => `+=${distance() + window.innerHeight * 0.9}`,
-            pin: true,
-            scrub: 0.7,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => paint(self.progress),
-          },
+      // The ring swings into place as the section arrives.
+      gsap.from("[data-ring]", {
+        scale: 0.85,
+        opacity: 0,
+        rotation: -30,
+        duration: 1.2,
+        ease: "expo.out",
+        scrollTrigger: { trigger: section, start: "top 65%", once: true },
+      });
+
+      paint(0);
+      const pin = (trigger: Element) =>
+        ScrollTrigger.create({
+          trigger,
+          start: "top top",
+          end: () => `+=${window.innerHeight * 2.4}`,
+          pin: true,
+          scrub: true,
+          anticipatePin: 1,
+          onUpdate: (self) => paint(self.progress),
         });
-        tl.to(track, { x: () => -distance(), duration: 0.8 }).to(
-          {},
-          { duration: 0.2 },
-        );
-        // Photos drift a little inside their cards as the track moves.
-        tl.fromTo(
-          section.querySelectorAll("[data-step-img]"),
-          { xPercent: 8 },
-          { xPercent: -8, duration: 0.8 },
-          0,
-        );
-        return () => scroller.addEventListener("scroll", onScroll);
+      mm.add("(min-width: 1024px)", () => {
+        pin(section);
+      });
+      mm.add("(max-width: 1023px)", () => {
+        pin(stage);
       });
     }, section);
 
     return () => {
-      scroller.removeEventListener("scroll", onScroll);
       mm.revert();
       ctx.revert();
       split?.revert();
     };
-  }, [locale]);
+  }, [locale, n]);
 
   return (
     <section
@@ -178,168 +135,186 @@ export function OurApproachSection({
       aria-labelledby="our-approach-title"
       className="bg-impact-blue relative w-full overflow-hidden text-white"
     >
-      {/* Soft glow behind the bridge. */}
+      {/* Soft glow behind the ring. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-40 left-1/2 h-80 w-[80vw] -translate-x-1/2 rounded-full bg-[#f4c600]/10 blur-[100px]"
+        className="pointer-events-none absolute top-1/2 right-[-10%] size-[70vw] max-w-[60rem] -translate-y-1/2 rounded-full bg-[#f4c600]/[0.07] blur-[120px]"
       />
 
-      <Container className="py-section relative flex flex-col gap-10 lg:min-h-[100svh] lg:justify-center lg:gap-8 lg:pt-[calc(var(--header-height)+1.5rem)] lg:pb-6">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-end lg:gap-10">
-          <div className="flex flex-col items-start gap-5 lg:col-span-7">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="bg-impact-yellow rounded-full px-4 py-1.5 text-sm font-semibold whitespace-nowrap text-black">
-                {getLocalizedText(data.eyebrow, locale)}
-              </span>
-              <span className="text-sm font-semibold text-[#ffde75]">
-                {getLocalizedText(data.tagline, locale)}
-              </span>
-            </div>
-            <h2
-              id="our-approach-title"
-              ref={headlineRef}
-              className="text-5xl leading-[1.05] font-semibold tracking-[-0.03em] text-balance"
-            >
-              {getLocalizedText(data.title, locale)}
-            </h2>
+      <Container className="py-section relative grid grid-cols-1 gap-12 lg:min-h-[100svh] lg:grid-cols-12 lg:items-center lg:gap-10 lg:pt-[calc(var(--header-height)+2rem)]">
+        <div className="flex flex-col gap-6 lg:col-span-6">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="bg-impact-yellow rounded-full px-4 py-1.5 text-sm font-semibold whitespace-nowrap text-black">
+              {getLocalizedText(data.eyebrow, locale)}
+            </span>
+            <span className="text-sm font-semibold text-[#ffde75]">
+              {getLocalizedText(data.tagline, locale)}
+            </span>
           </div>
-          <p className="max-w-[46ch] text-lg text-pretty text-white/75 lg:col-span-5 lg:pb-2">
+          <h2
+            id="our-approach-title"
+            ref={headlineRef}
+            className="text-5xl leading-[1.05] font-semibold tracking-[-0.03em] text-balance"
+          >
+            {getLocalizedText(data.title, locale)}
+          </h2>
+          <p className="max-w-[48ch] text-lg text-pretty text-white/75">
             {getLocalizedText(data.headline, locale)}
           </p>
-        </div>
 
-        {/* Track: swipeable below lg (and with reduced motion); on desktop
-            GSAP moves it with vertical scroll instead. */}
-        <div
-          ref={scrollerRef}
-          className="-mx-4 snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto px-4 md:-mx-8 md:px-8 lg:mx-0 lg:px-0 lg:motion-safe:overflow-visible [&::-webkit-scrollbar]:hidden"
-        >
-          <ol ref={trackRef} className="flex gap-4 md:gap-6 lg:gap-8">
+          {/* Step details, desktop: one at a time in the same spot. */}
+          <div className="mt-4 hidden border-t border-white/15 pt-8 lg:grid lg:gap-8 lg:motion-safe:gap-0">
             {data.steps.map((step, i) => (
-              <li
+              <StepDetails
                 key={step.stepNumber}
-                data-step-card
-                data-active={i === 0}
-                className={`text-impact-blue relative grid w-[86vw] shrink-0 snap-center grid-cols-1 overflow-hidden rounded-[28px] shadow-[0_40px_80px_-40px_rgb(0_0_0/0.6)] transition-[opacity,scale] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] data-[active=false]:scale-[0.96] data-[active=false]:opacity-55 md:w-[70vw] md:grid-cols-2 lg:h-[clamp(20rem,calc(100svh-27rem),30rem)] lg:w-[min(58rem,64vw)] lg:rounded-[32px] ${
-                  CARD_THEMES[i % CARD_THEMES.length]
-                }`}
-              >
-                <div className="relative order-2 flex flex-col justify-between gap-6 p-6 md:order-1 md:p-9 lg:p-11">
-                  <span
-                    aria-hidden="true"
-                    className="text-[5.5rem] leading-[0.8] font-extrabold text-transparent tabular-nums [-webkit-text-stroke:2px_rgb(16_27_98/0.25)] md:text-[8rem] lg:text-[9rem]"
-                  >
-                    {step.stepNumber}
-                  </span>
-                  <div className="flex flex-col gap-3">
-                    <h3 className="text-4xl leading-none font-semibold tracking-[-0.02em]">
-                      <span className="sr-only">{step.stepNumber}. </span>
-                      {getLocalizedText(step.title, locale)}
-                    </h3>
-                    <p className="text-lg leading-snug font-semibold text-pretty">
-                      {getLocalizedText(step.subtitle, locale)}
-                    </p>
-                    <p className="text-impact-blue/80 max-w-[42ch] text-base text-pretty">
-                      {getLocalizedText(step.description, locale)}
-                    </p>
-                  </div>
-                </div>
-                <div className="relative order-1 aspect-[16/10] overflow-hidden md:order-2 md:aspect-auto">
-                  <div
-                    data-step-img
-                    className="absolute -inset-x-[10%] inset-y-0"
-                  >
-                    <Image
-                      src={step.image.src}
-                      alt={getLocalizedText(step.image.alt, locale)}
-                      fill
-                      quality={90}
-                      sizes="(min-width: 1024px) 36vw, (min-width: 768px) 42vw, 90vw"
-                      className="object-cover"
-                    />
-                  </div>
-                </div>
-              </li>
+                index={i}
+                step={step}
+                locale={locale}
+              />
             ))}
-          </ol>
+          </div>
         </div>
 
-        {/* The bridge, from Education to Meaningful work. */}
+        {/* Stage: the ring (and, on phones, the step details under it). */}
         <div
-          aria-hidden="true"
-          className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pt-6 md:flex-nowrap md:gap-6 md:pt-0"
+          ref={stageRef}
+          className="flex flex-col items-center gap-8 max-lg:motion-safe:min-h-[100svh] max-lg:motion-safe:justify-center max-lg:motion-safe:pt-[var(--header-height)] lg:col-span-6"
         >
-          <span className="shrink-0 text-xs font-semibold tracking-[0.12em] text-white/70 uppercase md:text-sm">
-            {getLocalizedText(data.bridgeStart, locale)}
-          </span>
-          <div className="relative order-first h-12 w-full md:order-none md:h-16 md:w-auto md:flex-1">
+          <div
+            data-ring
+            className="relative aspect-square w-[min(78vw,24rem)] lg:w-[min(40vw,36rem)]"
+          >
             <svg
-              viewBox="0 0 1000 80"
-              preserveAspectRatio="none"
+              viewBox="0 0 600 600"
+              aria-hidden="true"
               className="absolute inset-0 size-full overflow-visible"
             >
               <defs>
-                <linearGradient id="bridge-fill" x1="0" x2="1" y1="0" y2="0">
+                <linearGradient id="loop-arc" x1="0" x2="1" y1="0" y2="1">
                   <stop offset="0%" stopColor="#ffde75" />
                   <stop offset="100%" stopColor="#f4c600" />
                 </linearGradient>
               </defs>
-              <path
-                d={ARC}
+              <circle
+                cx={C}
+                cy={C}
+                r={R}
                 fill="none"
-                stroke="rgb(255 255 255 / 0.15)"
-                strokeWidth={4}
-                strokeLinecap="round"
-                vectorEffect="non-scaling-stroke"
+                stroke="rgb(255 255 255 / 0.14)"
+                strokeWidth={3}
               />
-              <path
-                data-fill
-                d={ARC}
-                pathLength={1000}
+              <circle
+                data-arc
+                cx={C}
+                cy={C}
+                r={R}
                 fill="none"
-                stroke="url(#bridge-fill)"
+                stroke="url(#loop-arc)"
                 strokeWidth={5}
                 strokeLinecap="round"
+                pathLength={1000}
                 strokeDasharray={1000}
-                strokeDashoffset={1000}
-                vectorEffect="non-scaling-stroke"
-                className="drop-shadow-[0_0_10px_rgb(244_198_0/0.7)] transition-[stroke-dashoffset] duration-200"
+                transform={`rotate(-90 ${C} ${C})`}
+                className="drop-shadow-[0_0_10px_rgb(244_198_0/0.6)] [stroke-dashoffset:1000] motion-reduce:[stroke-dashoffset:0]"
               />
             </svg>
+
+            {/* Centre photo, one per step, crossfading. */}
+            <div className="absolute inset-[19%] overflow-hidden rounded-full shadow-[0_30px_80px_-20px_rgb(0_0_0/0.6)]">
+              {data.steps.map((step, i) => (
+                <div
+                  key={step.stepNumber}
+                  data-step={i}
+                  data-active={i === 0}
+                  className="absolute inset-0 transition-[opacity,scale] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[active=false]:scale-110 data-[active=false]:opacity-0"
+                >
+                  <Image
+                    src={step.image.src}
+                    alt={getLocalizedText(step.image.alt, locale)}
+                    fill
+                    quality={90}
+                    sizes="(min-width: 1024px) 24vw, 50vw"
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Nodes. */}
             {data.steps.map((step, i) => {
-              const t = STOPS[i];
+              const { left, top } = nodePos(i, n);
               return (
                 <span
                   key={step.stepNumber}
-                  data-node
+                  aria-hidden="true"
+                  data-step={i}
                   data-lit={i === 0}
-                  className="group absolute -translate-x-1/2 -translate-y-1/2"
-                  style={{
-                    left: `${t * 100}%`,
-                    top: `${(arcY(t) / 80) * 100}%`,
-                  }}
+                  data-active={i === 0}
+                  className="bg-impact-blue data-[lit=true]:border-impact-yellow data-[active=true]:bg-impact-yellow data-[active=true]:text-impact-blue motion-reduce:border-impact-yellow absolute flex size-[24%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-2 border-white/25 text-center transition-[background-color,border-color,color,box-shadow,scale] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] data-[active=true]:scale-110 data-[active=true]:shadow-[0_0_0_10px_rgb(244_198_0/0.18),0_0_40px_rgb(244_198_0/0.5)]"
+                  style={{ left: `${left}%`, top: `${top}%` }}
                 >
-                  <span className="absolute bottom-full left-1/2 mb-3 -translate-x-1/2 text-xs font-semibold whitespace-nowrap text-white/50 transition-colors duration-300 group-data-[lit=true]:text-white md:text-sm">
+                  <span className="text-[0.65rem] font-semibold tabular-nums opacity-70 md:text-xs">
+                    {step.stepNumber}
+                  </span>
+                  <span className="text-xs font-semibold sm:text-sm md:text-lg">
                     {getLocalizedText(step.title, locale)}
                   </span>
-                  <span className="bg-impact-blue group-data-[lit=true]:border-impact-yellow group-data-[lit=true]:bg-impact-yellow block size-5 rounded-full border-2 border-white/40 transition-[background-color,border-color,box-shadow,scale] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-data-[lit=true]:scale-125 group-data-[lit=true]:shadow-[0_0_0_8px_rgb(244_198_0/0.2),0_0_24px_rgb(244_198_0/0.8)] md:size-6" />
                 </span>
               );
             })}
           </div>
-          <span className="shrink-0 text-xs font-semibold tracking-[0.12em] text-white/70 uppercase md:text-sm">
-            {getLocalizedText(data.bridgeEnd, locale)}
-          </span>
+
+          {/* Step details, phones. */}
+          <div className="grid w-full gap-8 motion-safe:gap-0 lg:hidden">
+            {data.steps.map((step, i) => (
+              <StepDetails
+                key={step.stepNumber}
+                index={i}
+                step={step}
+                locale={locale}
+              />
+            ))}
+          </div>
         </div>
 
         <p
           data-closing
           data-shown="false"
-          className="max-w-[70ch] self-center text-center text-lg font-medium text-balance text-white transition-[opacity,translate] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[shown=false]:translate-y-3 data-[shown=false]:opacity-0 motion-reduce:!translate-y-0 motion-reduce:!opacity-100 max-lg:!translate-y-0 max-lg:!opacity-100 md:text-xl"
+          className="text-xl font-medium text-balance text-white transition-[opacity,translate] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[shown=false]:translate-y-3 data-[shown=false]:opacity-0 motion-reduce:!translate-y-0 motion-reduce:!opacity-100 max-lg:!translate-y-0 max-lg:!opacity-100 lg:col-span-12 lg:-mt-4 lg:text-center"
         >
           {getLocalizedText(data.closingLine, locale)}
         </p>
       </Container>
     </section>
+  );
+}
+
+/** Number, subtitle and description for one step. With motion, all three
+ *  share one grid cell and only the active one shows. */
+function StepDetails({
+  index,
+  step,
+  locale,
+}: {
+  index: number;
+  step: OurApproachContent["steps"][number];
+  locale: Locale;
+}) {
+  return (
+    <article
+      data-step={index}
+      data-active={index === 0}
+      className="flex flex-col gap-3 transition-[opacity,translate] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:col-start-1 motion-safe:row-start-1 motion-safe:data-[active=false]:pointer-events-none motion-safe:data-[active=false]:translate-y-4 motion-safe:data-[active=false]:opacity-0"
+    >
+      <span className="text-sm font-semibold tracking-[0.12em] text-[#ffde75] uppercase tabular-nums">
+        {step.stepNumber} — {getLocalizedText(step.title, locale)}
+      </span>
+      <h3 className="text-2xl leading-snug font-semibold text-balance md:text-3xl">
+        {getLocalizedText(step.subtitle, locale)}
+      </h3>
+      <p className="max-w-[50ch] text-base text-pretty text-white/80">
+        {getLocalizedText(step.description, locale)}
+      </p>
+    </article>
   );
 }

@@ -173,11 +173,9 @@ export const aboutPageContent: AboutPageContent = {
       fr: "Apprendre. Appliquer. Connecter.",
     },
     title: {
-      en: "Building the bridge, plank by plank.",
-      fr: "Construire la passerelle, planche par planche.",
+      en: "A model that keeps moving.",
+      fr: "Un modèle toujours en mouvement.",
     },
-    bridgeStart: { en: "Education", fr: "Éducation" },
-    bridgeEnd: { en: "Meaningful work", fr: "Travail porteur de sens" },
     headline: {
       en: "Our youth workforce development model brings together three things young people need to move more confidently from learning into opportunity.",
       fr: "Notre modèle de développement de l'employabilité des jeunes réunit trois éléments dont les jeunes ont besoin pour passer avec plus d'assurance de l'apprentissage à l'opportunité.",
