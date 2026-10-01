@@ -141,8 +141,8 @@ export function OurApproachSection({
         className="pointer-events-none absolute top-1/2 right-[-10%] size-[70vw] max-w-[60rem] -translate-y-1/2 rounded-full bg-[#f4c600]/[0.07] blur-[120px]"
       />
 
-      <Container className="py-section relative grid grid-cols-1 gap-12 lg:min-h-[100svh] lg:grid-cols-12 lg:items-center lg:gap-10 lg:pt-[calc(var(--header-height)+2rem)]">
-        <div className="flex flex-col gap-6 lg:col-span-6">
+      <Container className="py-section relative grid grid-cols-1 gap-12 lg:h-[100svh] lg:min-h-[34rem] lg:grid-cols-12 lg:items-center lg:gap-10 lg:pt-[var(--header-height)] lg:pb-[clamp(3rem,8svh,5rem)]">
+        <div className="flex flex-col gap-6 lg:col-span-6 lg:gap-[clamp(0.75rem,2.2svh,1.5rem)]">
           <div className="flex flex-wrap items-center gap-3">
             <span className="bg-impact-yellow rounded-full px-4 py-1.5 text-sm font-semibold whitespace-nowrap text-black">
               {getLocalizedText(data.eyebrow, locale)}
@@ -154,16 +154,16 @@ export function OurApproachSection({
           <h2
             id="our-approach-title"
             ref={headlineRef}
-            className="text-5xl leading-[1.05] font-semibold tracking-[-0.03em] text-balance"
+            className="text-5xl leading-[1.05] font-semibold tracking-[-0.03em] text-balance lg:text-[clamp(2.25rem,min(4vw,7svh),4.25rem)]"
           >
             {getLocalizedText(data.title, locale)}
           </h2>
-          <p className="max-w-[48ch] text-lg text-pretty text-white/75">
+          <p className="max-w-[52ch] text-lg text-pretty text-white/75 lg:text-[clamp(1rem,2.2svh,1.125rem)]">
             {getLocalizedText(data.headline, locale)}
           </p>
 
           {/* Step details, desktop: one at a time in the same spot. */}
-          <div className="mt-4 hidden border-t border-white/15 pt-8 lg:grid lg:gap-8 lg:motion-safe:gap-0">
+          <div className="hidden border-t border-white/15 lg:mt-1 lg:grid lg:gap-8 lg:pt-[clamp(1rem,3svh,2rem)] lg:motion-safe:gap-0">
             {data.steps.map((step, i) => (
               <StepDetails
                 key={step.stepNumber}
@@ -182,7 +182,7 @@ export function OurApproachSection({
         >
           <div
             data-ring
-            className="relative aspect-square w-[min(78vw,24rem)] lg:w-[min(40vw,36rem)]"
+            className="relative aspect-square w-[min(78vw,24rem)] lg:w-[min(40vw,36rem,calc(100svh-var(--header-height)-9rem))]"
           >
             <svg
               viewBox="0 0 600 600"
@@ -280,7 +280,7 @@ export function OurApproachSection({
         <p
           data-closing
           data-shown="false"
-          className="text-xl font-medium text-balance text-white transition-[opacity,translate] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[shown=false]:translate-y-3 data-[shown=false]:opacity-0 motion-reduce:!translate-y-0 motion-reduce:!opacity-100 max-lg:!translate-y-0 max-lg:!opacity-100 lg:col-span-12 lg:-mt-4 lg:text-center"
+          className="text-xl font-medium text-balance text-white transition-[opacity,translate] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[shown=false]:translate-y-3 data-[shown=false]:opacity-0 motion-reduce:!translate-y-0 motion-reduce:!opacity-100 max-lg:!translate-y-0 max-lg:!opacity-100 lg:absolute lg:inset-x-0 lg:bottom-[clamp(1rem,3svh,2rem)] lg:text-center lg:text-[clamp(1rem,2.4svh,1.25rem)]"
         >
           {getLocalizedText(data.closingLine, locale)}
         </p>
@@ -309,10 +309,10 @@ function StepDetails({
       <span className="text-sm font-semibold tracking-[0.12em] text-[#ffde75] uppercase tabular-nums">
         {step.stepNumber} — {getLocalizedText(step.title, locale)}
       </span>
-      <h3 className="text-2xl leading-snug font-semibold text-balance md:text-3xl">
+      <h3 className="text-2xl leading-snug font-semibold text-balance md:text-3xl lg:text-[clamp(1.375rem,3.4svh,1.875rem)]">
         {getLocalizedText(step.subtitle, locale)}
       </h3>
-      <p className="max-w-[50ch] text-base text-pretty text-white/80">
+      <p className="max-w-[56ch] text-base text-pretty text-white/80 lg:text-[clamp(0.9375rem,2svh,1rem)]">
         {getLocalizedText(step.description, locale)}
       </p>
     </article>
