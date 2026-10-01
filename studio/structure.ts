@@ -12,6 +12,7 @@ import { BLOG_POST_TYPE } from "./schemaTypes/blogPost";
 import { BLOG_AUTHOR_TYPE } from "./schemaTypes/blogAuthor";
 import { BLOG_CATEGORY_TYPE } from "./schemaTypes/blogCategory";
 import { EVENT_TYPE } from "./schemaTypes/event";
+import { REPORT_TYPE } from "./schemaTypes/report";
 import { EVENT_PERSON_TYPE } from "./schemaTypes/eventPerson";
 import { EVENT_PARTNER_TYPE } from "./schemaTypes/eventPartner";
 
@@ -31,6 +32,7 @@ const EXPLICITLY_PLACED_TYPES = new Set([
   BLOG_AUTHOR_TYPE,
   BLOG_CATEGORY_TYPE,
   EVENT_TYPE,
+  REPORT_TYPE,
   EVENT_PERSON_TYPE,
   EVENT_PARTNER_TYPE,
 ]);
@@ -126,6 +128,16 @@ export const structure: StructureResolver = (S) =>
               S.documentTypeListItem(EVENT_PERSON_TYPE).title("Speakers & Guests"),
               S.documentTypeListItem(EVENT_PARTNER_TYPE).title("Partners"),
             ]),
+        ),
+
+      // ── Reports ──
+      S.listItem()
+        .id("reportsGroup")
+        .title("Reports")
+        .child(
+          S.documentTypeList(REPORT_TYPE)
+            .title("Reports")
+            .defaultOrdering([{ field: "publishedAt", direction: "desc" }]),
         ),
 
       // ── Testimonials ──
