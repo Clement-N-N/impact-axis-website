@@ -20,7 +20,9 @@ const photo = (asset: string) => `${CDN}/${asset}?w=2000&auto=format&fit=max`;
 const PHOTO = {
   /** The Goodwill Fellowship group shot used in the design for the hero band
       and the principles section. */
-  fellowshipGroup: photo("8766500ae932668227956d446653ef27c3e49ee3-6960x4640.jpg"),
+  fellowshipGroup: photo(
+    "8766500ae932668227956d446653ef27c3e49ee3-6960x4640.jpg",
+  ),
   portrait: photo("f4d8bf08c6ef0cab78261a68285555ea0e62c48a-6960x4640.jpg"),
   workshop: photo("71462aa88345d5001153174afa6e18141b1b9255-6960x4640.jpg"),
   cohort2024: photo("bbc55c36c65b3937c0e8b44006ae2debe13142d6-6080x4640.jpg"),
@@ -111,13 +113,13 @@ export const aboutPageContent: AboutPageContent = {
     eyebrow: { en: "Mission & Vision", fr: "Mission et vision" },
     missionTitle: { en: "Our Mission", fr: "Notre mission" },
     missionBody: {
-      en: "To enable young people build the capabilities, experience and connections needed to move from education into meaningful work.",
-      fr: "Permettre aux jeunes d'acquérir les compétences, l'expérience et les relations nécessaires pour passer de l'éducation à un travail porteur de sens.",
+      en: "To enable young people to build the [capabilities], [experience] and [connections] needed to move from education into {meaningful work}.",
+      fr: "Permettre aux jeunes d'acquérir les [compétences], l'[expérience] et les [relations] nécessaires pour passer de l'éducation à {un travail porteur de sens}.",
     },
     visionTitle: { en: "Our Vision", fr: "Notre vision" },
     visionBody: {
-      en: "A future where young Africans can translate their talent and education into meaningful livelihoods.",
-      fr: "Un avenir où les jeunes Africains peuvent transformer leur talent et leur éducation en moyens de subsistance porteurs de sens.",
+      en: "A future where young Africans can translate their [talent] and [education] into {meaningful livelihoods}.",
+      fr: "Un avenir où les jeunes Africains peuvent transformer leur [talent] et leur [éducation] en {moyens de subsistance porteurs de sens}.",
     },
   },
 

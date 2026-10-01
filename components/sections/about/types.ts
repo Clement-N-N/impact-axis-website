@@ -50,6 +50,7 @@ export type WhyWeExistAboutContent = {
 export type MissionVisionContent = {
   eyebrow: LocalizedText;
   missionTitle: LocalizedText;
+  /** `[word]` gets a highlighter stroke, `{phrase}` a full gradient fill. */
   missionBody: LocalizedText;
   visionTitle: LocalizedText;
   visionBody: LocalizedText;
