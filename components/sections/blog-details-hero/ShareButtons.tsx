@@ -1,9 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CopySimpleIcon, FacebookLogoIcon, LinkedinLogoIcon, XLogoIcon } from "@phosphor-icons/react/dist/ssr";
 import { getLocalizedText, type LocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const labels = {
   facebook: { en: "Share", fr: "Partager" } satisfies LocalizedText,
@@ -28,6 +34,42 @@ function PillButton({ onClick, icon, label }: { onClick: () => void; icon: React
 
 export function ShareButtons({ title, locale }: { title: LocalizedText; locale: Locale }) {
   const [copied, setCopied] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const ctx = gsap.context(() => {
+      const items = wrapperRef.current
+        ? gsap.utils.toArray<HTMLElement>(wrapperRef.current.children)
+        : [];
+
+      if (items.length === 0) return;
+
+      if (prefersReducedMotion) {
+        gsap.set(items, { opacity: 1, y: 0 });
+        return;
+      }
+
+      gsap.set(items, { opacity: 0, y: 16 });
+      gsap.to(items, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: "power3.out",
+        stagger: 0.08,
+        scrollTrigger: {
+          trigger: wrapperRef.current,
+          start: "top 80%",
+          once: true,
+        },
+      });
+    }, wrapperRef);
+
+    return () => ctx.revert();
+  }, []);
 
   function getShareUrl() {
     return typeof window !== "undefined" ? window.location.href : "";
@@ -81,7 +123,7 @@ export function ShareButtons({ title, locale }: { title: LocalizedText; locale: 
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+    <div ref={wrapperRef} className="flex flex-wrap items-center gap-2 sm:gap-3">
       <PillButton
         icon={<FacebookLogoIcon weight="fill" className="h-5 w-5 text-[#1877F2]" />}
         label={getLocalizedText(labels.facebook, locale)}
