@@ -23,6 +23,8 @@ export type WhatWeDoDirection = {
   title: LocalizedText;
   body: LocalizedText;
   image: WhatWeDoImage;
+  /** CSS object-position keeping the subject in the 4:3 frame. */
+  imagePosition?: string;
   /** Internal route or in-page anchor (e.g. "#focus"). */
   href: string;
 };

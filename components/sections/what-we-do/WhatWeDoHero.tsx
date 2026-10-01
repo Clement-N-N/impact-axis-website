@@ -46,7 +46,7 @@ const PHOTO_SHAPE = `url("data:image/svg+xml,${encodeURIComponent(
  * photo zooms and the arrow turns navy (CSS, so it is interruptible).
  *
  * Under prefers-reduced-motion everything renders in its final state.
- * Below lg the cards become a swipeable row with a scroll progress bar.
+ * Below lg the cards stack, and each is dealt in as it scrolls into view.
  */
 export function WhatWeDoHero({
   data,
@@ -59,29 +59,6 @@ export function WhatWeDoHero({
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const introRef = useRef<HTMLParagraphElement>(null);
   const curvesRef = useRef<SVGSVGElement>(null);
-  const rowRef = useRef<HTMLDivElement>(null);
-  const barRef = useRef<HTMLDivElement>(null);
-
-  // Mobile/tablet: scroll progress bar under the swipeable row.
-  useEffect(() => {
-    const row = rowRef.current;
-    const bar = barRef.current;
-    if (!row || !bar) return;
-    const update = () => {
-      const visible = row.clientWidth / row.scrollWidth;
-      const max = row.scrollWidth - row.clientWidth;
-      const progress = max > 0 ? row.scrollLeft / max : 0;
-      bar.style.width = `${Math.min(1, visible) * 100}%`;
-      bar.style.transform = `translateX(${progress * (1 / visible - 1) * 100}%)`;
-    };
-    update();
-    row.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      row.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -100,14 +77,6 @@ export function WhatWeDoHero({
         curvesRef.current,
       );
       const cards = gsap.utils.toArray<HTMLElement>("[data-card]", section);
-      const photos = gsap.utils.toArray<HTMLElement>("[data-photo]", section);
-      const photoImgs = gsap.utils.toArray<HTMLElement>(
-        "[data-photo-img]",
-        section,
-      );
-      const arrows = gsap.utils.toArray<HTMLElement>("[data-arrow]", section);
-      const tilts = [-7, 2.5, 8];
-
       const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
 
       // 1. Curves draw in (pathLength=1000, see markup).
@@ -143,60 +112,62 @@ export function WhatWeDoHero({
         0.55,
       );
 
-      // 3. Cards dealt in, tilted, landing flat.
-      cards.forEach((card, i) =>
+      // 3–5. Each card is dealt in tilted and lands flat, its photo wipes
+      // up inside the frame, then its arrow spins in.
+      const cardIn = (
+        card: HTMLElement,
+        i: number,
+        opts: { delay?: number; tilt: number; onScroll?: boolean },
+      ) => {
+        const photo = card.querySelector<HTMLElement>("[data-photo]");
+        const img = card.querySelector<HTMLElement>("[data-photo-img]");
+        const arrow = card.querySelector<HTMLElement>("[data-arrow]");
         gsap.set(card, {
           y: 140,
-          rotation: tilts[i] ?? 0,
+          rotation: opts.tilt,
           scale: 0.9,
           opacity: 0,
           transformOrigin: "50% 100%",
-        }),
-      );
-      tl.to(
-        cards,
-        {
-          y: 0,
-          rotation: 0,
-          scale: 1,
-          opacity: 1,
-          duration: 1.3,
-          stagger: 0.14,
-        },
-        0.6,
-      );
+        });
+        gsap.set(photo, { clipPath: "inset(100% 0% 0% 0%)" });
+        gsap.set(img, { scale: 1.35 });
+        gsap.set(arrow, { scale: 0, rotation: -120 });
+        gsap
+          .timeline({
+            delay: opts.delay ?? 0,
+            defaults: { ease: "expo.out" },
+            scrollTrigger: opts.onScroll
+              ? { trigger: card, start: "top 88%", once: true }
+              : undefined,
+          })
+          .to(
+            card,
+            { y: 0, rotation: 0, scale: 1, opacity: 1, duration: 1.3 },
+            0,
+          )
+          .to(
+            photo,
+            {
+              clipPath: "inset(0% 0% 0% 0%)",
+              duration: 1.1,
+              ease: "power3.inOut",
+            },
+            0.35,
+          )
+          .to(img, { scale: 1, duration: 1.6 }, 0.35)
+          .to(
+            arrow,
+            { scale: 1, rotation: 0, duration: 0.7, ease: "back.out(2.2)" },
+            0.75,
+          );
+      };
 
-      // 4. Photos wipe up inside their frames as each card lands.
-      gsap.set(photos, { clipPath: "inset(100% 0% 0% 0%)" });
-      gsap.set(photoImgs, { scale: 1.35 });
-      tl.to(
-        photos,
-        {
-          clipPath: "inset(0% 0% 0% 0%)",
-          duration: 1.1,
-          ease: "power3.inOut",
-          stagger: 0.14,
-        },
-        0.95,
-      );
-      tl.to(photoImgs, { scale: 1, duration: 1.6, stagger: 0.14 }, 0.95);
-
-      // 5. Arrow buttons spin in.
-      gsap.set(arrows, { scale: 0, rotation: -120 });
-      tl.to(
-        arrows,
-        {
-          scale: 1,
-          rotation: 0,
-          duration: 0.7,
-          ease: "back.out(2.2)",
-          stagger: 0.14,
-        },
-        1.35,
-      );
-
-      // Desktop: depth on scroll.
+      // Desktop: dealt in together on load, then depth on scroll.
       mm.add("(min-width: 1024px)", () => {
+        const tilts = [-7, 2.5, 8];
+        cards.forEach((card, i) =>
+          cardIn(card, i, { delay: 0.6 + i * 0.14, tilt: tilts[i] ?? 0 }),
+        );
         const rates = [-4, -9, -6];
         cards.forEach((card, i) =>
           gsap.to(card, {
@@ -220,6 +191,14 @@ export function WhatWeDoHero({
             scrub: 1,
           },
         });
+      });
+
+      // Mobile/tablet: cards are stacked, so each is dealt in as it scrolls
+      // into view, tilting alternately left and right.
+      mm.add("(max-width: 1023px)", () => {
+        cards.forEach((card, i) =>
+          cardIn(card, i, { tilt: i % 2 ? 4 : -4, onScroll: true }),
+        );
       });
     }, section);
 
@@ -279,10 +258,8 @@ export function WhatWeDoHero({
           </p>
         </div>
 
-        <div
-          ref={rowRef}
-          className="-mx-6 mt-12 flex snap-x snap-mandatory [scrollbar-width:none] gap-4 overflow-x-auto px-6 pt-2 pb-4 md:-mx-12 md:px-12 lg:mx-0 lg:grid lg:grid-cols-3 lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden"
-        >
+        {/* Stacked below lg, three across from lg up. */}
+        <div className="mt-12 grid grid-cols-1 gap-4 lg:grid-cols-3">
           {data.directions.map((direction, i) => (
             <DirectionCard
               key={direction.href}
@@ -291,17 +268,6 @@ export function WhatWeDoHero({
               locale={locale}
             />
           ))}
-        </div>
-
-        {/* Scroll progress for the swipeable row (below lg). */}
-        <div
-          aria-hidden="true"
-          className="mx-auto mt-6 h-1.5 w-full max-w-3xl overflow-hidden rounded-full bg-black/5 lg:hidden"
-        >
-          <div
-            ref={barRef}
-            className="bg-impact-blue h-full w-1/3 rounded-full"
-          />
         </div>
       </Container>
     </section>
@@ -365,7 +331,9 @@ function DirectionCard({
             alt={getLocalizedText(direction.image.alt, locale)}
             fill
             preload={index === 0}
-            sizes="(min-width: 1024px) 18vw, (min-width: 640px) 32vw, 48vw"
+            quality={90}
+            sizes="(min-width: 1024px) 20vw, 52vw"
+            style={{ objectPosition: direction.imagePosition ?? "center" }}
             className="object-cover transition-[scale] duration-500 ease-out group-hover:scale-[1.07] motion-reduce:transition-none"
           />
         </div>
@@ -373,7 +341,7 @@ function DirectionCard({
     </div>
   );
 
-  const className = `group relative flex min-h-[20rem] w-[86%] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-[32px] p-6 transition-[translate,box-shadow] duration-300 ease-out hover:-translate-y-1.5 hover:shadow-[0_18px_40px_-18px_rgb(16_27_98/0.45)] focus-visible:outline-impact-blue focus-visible:outline-2 focus-visible:outline-offset-4 sm:w-[60%] lg:w-auto motion-reduce:hover:translate-y-0 ${CARD_BG[index] ?? CARD_BG[0]}`;
+  const className = `group relative flex min-h-[17rem] flex-col justify-between overflow-hidden rounded-[32px] p-6 transition-[translate,box-shadow] duration-300 ease-out hover:-translate-y-1.5 hover:shadow-[0_18px_40px_-18px_rgb(16_27_98/0.45)] focus-visible:outline-impact-blue focus-visible:outline-2 focus-visible:outline-offset-4 lg:min-h-[20rem] motion-reduce:hover:translate-y-0 ${CARD_BG[index] ?? CARD_BG[0]}`;
 
   const content = textTop ? (
     <>
