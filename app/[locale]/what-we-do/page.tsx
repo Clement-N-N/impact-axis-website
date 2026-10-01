@@ -6,7 +6,6 @@ import {
   OurFocusSection,
   OurProgrammesSection,
   EventGallerySection,
-  OurWorkClosingCta,
   whatWeDoPageContent,
 } from "@/components/sections/what-we-do";
 
@@ -62,7 +61,8 @@ export default async function WhatWeDoPage({ params }: Props) {
       {/* "What makes our work different" and "Work in action" are hidden
           for now (components and content kept) in favour of the gallery. */}
       <EventGallerySection data={content.gallery} locale={loc} />
-      <OurWorkClosingCta data={content.closing} locale={loc} />
+      {/* "Find your place in our work" (OurWorkClosingCta) is hidden for
+          now; component and content kept. */}
     </div>
   );
 }
