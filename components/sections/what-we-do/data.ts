@@ -293,6 +293,340 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
     },
   },
 
+  gallery: {
+    eyebrow: { en: "Gallery", fr: "Galerie" },
+    headline: {
+      en: "Moments from our events.",
+      fr: "Moments de nos événements.",
+    },
+    intro: {
+      en: "Fellowships, workshops, school visits and hangouts: the young people, volunteers and partners behind Impact Axis, in their element.",
+      fr: "Fellowships, ateliers, visites d'écoles et rencontres : les jeunes, les bénévoles et les partenaires d'Impact Axis, dans leur élément.",
+    },
+    allLabel: { en: "All", fr: "Tout" },
+    filterLabel: {
+      en: "Filter photos by event",
+      fr: "Filtrer les photos par événement",
+    },
+    lightbox: {
+      close: { en: "Close", fr: "Fermer" },
+      previous: { en: "Previous photo", fr: "Photo précédente" },
+      next: { en: "Next photo", fr: "Photo suivante" },
+      counter: { en: "{current} of {total}", fr: "{current} sur {total}" },
+    },
+    events: [
+      { id: "gwf-2026", name: { en: "GWF 2026", fr: "GWF 2026" } },
+      { id: "gwf-2025", name: { en: "GWF 2025", fr: "GWF 2025" } },
+      { id: "gwf-2024", name: { en: "GWF 2024", fr: "GWF 2024" } },
+      { id: "hive-001", name: { en: "The Hive 001", fr: "The Hive 001" } },
+      { id: "nsai-heroes", name: { en: "Nsai Heroes", fr: "Nsai Heroes" } },
+      {
+        id: "volunteers-hangout",
+        name: { en: "Volunteers hangout", fr: "Rencontre des bénévoles" },
+      },
+    ],
+    // Order is the "All" view; spans are tuned so the 4-column mosaic packs
+    // without holes.
+    photos: [
+      {
+        src: "/images/gallery/gwf-2026-36.jpg",
+        alt: {
+          en: "A large group of fellows in blue and white GWF t-shirts making peace signs outdoors",
+          fr: "Un grand groupe de fellows en t-shirts GWF bleus et blancs faisant le signe de la paix en plein air",
+        },
+        event: "gwf-2026",
+        width: 2000,
+        height: 1333,
+        span: "big",
+      },
+      {
+        src: "/images/gallery/hive-001-29.jpg",
+        alt: {
+          en: "A young woman smiling in front of a floral backdrop",
+          fr: "Une jeune femme souriante devant un décor floral",
+        },
+        event: "hive-001",
+        width: 1333,
+        height: 2000,
+        span: "tall",
+      },
+      {
+        src: "/images/gallery/gwf-2025-37.jpg",
+        alt: {
+          en: "Two fellows smiling as they take notes together at a table",
+          fr: "Deux fellows souriantes prenant des notes ensemble à une table",
+        },
+        event: "gwf-2025",
+        width: 2000,
+        height: 1253,
+      },
+      {
+        src: "/images/gallery/nsai-heroes-51.jpg",
+        alt: {
+          en: "Two pupils in orange uniforms examining a small robot car",
+          fr: "Deux élèves en uniforme orange examinant une petite voiture robot",
+        },
+        event: "nsai-heroes",
+        width: 2000,
+        height: 1090,
+      },
+      {
+        src: "/images/gallery/gwf-2024-43.jpg",
+        alt: {
+          en: "Six fellows standing shoulder to shoulder and smiling by a sunlit window",
+          fr: "Six fellows côte à côte, souriants, près d'une fenêtre ensoleillée",
+        },
+        event: "gwf-2024",
+        width: 2000,
+        height: 1183,
+        span: "wide",
+      },
+      {
+        src: "/images/gallery/volunteers-hangout-54.jpg",
+        alt: {
+          en: "Volunteers laughing as they pull together in a team game outdoors",
+          fr: "Des bénévoles riant en tirant ensemble lors d'un jeu d'équipe en plein air",
+        },
+        event: "volunteers-hangout",
+        width: 2000,
+        height: 1183,
+        span: "wide",
+      },
+      {
+        src: "/images/gallery/gwf-2026-32.jpg",
+        alt: {
+          en: "Two fellows in GWF t-shirts presenting their group's work from a sheet of paper",
+          fr: "Deux fellows en t-shirt GWF présentant le travail de leur groupe à partir d'une feuille",
+        },
+        event: "gwf-2026",
+        width: 2000,
+        height: 1333,
+      },
+      {
+        src: "/images/gallery/hive-001-27.jpg",
+        alt: {
+          en: "Two participants sharing a warm hug",
+          fr: "Deux participantes partageant une chaleureuse accolade",
+        },
+        event: "hive-001",
+        width: 2000,
+        height: 1333,
+      },
+      {
+        src: "/images/gallery/nsai-heroes-48.jpg",
+        alt: {
+          en: "Pupils in purple uniforms reaching up towards a small drone hovering above them",
+          fr: "Des élèves en uniforme violet tendant les mains vers un petit drone en vol",
+        },
+        event: "nsai-heroes",
+        width: 2000,
+        height: 1090,
+        span: "big",
+      },
+      {
+        src: "/images/gallery/gwf-2025-40.jpg",
+        alt: {
+          en: "A fellow in a yellow 2025 Goodwill Fellowship t-shirt giving a thumbs up during a negotiation workshop",
+          fr: "Une fellow en t-shirt jaune Goodwill Fellowship 2025 levant le pouce pendant un atelier de négociation",
+        },
+        event: "gwf-2025",
+        width: 2000,
+        height: 1253,
+      },
+      {
+        src: "/images/gallery/volunteers-hangout-53.jpg",
+        alt: {
+          en: "A volunteer holding a phone to her forehead during a guessing game",
+          fr: "Une bénévole tenant un téléphone sur son front pendant un jeu de devinettes",
+        },
+        event: "volunteers-hangout",
+        width: 1333,
+        height: 1850,
+        span: "tall",
+      },
+      {
+        src: "/images/gallery/gwf-2024-45.jpg",
+        alt: {
+          en: "Two fellows hugging while a friend beside them smiles",
+          fr: "Deux fellows s'enlaçant tandis qu'une amie sourit à côté",
+        },
+        event: "gwf-2024",
+        width: 2000,
+        height: 1183,
+      },
+      {
+        src: "/images/gallery/hive-001-28.jpg",
+        alt: {
+          en: "A black-and-white photo of two participants deep in conversation",
+          fr: "Une photo en noir et blanc de deux participants en pleine conversation",
+        },
+        event: "hive-001",
+        width: 2000,
+        height: 1333,
+      },
+      {
+        src: "/images/gallery/gwf-2026-33.jpg",
+        alt: {
+          en: "A group of seven fellows wearing name tags and smiling indoors",
+          fr: "Un groupe de sept fellows portant des badges et souriant à l'intérieur",
+        },
+        event: "gwf-2026",
+        width: 2000,
+        height: 1333,
+        span: "wide",
+      },
+      {
+        src: "/images/gallery/gwf-2025-41.jpg",
+        alt: {
+          en: "The 2025 Goodwill Fellowship cohort in yellow t-shirts posing in front of the event banner",
+          fr: "La promotion 2025 de la Goodwill Fellowship en t-shirts jaunes posant devant la bannière de l'événement",
+        },
+        event: "gwf-2025",
+        width: 2000,
+        height: 1253,
+        span: "big",
+      },
+      {
+        src: "/images/gallery/nsai-heroes-47.jpg",
+        alt: {
+          en: "A pupil holding up a solar water device built from a bottle and a wooden box",
+          fr: "Un élève montrant un dispositif solaire fabriqué avec une bouteille et une boîte en bois",
+        },
+        event: "nsai-heroes",
+        width: 1333,
+        height: 1755,
+        span: "tall",
+      },
+      {
+        src: "/images/gallery/gwf-2024-44.jpg",
+        alt: {
+          en: "Two fellows wearing name tags walking past the Goodwill Fellowship banner",
+          fr: "Deux fellows portant des badges passant devant la bannière de la Goodwill Fellowship",
+        },
+        event: "gwf-2024",
+        width: 2000,
+        height: 1183,
+      },
+      {
+        src: "/images/gallery/hive-001-30.jpg",
+        alt: {
+          en: "Participants in a group discussion outdoors among palm trees",
+          fr: "Des participants en discussion de groupe en plein air, parmi les palmiers",
+        },
+        event: "hive-001",
+        width: 2000,
+        height: 1333,
+        span: "wide",
+      },
+      {
+        src: "/images/gallery/gwf-2026-35.jpg",
+        alt: {
+          en: "Two fellows in discussion, one gesturing as he explains an idea",
+          fr: "Deux fellows en discussion, l'un gesticulant pour expliquer une idée",
+        },
+        event: "gwf-2026",
+        width: 2000,
+        height: 1333,
+      },
+      {
+        src: "/images/gallery/volunteers-hangout-52.jpg",
+        alt: {
+          en: "Two volunteers in conversation, one explaining with open hands",
+          fr: "Deux bénévoles en conversation, l'un expliquant les mains ouvertes",
+        },
+        event: "volunteers-hangout",
+        width: 2000,
+        height: 1333,
+        span: "wide",
+      },
+      {
+        src: "/images/gallery/gwf-2024-42.jpg",
+        alt: {
+          en: "The 2024 Goodwill Fellowship cohort in blue t-shirts making peace signs",
+          fr: "La promotion 2024 de la Goodwill Fellowship en t-shirts bleus faisant le signe de la paix",
+        },
+        event: "gwf-2024",
+        width: 2000,
+        height: 1099,
+        span: "big",
+      },
+      {
+        src: "/images/gallery/nsai-heroes-49.jpg",
+        alt: {
+          en: "Two pupils wiring a solar device together at their desk",
+          fr: "Deux élèves câblant ensemble un dispositif solaire à leur table",
+        },
+        event: "nsai-heroes",
+        width: 2000,
+        height: 1090,
+      },
+      {
+        src: "/images/gallery/gwf-2025-39.jpg",
+        alt: {
+          en: "Fellows in yellow t-shirts planning together around a table covered in sticky notes",
+          fr: "Des fellows en t-shirts jaunes planifiant ensemble autour d'une table couverte de post-it",
+        },
+        event: "gwf-2025",
+        width: 2000,
+        height: 1253,
+      },
+      {
+        src: "/images/gallery/hive-001-31.jpg",
+        alt: {
+          en: "Two young women smiling together in purple light",
+          fr: "Deux jeunes femmes souriant ensemble sous une lumière violette",
+        },
+        event: "hive-001",
+        width: 1333,
+        height: 2000,
+        span: "tall",
+      },
+      {
+        src: "/images/gallery/gwf-2026-34.jpg",
+        alt: {
+          en: "Two fellows smiling inside a Grow, Connect, Thrive photo frame",
+          fr: "Deux fellows souriant dans un cadre photo « Grow, Connect, Thrive »",
+        },
+        event: "gwf-2026",
+        width: 2000,
+        height: 1333,
+      },
+      {
+        src: "/images/gallery/nsai-heroes-50.jpg",
+        alt: {
+          en: "A classroom of pupils in orange uniforms listening attentively",
+          fr: "Une classe d'élèves en uniforme orange écoutant attentivement",
+        },
+        event: "nsai-heroes",
+        width: 2000,
+        height: 1090,
+        span: "wide",
+      },
+      {
+        src: "/images/gallery/gwf-2025-38.jpg",
+        alt: {
+          en: "Fellows in white t-shirts posing with an Impact Axis social media photo frame",
+          fr: "Des fellows en t-shirts blancs posant avec un cadre photo Impact Axis façon réseaux sociaux",
+        },
+        event: "gwf-2025",
+        width: 2000,
+        height: 1253,
+        span: "wide",
+      },
+      {
+        src: "/images/gallery/gwf-2024-46.jpg",
+        alt: {
+          en: "A fellow laughing in conversation with a friend",
+          fr: "Un fellow riant en pleine conversation avec une amie",
+        },
+        event: "gwf-2024",
+        width: 2000,
+        height: 1183,
+        span: "wide",
+      },
+    ],
+  },
+
   closing: {
     headline: {
       en: "Find your place in our work.",
