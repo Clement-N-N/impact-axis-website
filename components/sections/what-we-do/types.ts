@@ -111,11 +111,46 @@ export type OurWorkClosingContent = {
   cards: ClosingCtaCard[];
 };
 
+export type GalleryEvent = {
+  /** Stable key used by the filter chips and each photo's `event`. */
+  id: string;
+  name: LocalizedText;
+};
+
+export type GalleryPhoto = {
+  src: string;
+  alt: LocalizedText;
+  event: GalleryEvent["id"];
+  width: number;
+  height: number;
+  /** Mosaic footprint: 1×1 by default, `wide` 2×1, `tall` 1×2, `big` 2×2. */
+  span?: "wide" | "tall" | "big";
+};
+
+export type GalleryContent = {
+  eyebrow: LocalizedText;
+  headline: LocalizedText;
+  intro: LocalizedText;
+  allLabel: LocalizedText;
+  /** Accessible label for the chip group. */
+  filterLabel: LocalizedText;
+  lightbox: {
+    close: LocalizedText;
+    previous: LocalizedText;
+    next: LocalizedText;
+    /** "{current} of {total}" */
+    counter: LocalizedText;
+  };
+  events: GalleryEvent[];
+  photos: GalleryPhoto[];
+};
+
 export type WhatWeDoPageContent = {
   hero: WhatWeDoHeroContent;
   focus: OurFocusContent;
   programmes: OurProgrammesContent;
   different: WhatMakesDifferentContent;
   workInAction: WorkInActionContent;
+  gallery: GalleryContent;
   closing: OurWorkClosingContent;
 };

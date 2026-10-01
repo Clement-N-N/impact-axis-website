@@ -5,8 +5,7 @@ import {
   WhatWeDoHero,
   OurFocusSection,
   OurProgrammesSection,
-  WhatMakesDifferentSection,
-  WorkInActionSection,
+  EventGallerySection,
   OurWorkClosingCta,
   whatWeDoPageContent,
 } from "@/components/sections/what-we-do";
@@ -60,8 +59,9 @@ export default async function WhatWeDoPage({ params }: Props) {
       <WhatWeDoHero data={content.hero} locale={loc} />
       <OurFocusSection data={content.focus} locale={loc} />
       <OurProgrammesSection data={content.programmes} locale={loc} />
-      <WhatMakesDifferentSection data={content.different} locale={loc} />
-      <WorkInActionSection data={content.workInAction} locale={loc} />
+      {/* "What makes our work different" and "Work in action" are hidden
+          for now (components and content kept) in favour of the gallery. */}
+      <EventGallerySection data={content.gallery} locale={loc} />
       <OurWorkClosingCta data={content.closing} locale={loc} />
     </div>
   );
