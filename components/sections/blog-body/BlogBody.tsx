@@ -1,6 +1,6 @@
 import { BlogCard } from "@/components/ui/BlogCard";
 import { BlogContentLayout } from "@/components/sections/blog-content-layout";
-import { PromoCard } from "@/components/ui/PromoCard";
+import { PromoCard, type PromoCardContent } from "@/components/ui/PromoCard";
 import type { Locale } from "@/i18n/routing";
 import type { BlogPost } from "@/components/sections/blog-card/types";
 import { blogBodyContent } from "./data";
@@ -12,11 +12,14 @@ export function BlogBody({
   categories,
   activeCategory,
   locale,
+  promoCard,
 }: {
   posts: BlogPost[];
   categories: BlogCategory[];
   activeCategory?: string;
   locale: Locale;
+  /** The open call, when one is running. Absent means no card is shown. */
+  promoCard?: PromoCardContent | null;
 }) {
   const data = blogBodyContent;
 
@@ -33,7 +36,7 @@ export function BlogBody({
       }
       sidebar={
         <>
-          <PromoCard content={data.promoCard} locale={locale} />
+          {promoCard ? <PromoCard content={promoCard} locale={locale} /> : null}
           <CategoryList
             heading={data.categoriesHeading}
             viewAllLabel={data.viewAllCategoriesLabel}

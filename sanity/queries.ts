@@ -141,3 +141,18 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "homePage"][0]{
   bottomCtaTitle{en, fr},
   bottomCtaButtonLabel{en, fr}
 }`);
+
+// Only a call that is currently running. Sanity evaluates now() server-side, so
+// a closed call is simply not returned and the card has nothing to render.
+export const OPEN_CALL_QUERY = defineQuery(`*[
+  _type == "openCall"
+  && applicationsOpenAt <= string(now())
+  && applicationsCloseAt >= string(now())
+] | order(applicationsCloseAt asc)[0]{
+  "id": _id,
+  title{en, fr},
+  applicationsCloseAt,
+  applyHref,
+  learnMoreHref,
+  "image": image.asset->url
+}`);

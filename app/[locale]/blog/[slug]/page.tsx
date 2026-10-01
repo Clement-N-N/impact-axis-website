@@ -5,6 +5,7 @@ import { BlogDetailsHero } from "@/components/sections/blog-details-hero";
 import { BlogDetailsBody } from "@/components/sections/blog-details-body";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
+import { getOpenCallPromo } from "@/sanity/openCall";
 import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
 import { BLOG_POST_BY_SLUG_QUERY, BLOG_POSTS_QUERY, BLOG_SLUGS_QUERY } from "@/sanity/queries";
@@ -96,6 +97,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BlogPostPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
+  const promoCard = await getOpenCallPromo();
 
   const post = await getPostBySlug(slug);
   if (!post) notFound();
@@ -105,7 +107,7 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <>
       <BlogDetailsHero post={post} locale={locale as Locale} />
-      <BlogDetailsBody post={post} relatedPost={relatedPost} locale={locale as Locale} />
+      <BlogDetailsBody post={post} relatedPost={relatedPost} locale={locale as Locale} promoCard={promoCard} />
     </>
   );
 }

@@ -1,6 +1,7 @@
 import type { Locale } from "@/i18n/routing";
 import { client } from "@/sanity/client";
 import { HOME_SETTINGS_QUERY } from "@/sanity/queries";
+import { getOpenCallPromo } from "@/sanity/openCall";
 import { heroConfig } from "@/components/sections/home-hero/data";
 import { isHeroVariantId } from "./types";
 import { PromoCardHero } from "./PromoCardHero";
@@ -36,7 +37,14 @@ export async function HomeHero({ locale }: { locale: Locale }) {
 
   switch (data.type) {
     case "promo-card":
-      return <PromoCardHero data={data} locale={locale} />;
+      // Only this variant shows an open call, so only it pays for the query.
+      return (
+        <PromoCardHero
+          data={data}
+          locale={locale}
+          promoCard={await getOpenCallPromo()}
+        />
+      );
     case "overlay-welcome":
       return <OverlayWelcomeHero data={data} locale={locale} />;
     case "collage-dark":
