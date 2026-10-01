@@ -323,11 +323,9 @@ export function WhyWeExistAbout({
           <span className="bg-impact-yellow rounded-full px-4 py-1.5 text-sm font-semibold whitespace-nowrap text-black">
             {getLocalizedText(data.eyebrow, locale)}
           </span>
-          {/* `!` because styles/_base.scss sets unlayered h1–h6 rules that
-              otherwise beat Tailwind's utilities. */}
           <h2
             ref={headingRef}
-            className="text-impact-blue text-5xl leading-[1.08]! font-light! tracking-[-0.02em] text-balance"
+            className="text-impact-blue text-5xl leading-[1.08] font-light tracking-[-0.02em] text-balance"
           >
             <span className="block overflow-hidden pb-[0.08em]">
               <span data-line className="block font-bold">

@@ -29,7 +29,7 @@ export function AboutHero({
       <Container className="relative z-10 pt-14 md:pt-20 lg:pt-16">
         <HeroStagger className="mx-auto flex max-w-[62rem] flex-col items-center gap-6 text-center">
           <HeroStaggerItem>
-            <h1 className="text-5xl leading-[1.1]! font-light! tracking-[-0.02em] text-balance text-white">
+            <h1 className="text-5xl leading-[1.1] font-light tracking-[-0.02em] text-balance text-white">
               <HighlightedText text={getLocalizedText(data.headline, locale)} />
             </h1>
           </HeroStaggerItem>

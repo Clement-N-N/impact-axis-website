@@ -30,7 +30,7 @@ export function PromoCardHero({
       <div className="absolute inset-0 z-10 flex h-full w-full items-end bg-[#0D0D0D]/65">
         <Container className="gap-gutter grid grid-cols-1 py-12 lg:grid-cols-12">
           <div className={headlineColStyles({ locale })}>
-            <h1 className="text-5xl !font-medium text-white">
+            <h1 className="text-5xl font-medium text-white">
               {getLocalizedText(data.headline, locale)}
             </h1>
             <Button

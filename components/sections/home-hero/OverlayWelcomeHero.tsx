@@ -28,7 +28,7 @@ export function OverlayWelcomeHero({
           </div>
 
           <div className="flex h-full flex-col gap-10 lg:col-span-6">
-            <h1 className="text-[4vw] leading-[4.5vw] !font-normal text-white">
+            <h1 className="text-[4vw] leading-[4.5vw] font-normal text-white">
               {getLocalizedText(data.headline, locale)}{" "}
               <span className="font-normal italic">
                 {getLocalizedText(data.headlineEmphasis, locale)}

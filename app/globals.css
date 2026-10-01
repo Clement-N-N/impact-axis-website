@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+/* Heading defaults. Kept in the base layer (not in styles/_base.scss,
+   which is unlayered) so a heading's own font-* / leading-* / text-*
+   utilities override them. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 450;
+    line-height: 1.3;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
