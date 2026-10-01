@@ -161,30 +161,30 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
   programmes: {
     eyebrow: { en: "Our Programmes", fr: "Nos programmes" },
     headline: {
-      en: "Where the work comes to life.",
-      fr: "Là où le travail prend vie.",
+      en: "How we bring this to life",
+      fr: "Comment nous donnons vie à cette approche",
     },
     intro: {
-      en: "Our programmes turn these focus areas into structured learning, community and career development experiences for young people.",
-      fr: "Nos programmes traduisent ces axes en expériences structurées d'apprentissage, de communauté et de développement de carrière pour les jeunes.",
+      en: "Our programmes turn skills, networks and career readiness into practical experiences for young people.",
+      fr: "Nos programmes transforment les compétences, les réseaux et la préparation à la carrière en expériences concrètes pour les jeunes.",
     },
     programmes: [
       {
         id: "goodwill-fellowship",
         title: { en: "Goodwill Fellowship", fr: "Goodwill Fellowship" },
         tagline: {
-          en: "Building skills, relationships and pathways to opportunity.",
-          fr: "Développer des compétences, des relations et des chemins vers l'opportunité.",
+          en: "Skills, relationships and pathways to opportunity.",
+          fr: "Compétences, relations et passerelles vers les opportunités.",
         },
         description: {
-          en: "The Goodwill Fellowship is a four-month employability and youth development programme for young Cameroonians. Fellows strengthen durable skills, gain practical experience, build professional relationships and receive continued support as they navigate opportunities.",
-          fr: "Le Goodwill Fellowship est un programme de quatre mois dédié à l'employabilité et au développement des jeunes Camerounais. Les fellows renforcent leurs compétences durables, acquièrent une expérience pratique, tissent des relations professionnelles et bénéficient d'un accompagnement continu.",
+          en: "A four-month programme helping young Cameroonians build durable skills, practical experience and professional networks.",
+          fr: "Un programme de quatre mois qui aide les jeunes Camerounais à développer des compétences durables, une expérience pratique et des réseaux professionnels.",
         },
         image: {
-          src: "/images/alumni-1.jpg",
+          src: "/images/prog-goodwill-fellowship.jpg",
           alt: {
-            en: "Goodwill Fellowship participants during an intensive",
-            fr: "Des participants du Goodwill Fellowship pendant un intensif",
+            en: "Goodwill Fellowship participants in black Impact Axis T-shirts posing together in front of the programme banner",
+            fr: "Des participants de la Goodwill Fellowship en T-shirts noirs Impact Axis posent ensemble devant la bannière du programme",
           },
         },
       },
@@ -192,21 +192,21 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
         id: "skills-employability-learning",
         title: {
           en: "Skills & Employability Learning",
-          fr: "Apprentissage des compétences et de l'employabilité",
+          fr: "Compétences et employabilité",
         },
         tagline: {
           en: "Practical learning for life beyond the classroom.",
-          fr: "Un apprentissage pratique pour la vie au-delà de la salle de classe.",
+          fr: "Un apprentissage concret pour la vie après l’école.",
         },
         description: {
-          en: "Our experiential workshops help young people build and practise communication, problem-solving, teamwork, career navigation, digital skills and other capabilities relevant to the world of work.",
-          fr: "Nos ateliers expérientiels aident les jeunes à développer et à pratiquer la communication, la résolution de problèmes, le travail d'équipe, l'orientation de carrière, les compétences numériques et d'autres capacités utiles au monde du travail.",
+          en: "Experiential workshops that help young people practise the skills they need to navigate work and opportunity.",
+          fr: "Des ateliers expérientiels qui aident les jeunes à pratiquer les compétences dont ils ont besoin pour évoluer dans le monde du travail et saisir les opportunités.",
         },
         image: {
-          src: "/images/alumni-4.png",
+          src: "/images/prog-skills-learning.jpg",
           alt: {
-            en: "A skills workshop in progress",
-            fr: "Un atelier de compétences en cours",
+            en: "Two participants work through a worksheet together during a skills workshop",
+            fr: "Deux participants remplissent ensemble une fiche lors d’un atelier de compétences",
           },
         },
       },
@@ -215,17 +215,17 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
         title: { en: "The Hive", fr: "The Hive" },
         tagline: {
           en: "Where young people, ideas and opportunity meet.",
-          fr: "Là où les jeunes, les idées et les opportunités se rencontrent.",
+          fr: "Là où se rencontrent les jeunes, les idées et les opportunités.",
         },
         description: {
-          en: "The Hive creates spaces for young people to meet peers and professionals, exchange ideas, build meaningful relationships and gain exposure to opportunities beyond their immediate networks.",
-          fr: "The Hive crée des espaces où les jeunes rencontrent leurs pairs et des professionnels, échangent des idées, nouent des relations solides et accèdent à des opportunités au-delà de leur réseau immédiat.",
+          en: "Curated spaces for young people to connect, exchange ideas and expand their professional networks.",
+          fr: "Des espaces pensés pour que les jeunes se rencontrent, échangent des idées et élargissent leurs réseaux professionnels.",
         },
         image: {
-          src: "/images/girls-2.jpg",
+          src: "/images/prog-the-hive.jpg",
           alt: {
-            en: "Young people connecting at a Hive gathering",
-            fr: "Des jeunes échangeant lors d'une rencontre The Hive",
+            en: "Young women in matching blue T-shirts smiling and making peace signs together",
+            fr: "De jeunes femmes en T-shirts bleus assortis sourient et font ensemble le signe de la paix",
           },
         },
       },
