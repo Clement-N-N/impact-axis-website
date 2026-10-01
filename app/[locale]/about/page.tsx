@@ -3,7 +3,6 @@ import { setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import {
   AboutHero,
-  AboutImageBand,
   WhyWeExistAbout,
   MissionVisionSection,
   PhotoStrip,
@@ -60,7 +59,8 @@ export default async function AboutPage({ params }: Props) {
   return (
     <div className="w-full bg-white">
       <AboutHero data={content.hero} locale={loc} />
-      <AboutImageBand data={content.imageBand} locale={loc} />
+      {/* The "Youth workforce development in Cameroon" image band
+          (AboutImageBand) is hidden for now; component and content kept. */}
       <WhyWeExistAbout data={content.whyWeExist} locale={loc} />
       <MissionVisionSection data={content.missionVision} locale={loc} />
       <PhotoStrip data={content.photoStrip} locale={loc} />
