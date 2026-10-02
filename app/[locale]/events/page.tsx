@@ -13,7 +13,8 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
-  const title = locale === "fr" ? "Événements & Ateliers" : "Events & Workshops";
+  const title =
+    locale === "fr" ? "Événements & Ateliers" : "Events & Workshops";
   const description =
     locale === "fr"
       ? "Rejoignez nos événements, ateliers et webinaires pour connecter et développer les compétences des jeunes talents."

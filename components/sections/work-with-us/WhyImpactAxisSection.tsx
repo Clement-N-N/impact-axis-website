@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { Container } from "@/components/layout/Container";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
-import { aboutPageContent } from "@/components/sections/about";
+import { PartnerLogoMarquee } from "@/components/sections/partners/PartnerLogoMarquee";
 import type { ImpactStatEntry } from "@/sanity/home";
 import type { Locale } from "@/i18n/routing";
 import type { WhyImpactAxisContent } from "./types";
@@ -20,9 +19,8 @@ if (typeof window !== "undefined") {
  * Figures and the partner logos that back them.
  *
  * Both are borrowed rather than restated: the statistics come from the same
- * `homeImpact` singleton the home and Impact pages read, and the logos from
- * the About page's list, which mirrors the `partnerLogo` documents. Writing
- * either out again here would be a second place to update them.
+ * `homeImpact` singleton the home and Impact pages read, and the logos are
+ * the shared partner rows (one list, mirroring the `partnerLogo` documents).
  */
 export function WhyImpactAxisSection({
   data,
@@ -126,8 +124,6 @@ export function WhyImpactAxisSection({
     };
   }, []);
 
-  const logos = aboutPageContent.partnership.logos;
-
   return (
     <section ref={sectionRef} className="py-section w-full bg-white">
       <Container className="gap-gutter grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12">
@@ -179,7 +175,7 @@ export function WhyImpactAxisSection({
                     key={index}
                     className="border-border flex flex-col gap-1 border-t pt-4"
                   >
-                    <span className="text-[clamp(1.25rem,2vw,1.75rem)] leading-none font-medium tabular-nums text-black">
+                    <span className="text-[clamp(1.25rem,2vw,1.75rem)] leading-none font-medium text-black tabular-nums">
                       {stat.value}
                     </span>
                     <span className="text-impact-gray text-[clamp(0.75rem,0.9vw,0.875rem)] leading-[1.45]">
@@ -191,39 +187,17 @@ export function WhyImpactAxisSection({
             </div>
           </div>
         ) : null}
+      </Container>
 
-        <div
-          ref={logosRef}
-          className="col-span-4 mt-16 md:col-span-8 lg:col-span-12 lg:mt-20"
-        >
+      {/* Partners: the shared logo rows, full bleed. */}
+      <div ref={logosRef} className="mt-16 lg:mt-20">
+        <Container>
           <p className="text-impact-gray pb-8 text-[clamp(0.875rem,1vw,0.9375rem)] lg:pb-10">
             {getLocalizedText(data.logosCaption, locale)}
           </p>
-
-          {/* Centred only below lg. The marks are fixed width, so on a narrow
-              screen they pack from the left and leave the remainder empty, as
-              though a column were missing. Desktop and tablet keep the
-              left-aligned row they already had. */}
-          <ul className="gap-gutter flex flex-wrap items-center justify-center lg:justify-start">
-            {logos.map((logo) => (
-              <li
-                key={logo.name}
-                className="border-border flex items-center justify-center border p-5"
-              >
-                <div className="relative h-10 w-24 lg:h-12 lg:w-28">
-                  <Image
-                    src={logo.logoUrl}
-                    alt={logo.name}
-                    fill
-                    sizes="112px"
-                    className="object-contain"
-                  />
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Container>
+        </Container>
+        <PartnerLogoMarquee locale={locale} rows={2} />
+      </div>
     </section>
   );
 }

@@ -7,7 +7,11 @@ import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import { client } from "@/sanity/client";
 import { BLOG_CATEGORY_SLUGS_QUERY } from "@/sanity/queries";
-import { getBlogCategories, getBlogCategoryBySlug, getBlogPosts } from "@/sanity/blog";
+import {
+  getBlogCategories,
+  getBlogCategoryBySlug,
+  getBlogPosts,
+} from "@/sanity/blog";
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
@@ -66,12 +70,20 @@ export default async function BlogCategoryPage({ params }: Props) {
   const category = await getBlogCategoryBySlug(slug);
   if (!category) notFound();
 
-  const [posts, categories] = await Promise.all([getBlogPosts(slug), getBlogCategories()]);
+  const [posts, categories] = await Promise.all([
+    getBlogPosts(slug),
+    getBlogCategories(),
+  ]);
 
   return (
     <>
       <BlogCategoryHero category={category} locale={locale as Locale} />
-      <BlogBody posts={posts} categories={categories} activeCategory={slug} locale={locale as Locale} />
+      <BlogBody
+        posts={posts}
+        categories={categories}
+        activeCategory={slug}
+        locale={locale as Locale}
+      />
     </>
   );
 }

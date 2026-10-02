@@ -70,7 +70,8 @@ export default async function ImpactPage({ params }: Props) {
 
   // An explicitly featured report wins; otherwise the most recently published
   // one, since the query already returns them newest first.
-  const latest = reports.find((report) => report.featured) ?? reports[0] ?? null;
+  const latest =
+    reports.find((report) => report.featured) ?? reports[0] ?? null;
 
   return (
     <div className="w-full bg-white">

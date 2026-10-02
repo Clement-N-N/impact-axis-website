@@ -58,14 +58,25 @@ export default async function BlogPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [posts, categories] = await Promise.all([getBlogPosts(null), getBlogCategories()]);
+  const [posts, categories] = await Promise.all([
+    getBlogPosts(null),
+    getBlogCategories(),
+  ]);
   const heroPosts = posts.slice(0, HERO_POST_COUNT);
   const bodyPosts = posts.slice(HERO_POST_COUNT);
 
   return (
     <>
-      <BlogHero data={blogHeroContent} posts={heroPosts} locale={locale as Locale} />
-      <BlogBody posts={bodyPosts} categories={categories} locale={locale as Locale} />
+      <BlogHero
+        data={blogHeroContent}
+        posts={heroPosts}
+        locale={locale as Locale}
+      />
+      <BlogBody
+        posts={bodyPosts}
+        categories={categories}
+        locale={locale as Locale}
+      />
     </>
   );
 }

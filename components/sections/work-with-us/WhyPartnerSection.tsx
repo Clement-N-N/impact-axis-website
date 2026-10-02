@@ -61,11 +61,9 @@ export function WhyPartnerSection({
             pathsRef.current.querySelectorAll("path"),
           )
         : [];
-      const fadeTargets = [
-        eyebrowRef.current,
-        ...items,
-        ...bodyItems,
-      ].filter(Boolean);
+      const fadeTargets = [eyebrowRef.current, ...items, ...bodyItems].filter(
+        Boolean,
+      );
 
       if (!headlineRef.current) return;
 
