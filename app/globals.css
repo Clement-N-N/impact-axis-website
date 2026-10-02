@@ -188,3 +188,11 @@
     transform: scaleX(1);
   }
 }
+
+/* Odometer digit column (components/sections/work-with-us/Odometer.tsx):
+   two runs of 0–9, one per line, drawn by CSS so they aren't page text. */
+.odometer-col::before {
+  content: "0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9";
+  white-space: pre;
+  display: block;
+}

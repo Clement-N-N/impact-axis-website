@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { pageTitle, withBrand } from "@/lib/seo";
+import { staticPageMetadata } from "@/lib/seo";
 import { setRequestLocale } from "next-intl/server";
 import { BlogHero } from "@/components/sections/blog-hero";
 import { blogHeroContent } from "@/components/sections/blog-hero/data";
@@ -13,40 +13,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-
-  const title = pageTitle("blog", locale);
-  const description =
-    locale === "fr"
-      ? "Découvrez nos derniers articles, actualités et réflexions sur le développement des talents en Afrique."
-      : "Explore our latest articles, news, and insights on empowering African talent.";
-
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
-  const canonical = `${baseUrl}/${locale}/blog`;
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical,
-      languages: {
-        en: `${baseUrl}/en/blog`,
-        fr: `${baseUrl}/fr/blog`,
-      },
-    },
-    openGraph: {
-      title: withBrand(title),
-      description,
-      url: canonical,
-      siteName: "Impact Axis",
-      locale: locale === "fr" ? "fr_FR" : "en_US",
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: withBrand(title),
-      description,
-    },
-  };
+  return staticPageMetadata("blog", "/blog", locale);
 }
 
 const HERO_POST_COUNT = 2;

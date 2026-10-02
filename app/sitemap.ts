@@ -12,7 +12,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "",
     "/about",
     "/what-we-do",
-    "/programs",
     "/impact",
     "/work-with-us",
     // Derived from the audience list so a new partnership page can't be
@@ -26,7 +25,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const entries: MetadataRoute.Sitemap = [];
-  const now = new Date();
+  // Each URL lists its other-language twin (and x-default), matching the
+  // pages' own hreflang tags. No lastModified: a fake "changed today" on
+  // every build teaches Google to ignore the field.
+  const languages = (route: string) => ({
+    ...Object.fromEntries(locales.map((l) => [l, `${baseUrl}/${l}${route}`])),
+    "x-default": `${baseUrl}/${routing.defaultLocale}${route}`,
+  });
 
   // Add static routes for each locale
   for (const route of staticRoutes) {
@@ -34,9 +39,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const url = `${baseUrl}/${locale}${route}`;
       entries.push({
         url,
-        lastModified: now,
         changeFrequency: route === "" ? "daily" : "weekly",
         priority: route === "" ? 1.0 : 0.8,
+        alternates: { languages: languages(route) },
       });
     }
   }
@@ -50,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         for (const locale of locales) {
           entries.push({
             url: `${baseUrl}/${locale}/blog/${slug}`,
-            lastModified: now,
+            alternates: { languages: languages(`/blog/${slug}`) },
             changeFrequency: "monthly",
             priority: 0.6,
           });
@@ -70,7 +75,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         for (const locale of locales) {
           entries.push({
             url: `${baseUrl}/${locale}/blog/category/${slug}`,
-            lastModified: now,
+            alternates: { languages: languages(`/blog/category/${slug}`) },
             changeFrequency: "weekly",
             priority: 0.5,
           });

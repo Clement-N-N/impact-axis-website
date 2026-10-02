@@ -16,11 +16,11 @@ export const blogBodyContent: BlogBodyContent = {
     },
     applyButton: {
       label: { en: "Apply now", fr: "Postuler maintenant" },
-      href: "/programs",
+      href: "/what-we-do",
     },
     learnMoreButton: {
       label: { en: "Learn more", fr: "En savoir plus" },
-      href: "/programs",
+      href: "/what-we-do",
     },
   },
   categoriesHeading: { en: "All categories", fr: "Toutes les catégories" },

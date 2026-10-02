@@ -27,11 +27,11 @@ export const heroConfig: HeroConfig = {
         },
         applyButton: {
           label: { en: "Apply now", fr: "Postuler" },
-          href: "/programs",
+          href: "/what-we-do",
         },
         learnMoreButton: {
           label: { en: "Learn more", fr: "En savoir plus" },
-          href: "/programs",
+          href: "/what-we-do",
         },
       },
     },

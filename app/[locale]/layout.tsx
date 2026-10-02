@@ -9,43 +9,47 @@ import { Footer } from "@/components/layout/Footer";
 import { client } from "@/sanity/client";
 import { SOCIAL_LINKS_QUERY } from "@/sanity/queries";
 import type { SocialLinks } from "@/sanity/types";
-import { PAGE_TITLES, SITE_NAME, TITLE_TEMPLATE, withBrand } from "@/lib/seo";
+import { Analytics } from "@vercel/analytics/next";
+import {
+  BASE_URL,
+  PAGE_DESCRIPTIONS,
+  PAGE_TITLES,
+  SITE_NAME,
+  TITLE_TEMPLATE,
+  ogCard,
+  withBrand,
+} from "@/lib/seo";
+import { SiteJsonLd } from "@/components/seo/JsonLd";
+import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import "../globals.css";
 import "@/styles/_fonts.scss";
 import "@/styles/_base.scss";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(baseUrl),
+  metadataBase: new URL(BASE_URL),
   title: {
     // Only pages without their own title (404, errors) fall back to this.
     default: SITE_NAME,
     template: TITLE_TEMPLATE,
   },
-  description:
-    "Giving young Africans the skills, judgment, and confidence employers actually need.",
+  description: PAGE_DESCRIPTIONS.home.en,
   openGraph: {
     type: "website",
-    siteName: "Impact Axis",
+    siteName: SITE_NAME,
     title: withBrand(PAGE_TITLES.home.en),
-    description:
-      "Giving young Africans the skills, judgment, and confidence employers actually need.",
-    images: [
-      {
-        url: "/logos/impact_axis_white_transparent.png",
-        width: 1200,
-        height: 630,
-        alt: "Impact Axis Logo",
-      },
-    ],
+    description: PAGE_DESCRIPTIONS.home.en,
+    images: [ogCard(PAGE_TITLES.home.en)],
   },
   twitter: {
     card: "summary_large_image",
     title: withBrand(PAGE_TITLES.home.en),
-    description:
-      "Giving young Africans the skills, judgment, and confidence employers actually need.",
-    images: ["/logos/impact_axis_white_transparent.png"],
+    description: PAGE_DESCRIPTIONS.home.en,
+    images: [ogCard(PAGE_TITLES.home.en).url],
+  },
+  // Google Search Console: set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION in Vercel
+  // to the code from the "HTML tag" method.
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
   },
 };
 
@@ -89,6 +93,8 @@ export default async function RootLayout({
           <MobileNav />
           <main>{children}</main>
           <Footer socialLinks={socialLinks} />
+          <SiteJsonLd locale={locale as Locale} socialLinks={socialLinks} />
+          <BreadcrumbJsonLd />
           {process.env.NODE_ENV === "development" && (
             <>
               <LocalizationDebuggerLoader />
@@ -96,6 +102,7 @@ export default async function RootLayout({
             </>
           )}
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { pageTitle, withBrand } from "@/lib/seo";
+import { staticPageMetadata } from "@/lib/seo";
 import { setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { getReports } from "@/sanity/reports";
@@ -18,35 +18,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const isFr = locale === "fr";
-
-  const title = pageTitle("impact", locale);
-  const description = isFr
-    ? "Nos résultats, nos rapports annuels et nos documents de redevabilité : ce que nous avons accompli, ce que nous apprenons et où nous allons."
-    : "Our results, annual reports and accountability documents: what we have done, what we are learning and where we are going next.";
-
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
-  const canonical = `${baseUrl}/${locale}/impact`;
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical,
-      languages: {
-        en: `${baseUrl}/en/impact`,
-        fr: `${baseUrl}/fr/impact`,
-      },
-    },
-    openGraph: {
-      title: withBrand(title),
-      description,
-      url: canonical,
-      siteName: "Impact Axis",
-      locale: isFr ? "fr_FR" : "en_US",
-      type: "website",
-    },
-  };
+  return staticPageMetadata("impact", "/impact", locale);
 }
 
 export default async function ImpactPage({ params }: Props) {

@@ -12,7 +12,8 @@ if (typeof window !== "undefined") {
  * A figure like "$1.5M+" whose digits roll into place, odometer style, when
  * it scrolls into view. Each digit is a column 0–9 that slides to its value;
  * other characters ($ . M + %) stay put. The real value is the accessible
- * name, and with reduced motion (or no JS) the final digits simply show.
+ * name and the only text in the DOM; with reduced motion (or no JS) the
+ * final digits simply show.
  */
 export function Odometer({
   value,
@@ -53,6 +54,7 @@ export function Odometer({
   return (
     <span
       ref={ref}
+      role="img"
       aria-label={value}
       className={`inline-flex items-baseline tabular-nums ${className}`}
     >
@@ -65,18 +67,14 @@ export function Odometer({
           >
             <span className="invisible">{ch}</span>
             {/* Two runs of 0–9 so every digit travels at least a full turn.
-                At rest (no JS) the column sits on the real digit. */}
+                The digits are CSS-generated (.odometer-col in globals.css)
+                so the page text, which crawlers and AI tools read, is just
+                the real figure. At rest (no JS) the column sits on it. */}
             <span
               data-col={ch}
-              className="absolute inset-x-0 top-0 flex translate-y-[calc(var(--d)*-5%)] flex-col"
+              className="odometer-col absolute inset-x-0 top-0 block leading-none translate-y-[calc(var(--d)*-5%)]"
               style={{ "--d": Number(ch) + 10 } as React.CSSProperties}
-            >
-              {Array.from({ length: 20 }, (_, n) => (
-                <span key={n} className="block h-[1em] leading-none">
-                  {n % 10}
-                </span>
-              ))}
-            </span>
+            />
           </span>
         ) : (
           <span

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { pageTitle, withBrand } from "@/lib/seo";
+import { staticPageMetadata } from "@/lib/seo";
 import { setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import {
@@ -16,35 +16,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const isFr = locale === "fr";
-
-  const title = pageTitle("whatWeDo", locale);
-  const description = isFr
-    ? "Impact Axis conçoit et met en œuvre au Cameroun des programmes de développement de l'employabilité des jeunes : compétences pratiques, expérience concrète et accès aux opportunités."
-    : "Impact Axis designs and delivers youth workforce development programmes in Cameroon, building practical skills, real-world experience and access to opportunity.";
-
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
-  const canonical = `${baseUrl}/${locale}/what-we-do`;
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical,
-      languages: {
-        en: `${baseUrl}/en/what-we-do`,
-        fr: `${baseUrl}/fr/what-we-do`,
-      },
-    },
-    openGraph: {
-      title: withBrand(title),
-      description,
-      url: canonical,
-      siteName: "Impact Axis",
-      locale: isFr ? "fr_FR" : "en_US",
-      type: "website",
-    },
-  };
+  return staticPageMetadata("whatWeDo", "/what-we-do", locale);
 }
 
 export default async function WhatWeDoPage({ params }: Props) {
