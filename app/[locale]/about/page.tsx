@@ -9,7 +9,7 @@ import {
   PhotoStrip,
   OurApproachSection,
   OurPrinciplesSection,
-  PartnershipSection,
+  TeamSection,
   aboutPageContent,
 } from "@/components/sections/about";
 
@@ -70,7 +70,9 @@ export default async function AboutPage({ params }: Props) {
       <PhotoStrip data={content.photoStrip} locale={loc} />
       <OurApproachSection data={content.ourApproach} locale={loc} />
       <OurPrinciplesSection data={content.ourPrinciples} locale={loc} />
-      <PartnershipSection data={content.partnership} locale={loc} />
+      {/* Partnership now lives on Work With Us (and as a logo strip on the
+          home page); the About page ends with the people instead. */}
+      <TeamSection data={content.team} locale={loc} />
     </div>
   );
 }

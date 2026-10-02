@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PartnerLogoStrip } from "@/components/sections/partners/PartnerLogoMarquee";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { ParallaxImage } from "@/components/sections/parallax-image";
@@ -28,7 +29,11 @@ export function generateStaticParams() {
 
 async function getSocialLinks(): Promise<SocialLinks> {
   try {
-    const result = await client.fetch(SOCIAL_LINKS_QUERY, {}, { next: { revalidate: 60 } });
+    const result = await client.fetch(
+      SOCIAL_LINKS_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    );
     if (result && typeof result === "object") return result as SocialLinks;
   } catch (error) {
     console.error("Failed to fetch social links from Sanity.", error);
@@ -101,6 +106,13 @@ export default async function PartnershipPage({ params }: Props) {
       <PartnershipStatement
         statement={partnershipContent.statement}
         locale={loc}
+      />
+      <PartnerLogoStrip
+        locale={loc}
+        label={{
+          en: "Trusted by partners like",
+          fr: "Ils nous font confiance",
+        }}
       />
       <PartnershipContact
         formSubject={content.formSubject}

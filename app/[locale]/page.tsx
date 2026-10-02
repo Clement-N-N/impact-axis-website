@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PartnerLogoStrip } from "@/components/sections/partners/PartnerLogoMarquee";
 import { setRequestLocale } from "next-intl/server";
 import { HomeHero } from "@/components/sections/home-hero";
 import { WhyWeExist } from "@/components/sections/why-we-exist";
@@ -21,7 +22,8 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
-  const title = locale === "fr" ? "Accueil — Impact Axis" : "Home — Impact Axis";
+  const title =
+    locale === "fr" ? "Accueil — Impact Axis" : "Home — Impact Axis";
   const description =
     locale === "fr"
       ? "Donner aux jeunes Africains les compétences, le jugement et la confiance dont les employeurs ont réellement besoin."
@@ -73,10 +75,18 @@ export default async function Home({
       <WhyWeExist locale={loc} data={content.whyWeExist} />
       <ParallaxImage src="/images/team-1.jpg" heightClass="h-[55vh]" />
       <HomeSolution locale={loc} data={content.solution} />
-      <ParallaxImage src="/images/pattern-1.png" heightClass="h-[35vh]" padded={false} />
+      <ParallaxImage
+        src="/images/pattern-1.png"
+        heightClass="h-[35vh]"
+        padded={false}
+      />
       <WhoWeServe locale={loc} data={content.whoWeServe} />
       <WhatWeBuild locale={loc} data={content.whatWeBuild} />
       <OurImpact locale={loc} chrome={content.impactChrome} />
+      <PartnerLogoStrip
+        locale={loc}
+        label={{ en: "In partnership with", fr: "En partenariat avec" }}
+      />
       <HomeTestimonials locale={loc} />
       <HomeBlog locale={loc} />
       <HomeFaq locale={loc} />

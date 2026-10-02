@@ -469,4 +469,161 @@ export const aboutPageContent: AboutPageContent = {
       href: "/work-with-us",
     },
   },
+
+  team: {
+    eyebrow: { en: "Our Team", fr: "Notre équipe" },
+    headline: {
+      en: "Built by people who believe in what young people can become.",
+      fr: "Portée par des personnes qui croient en ce que les jeunes peuvent devenir.",
+    },
+    intro: {
+      en: "Our team brings together experience across programme design, education, research, communications, community building and youth development, united by a shared commitment to improving how young people move from learning into opportunity.",
+      fr: "Notre équipe réunit des expériences en conception de programmes, éducation, recherche, communication, animation de communautés et développement de la jeunesse, unies par un engagement commun : améliorer la manière dont les jeunes passent de l'apprentissage à l'opportunité.",
+    },
+    groups: {
+      core: { en: "Core team", fr: "Équipe principale" },
+      fellows: { en: "Fellows in residence", fr: "Fellows en résidence" },
+      board: { en: "Advisory board", fr: "Conseil consultatif" },
+    },
+    core: [
+      {
+        name: "Clement Ngosong",
+        role: { en: "Founder", fr: "Fondateur" },
+        image: "/images/team/clement-ngosong.jpg",
+        linkedin: "https://www.linkedin.com/in/clementngosong/",
+      },
+      {
+        name: "Sosthene Fotso",
+        role: { en: "Programme Lead", fr: "Responsable des programmes" },
+        image: "/images/team/sosthene-fotso.jpg",
+        linkedin: "https://www.linkedin.com/in/sosthene-f-26a959137/",
+      },
+      {
+        name: "Lenora Kelen",
+        role: { en: "Administrative Lead", fr: "Responsable administrative" },
+        image: "/images/team/lenora-kelen.jpg",
+        linkedin: "https://www.linkedin.com/in/lenora-kelen-661ab022b/",
+      },
+      {
+        name: "Walters Kumo",
+        role: { en: "Community Lead", fr: "Responsable de la communauté" },
+        image: "/images/team/walters-kumo.jpg",
+        linkedin: "https://www.linkedin.com/in/kumo-walters-n-5035181b9/",
+      },
+    ],
+    fellows: [
+      {
+        name: "Vitalis Ngam",
+        role: { en: "Fellow in Residence", fr: "Fellow en résidence" },
+        image: "/images/team/vitalis-ngam.jpg",
+        linkedin: "https://www.linkedin.com/in/ngam-vitalis/",
+      },
+      {
+        name: "Silas Fomishi",
+        role: { en: "Fellow in Residence", fr: "Fellow en résidence" },
+        image: "/images/team/silas-fomishi.jpg",
+        linkedin: "https://www.linkedin.com/in/silas-fomishi-mumeh-3a4b75251/",
+      },
+    ],
+    board: [
+      {
+        name: "Isaac Cudjoe, PhD",
+        role: { en: "CEO, Peace First", fr: "Directeur général, Peace First" },
+        image: "/images/team/isaac-cudjoe.jpg",
+        bio: {
+          en: "Isaac Cudjoe is CEO of Peace First, a global nonprofit supporting young people to lead change in their communities. His career spans youth leadership, systems change, programme design and global strategy across Africa and the United States. He holds a PhD in Public Policy and Administration and brings deep experience building youth-centred programmes, partnerships and institutions.",
+          fr: "Isaac Cudjoe est Directeur général de Peace First, une organisation mondiale à but non lucratif qui accompagne les jeunes dans leur capacité à conduire le changement au sein de leurs communautés. Son parcours couvre le leadership des jeunes, la transformation des systèmes, la conception de programmes et la stratégie internationale en Afrique et aux États-Unis. Titulaire d’un doctorat en politiques publiques et administration, il possède une solide expérience dans la conception de programmes, de partenariats et d’institutions centrés sur les jeunes.",
+        },
+      },
+      {
+        name: "Nsah Mala, PhD",
+        role: {
+          en: "Futurist and foresight researcher",
+          fr: "Futurologue et chercheur en prospective",
+        },
+        image: "/images/team/nsah-mala.jpg",
+        bio: {
+          en: "Nsah Mala is an award-winning futurist, foresight practitioner, writer and transdisciplinary researcher working across sustainability, anticipatory governance, environmental humanities and futures studies. His work has included collaborations with organisations such as UNESCO-MOST BRIDGES Coalition, the School of International Futures, Brookings Institution, Future Earth and several European universities.",
+          fr: "Nsah Mala est futurologue, spécialiste de la prospective, écrivain et chercheur transdisciplinaire primé. Ses travaux portent notamment sur la durabilité, la gouvernance anticipative, les humanités environnementales et les études des futurs. Il a notamment collaboré avec des organisations telles que la coalition UNESCO-MOST BRIDGES, la School of International Futures, la Brookings Institution, Future Earth ainsi qu’avec plusieurs universités européennes.",
+        },
+      },
+      {
+        name: "Clare Ignatowski, PhD",
+        role: {
+          en: "Youth development expert, formerly USAID",
+          fr: "Experte du développement de la jeunesse, ex-USAID",
+        },
+        image: "/images/team/clare-ignatowski.jpg",
+        bio: {
+          en: "Clare Ignatowski is a youth development expert with more than a decade of experience at USAID, where she co-authored the Agency's first Youth in Development Policy and helped design the $500 million YouthPower Project. A former Peace Corps Volunteer and researcher in Cameroon, she brings extensive expertise in youth systems change, soft skills development and large-scale programme design.",
+          fr: "Clare Ignatowski est une experte du développement de la jeunesse qui possède plus de dix ans d’expérience à l’USAID, où elle a participé à la rédaction de la première politique de l’Agence consacrée à la jeunesse et au développement et contribué à la conception du projet YouthPower, doté de 500 millions de dollars. Ancienne volontaire du Peace Corps et chercheuse au Cameroun, elle possède une vaste expertise en transformation des systèmes liés à la jeunesse, développement des compétences comportementales et conception de programmes à grande échelle.",
+        },
+      },
+      {
+        name: "William Mutua",
+        role: {
+          en: "Learning experience designer, Generation Kenya",
+          fr: "Concepteur pédagogique, Generation Kenya",
+        },
+        image: "/images/team/william-mutua.jpg",
+        bio: {
+          en: "William Mutua is a learning experience designer, facilitator and Master Trainer with more than 12 years of experience across youth employment, education and leadership development. He currently works with Generation Kenya, an education-to-employment programme, and has supported organisations including ALX/TheRoom, Spire Education and the School of Wildlife Conservation. His work centres on designing practical learning experiences that prepare people for work and leadership.",
+          fr: "William Mutua est concepteur d’expériences d’apprentissage, facilitateur et formateur de formateurs, avec plus de 12 ans d’expérience dans les domaines de l’emploi des jeunes, de l’éducation et du développement du leadership. Il travaille actuellement avec Generation Kenya, un programme de transition entre l’éducation et l’emploi, et a accompagné des organisations telles que ALX/TheRoom, Spire Education et la School of Wildlife Conservation. Son travail consiste principalement à concevoir des expériences d’apprentissage pratiques qui préparent les individus au monde du travail et au leadership.",
+        },
+      },
+      {
+        name: "Ntua Edia",
+        role: {
+          en: "Chief of Staff to the CEO, Fixa",
+          fr: "Chief of Staff du Directeur général, Fixa",
+        },
+        image: "/images/team/ntua-edia.jpg",
+        bio: {
+          en: "Ntua Edia is Chief of Staff to the CEO of Fixa, an HR-fintech startup expanding financial services for the informal sector. Her work focuses on organisational performance, cross-functional alignment and building the operational systems that help teams deliver results. With an early career in the creative sector, she also remains passionate about mobilising greater investment and attention toward Africa's creative economy.",
+          fr: "Ntua Edia est Chief of Staff auprès du Directeur général de Fixa, une startup spécialisée dans les technologies RH et la fintech, qui développe l’accès aux services financiers pour le secteur informel. Son travail porte sur la performance organisationnelle, l’alignement entre les différentes fonctions et la mise en place de systèmes opérationnels permettant aux équipes d’obtenir des résultats. Ayant commencé sa carrière dans le secteur créatif, elle reste également engagée dans la mobilisation de davantage d’investissements et d’attention en faveur de l’économie créative africaine.",
+        },
+      },
+      {
+        name: "Abigail Ndikum",
+        role: {
+          en: "Founder, Yale Africa Innovation Symposium",
+          fr: "Fondatrice, Yale Africa Innovation Symposium",
+        },
+        image: "/images/team/abigail-ndikum.jpg",
+        bio: {
+          en: "Abigail Ndikum is a Cameroonian-American strategist, organiser and advocate focused on strengthening engagement between Africa and the global African diaspora. She founded the Yale Africa Innovation Symposium and works across women's empowerment, civic engagement and youth leadership. Professionally, she advises organisations on strategy and impact while advancing practical pathways for diaspora participation in Africa's development.",
+          fr: "Abigail Ndikum est une stratège, organisatrice et défenseure des intérêts d’origine camerounaise et américaine, qui œuvre à renforcer les liens entre l’Afrique et la diaspora africaine mondiale. Elle a fondé le Yale Africa Innovation Symposium et travaille sur des enjeux liés à l’autonomisation des femmes, à l’engagement citoyen et au leadership des jeunes. Dans son activité professionnelle, elle accompagne les organisations sur les questions de stratégie et d’impact tout en développant des voies concrètes permettant à la diaspora de contribuer au développement de l’Afrique.",
+        },
+      },
+      {
+        name: "Antonia Bezanilla",
+        role: {
+          en: "Strategy and education, Stanford MBA",
+          fr: "Stratégie et éducation, MBA de Stanford",
+        },
+        image: "/images/team/antonia-bezanilla.jpg",
+        bio: {
+          en: "Antonia Bezanilla is a strategy and education professional whose work spans consulting, public policy and impact investing. A Stanford MBA and Forté Fellow with experience at BCG, she previously advised Chile's Ministry of Education, where she worked on policies to prevent school dropout and support student re-entry. She also contributes to education-focused impact investing and has helped advance women's leadership through Women MBA Chile.",
+          fr: "Antonia Bezanilla est une professionnelle de la stratégie et de l’éducation dont le parcours couvre le conseil, les politiques publiques et l’investissement à impact. Titulaire d’un MBA de Stanford et membre du programme Forté Fellow, elle possède une expérience au sein de BCG. Elle a auparavant conseillé le ministère chilien de l’Éducation, où elle a travaillé sur des politiques visant à prévenir le décrochage scolaire et à favoriser le retour des élèves dans le système éducatif. Elle contribue également à des investissements à impact axés sur l’éducation et a participé au développement du leadership féminin à travers Women MBA Chile.",
+        },
+      },
+    ],
+    labels: {
+      readBio: { en: "Read bio", fr: "Lire la biographie" },
+      close: { en: "Close", fr: "Fermer" },
+      previous: { en: "Previous", fr: "Précédent" },
+      next: { en: "Next", fr: "Suivant" },
+      linkedin: { en: "{name} on LinkedIn", fr: "{name} sur LinkedIn" },
+    },
+    closing: {
+      text: {
+        en: "Want to help build what comes next?",
+        fr: "Envie de construire la suite avec nous ?",
+      },
+      cta: {
+        label: { en: "Partner with us", fr: "Devenir partenaire" },
+        href: "/work-with-us",
+      },
+    },
+  },
 };

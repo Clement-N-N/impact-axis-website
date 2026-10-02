@@ -7,5 +7,6 @@ export { PhotoStrip } from "./PhotoStrip";
 export { OurApproachSection } from "./OurApproachSection";
 export { OurPrinciplesSection } from "./OurPrinciplesSection";
 export { PartnershipSection } from "./PartnershipSection";
+export { TeamSection } from "./TeamSection";
 export { aboutPageContent } from "./data";
 export type * from "./types";

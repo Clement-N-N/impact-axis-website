@@ -140,6 +140,42 @@ export type OurStoryContent = {
   chapters: StoryChapter[];
 };
 
+export type TeamPerson = {
+  name: string;
+  /** Job title, or for the advisory board a one-line summary. */
+  role: LocalizedText;
+  image: string;
+  linkedin?: string;
+  /** Advisory board only, for now; core team bios are still to be written. */
+  bio?: LocalizedText;
+};
+
+export type TeamContent = {
+  eyebrow: LocalizedText;
+  headline: LocalizedText;
+  intro: LocalizedText;
+  groups: {
+    core: LocalizedText;
+    fellows: LocalizedText;
+    board: LocalizedText;
+  };
+  core: TeamPerson[];
+  fellows: TeamPerson[];
+  board: TeamPerson[];
+  labels: {
+    readBio: LocalizedText;
+    close: LocalizedText;
+    previous: LocalizedText;
+    next: LocalizedText;
+    /** "{name} on LinkedIn" */
+    linkedin: LocalizedText;
+  };
+  closing: {
+    text: LocalizedText;
+    cta: { label: LocalizedText; href: string };
+  };
+};
+
 export type AboutPageContent = {
   hero: AboutHeroContent;
   imageBand: AboutImageBandContent;
@@ -150,4 +186,5 @@ export type AboutPageContent = {
   ourApproach: OurApproachContent;
   ourPrinciples: OurPrinciplesContent;
   partnership: PartnershipContent;
+  team: TeamContent;
 };
