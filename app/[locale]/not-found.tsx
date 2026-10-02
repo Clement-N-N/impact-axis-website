@@ -25,11 +25,7 @@ export default async function NotFound() {
         <p className="text-impact-gray max-w-md">{t("description")}</p>
       </div>
 
-      <Button
-        href="/"
-        variant="primary"
-        icon={<ArrowRightIcon weight="bold" className="h-4 w-4" />}
-      >
+      <Button href="/" variant="primary" icon={<ArrowRightIcon weight="bold" className="h-4 w-4" />}>
         {t("cta")}
       </Button>
     </div>

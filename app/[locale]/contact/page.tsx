@@ -9,8 +9,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "contact" });
 
-  const title =
-    t("title") || (locale === "fr" ? "Contactez-nous" : "Contact Us");
+  const title = t("title") || (locale === "fr" ? "Contactez-nous" : "Contact Us");
   const description =
     t("intro") ||
     (locale === "fr"
@@ -64,19 +63,16 @@ export default async function ContactPage({
         <p className="text-impact-gray max-w-md">{t("intro")}</p>
       </div>
 
-      <div className="text-impact-gray flex flex-col gap-2">
+      <div className="flex flex-col gap-2 text-impact-gray">
         <p>{tFooter("address")}</p>
         <p>
-          <span className="font-medium text-black">
-            {tFooter("emailLabel")}
-          </span>{" "}
+          <span className="font-medium text-black">{tFooter("emailLabel")}</span>{" "}
           <a href={`mailto:${tFooter("email")}`} className="underline">
             {tFooter("email")}
           </a>
         </p>
         <p>
-          <span className="font-medium text-black">{tFooter("telLabel")}</span>{" "}
-          {tFooter("tel")}
+          <span className="font-medium text-black">{tFooter("telLabel")}</span> {tFooter("tel")}
         </p>
       </div>
     </div>

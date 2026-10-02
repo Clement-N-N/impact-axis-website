@@ -53,11 +53,7 @@ export function generateStaticParams() {
 
 async function getSocialLinks(): Promise<SocialLinks> {
   try {
-    const result = await client.fetch(
-      SOCIAL_LINKS_QUERY,
-      {},
-      { next: { revalidate: 60 } },
-    );
+    const result = await client.fetch(SOCIAL_LINKS_QUERY, {}, { next: { revalidate: 60 } });
     if (result && typeof result === "object") return result as SocialLinks;
   } catch (error) {
     console.error("Failed to fetch social links from Sanity.", error);
@@ -85,7 +81,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} className="h-full antialiased" suppressHydrationWarning>
-      <body className="flex min-h-full flex-col" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Navbar socialLinks={socialLinks} />
           <MobileNav />
@@ -104,13 +100,15 @@ export default async function RootLayout({
 }
 
 async function LocalizationDebuggerLoader() {
-  const { LocalizationDebugger } =
-    await import("@/components/dev/LocalizationDebugger");
+  const { LocalizationDebugger } = await import(
+    "@/components/dev/LocalizationDebugger"
+  );
   return <LocalizationDebugger />;
 }
 
 async function DesignGridOverlayLoader() {
-  const { DesignGridOverlay } =
-    await import("@/components/dev/DesignGridOverlay");
+  const { DesignGridOverlay } = await import(
+    "@/components/dev/DesignGridOverlay"
+  );
   return <DesignGridOverlay />;
 }

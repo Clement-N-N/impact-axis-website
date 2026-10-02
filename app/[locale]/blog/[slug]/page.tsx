@@ -7,15 +7,8 @@ import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
-import {
-  BLOG_POST_BY_SLUG_QUERY,
-  BLOG_POSTS_QUERY,
-  BLOG_SLUGS_QUERY,
-} from "@/sanity/queries";
-import type {
-  BlogPost,
-  BlogPostDetail,
-} from "@/components/sections/blog-card/types";
+import { BLOG_POST_BY_SLUG_QUERY, BLOG_POSTS_QUERY, BLOG_SLUGS_QUERY } from "@/sanity/queries";
+import type { BlogPost, BlogPostDetail } from "@/components/sections/blog-card/types";
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
@@ -112,11 +105,7 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <>
       <BlogDetailsHero post={post} locale={locale as Locale} />
-      <BlogDetailsBody
-        post={post}
-        relatedPost={relatedPost}
-        locale={locale as Locale}
-      />
+      <BlogDetailsBody post={post} relatedPost={relatedPost} locale={locale as Locale} />
     </>
   );
 }

@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import {
-  LegalPageLayout,
-  type LegalPageContent,
-} from "@/components/legal/LegalPageLayout";
+import { LegalPageLayout, type LegalPageContent } from "@/components/legal/LegalPageLayout";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -13,9 +10,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "privacyPolicy" });
 
-  const title =
-    t("title") ||
-    (locale === "fr" ? "Politique de confidentialité" : "Privacy Policy");
+  const title = t("title") || (locale === "fr" ? "Politique de confidentialité" : "Privacy Policy");
   const description =
     locale === "fr"
       ? "Lisez la politique de confidentialité d'Impact Axis."
