@@ -18,6 +18,13 @@ export type OurImpactChrome = {
   reportCta: LocalizedText;
 };
 
-export type OurImpactContent = OurImpactChrome & {
-  metrics: ImpactMetric[];
+/** Headline copy for the home tiles; kept in code alongside the design. */
+export type OurImpactCopy = {
+  headline: LocalizedText;
+  subline: LocalizedText;
 };
+
+export type OurImpactContent = OurImpactChrome &
+  OurImpactCopy & {
+    metrics: ImpactMetric[];
+  };

@@ -1,4 +1,4 @@
-import type { ImpactCardDesign, OurImpactChrome } from "./types";
+import type { ImpactCardDesign, OurImpactChrome, OurImpactCopy } from "./types";
 
 export const ourImpactChrome: OurImpactChrome = {
   eyebrow: { en: "Our Impact", fr: "Notre impact" },
@@ -12,32 +12,49 @@ export const ourImpactChrome: OurImpactChrome = {
   },
 };
 
+export const ourImpactCopy: OurImpactCopy = {
+  headline: {
+    en: "We measure what young people do next.",
+    fr: "Nous mesurons ce que les jeunes font ensuite.",
+  },
+  subline: {
+    en: "Not just who showed up, but who got stronger, got connected and got the opportunity.",
+    fr: "Pas seulement qui était là, mais qui a progressé, s'est connecté et a saisi l'opportunité.",
+  },
+};
+
 // Card visuals are fixed design, not editorial content — they aren't stored in
 // Sanity. Stats are mapped onto these designs by position; if there are more
 // stats than designs, the designs repeat in sequence.
 export const IMPACT_CARD_DESIGNS: ImpactCardDesign[] = [
   {
     image: "/images/placeholder_image_1.png",
-    background: "linear-gradient(180deg, rgba(250,177,160,0.3) 0%, rgba(247,136,110,0.5) 100%)",
+    background:
+      "linear-gradient(180deg, rgba(250,177,160,0.3) 0%, rgba(247,136,110,0.5) 100%)",
   },
   {
     image: "/images/placeholder_image.png",
-    background: "linear-gradient(180deg, rgba(255,234,167,0.3) 0%, rgba(255,222,117,0.5) 100%)",
+    background:
+      "linear-gradient(180deg, rgba(255,234,167,0.3) 0%, rgba(255,222,117,0.5) 100%)",
   },
   {
     image: "/images/placeholder_image_4.png",
-    background: "linear-gradient(180deg, rgba(167,255,180,0.3) 0%, rgba(117,255,138,0.5) 100%)",
+    background:
+      "linear-gradient(180deg, rgba(167,255,180,0.3) 0%, rgba(117,255,138,0.5) 100%)",
   },
   {
     image: "/images/placeholder_image_3.png",
-    background: "linear-gradient(180deg, rgba(116,185,255,0.3) 0%, rgba(66,160,255,0.5) 100%)",
+    background:
+      "linear-gradient(180deg, rgba(116,185,255,0.3) 0%, rgba(66,160,255,0.5) 100%)",
   },
   {
     image: "/images/placeholder_image_2.png",
-    background: "linear-gradient(180deg, rgba(220,116,255,0.3) 0%, rgba(208,66,255,0.5) 100%)",
+    background:
+      "linear-gradient(180deg, rgba(220,116,255,0.3) 0%, rgba(208,66,255,0.5) 100%)",
   },
   {
     image: "/images/placeholder_image_2.png",
-    background: "linear-gradient(180deg, rgba(255,218,167,0.3) 0%, rgba(255,198,117,0.5) 100%)",
+    background:
+      "linear-gradient(180deg, rgba(255,218,167,0.3) 0%, rgba(255,198,117,0.5) 100%)",
   },
 ];
