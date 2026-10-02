@@ -151,160 +151,165 @@ export function HomeGapSection({
   const num = (i: number) => String(i + 1).padStart(2, "0");
 
   return (
-    <section
-      ref={sectionRef}
-      aria-labelledby="home-gap-problem"
-      className="relative w-full overflow-hidden"
-    >
-      {/* Desktop. */}
-      <div data-desk className="hidden h-[100svh] min-h-[36rem] lg:flex">
-        <div
-          data-left
-          className="bg-impact-blue relative z-10 flex w-1/2 shrink-0 flex-col pt-[calc(var(--header-height)+clamp(1rem,3.5svh,3.5rem))] pr-[clamp(2rem,4vw,4rem)] pb-[clamp(1.25rem,4svh,4rem)] pl-[max(1.5rem,calc((100vw-90rem)/2+1.5rem))] text-white"
-        >
-          <span className="text-sm font-semibold tracking-[0.14em] text-[#f7886e] uppercase">
-            {getLocalizedText(data.problemEyebrow, locale)}
-          </span>
-          <h2
-            id="home-gap-problem"
-            className="mt-4 max-w-[18ch] text-[clamp(1.6rem,min(2.9vw,4.9svh),3.25rem)] leading-[1.1] font-semibold tracking-[-0.025em] text-balance"
+    // GSAP wraps the pinned <section> in a pin-spacer. This plain wrapper is
+    // what React removes on navigation, so it never tries to detach the
+    // section from a parent that is no longer its parent (removeChild error).
+    <div>
+      <section
+        ref={sectionRef}
+        aria-labelledby="home-gap-problem"
+        className="relative w-full overflow-hidden"
+      >
+        {/* Desktop. */}
+        <div data-desk className="hidden h-[100svh] min-h-[36rem] lg:flex">
+          <div
+            data-left
+            className="bg-impact-blue relative z-10 flex w-1/2 shrink-0 flex-col pt-[calc(var(--header-height)+clamp(1rem,3.5svh,3.5rem))] pr-[clamp(2rem,4vw,4rem)] pb-[clamp(1.25rem,4svh,4rem)] pl-[max(1.5rem,calc((100vw-90rem)/2+1.5rem))] text-white"
           >
-            {getLocalizedText(data.problem, locale)}
-          </h2>
-          <ul className="mt-auto flex flex-col gap-[clamp(0.4rem,1.2svh,0.875rem)] pt-[clamp(1rem,3svh,2rem)]">
-            {pairs.map((p, i) => (
-              <li
-                key={i}
-                data-gap
-                className="relative flex h-[clamp(2.75rem,6.6svh,4.5rem)] items-center justify-end rounded-[18px] border border-dashed border-white/25 bg-white/[0.05] px-6 text-[clamp(0.95rem,2.2svh,1.3rem)] font-semibold text-white/60"
-              >
-                <span className="relative">
-                  {p.gap}
-                  <span
-                    data-strike
-                    aria-hidden="true"
-                    className="absolute inset-x-0 top-1/2 h-[2px] origin-right -translate-y-1/2 rounded-full bg-[#f7886e]"
-                  />
-                </span>
-              </li>
-            ))}
-          </ul>
-
-          {/* Counter on the seam. */}
-          <span
-            ref={counterRef}
-            aria-hidden="true"
-            data-done="true"
-            className="bg-impact-yellow text-impact-blue absolute top-1/2 right-0 z-20 translate-x-1/2 -translate-y-1/2 rounded-full px-2.5 py-4 text-xs font-bold tracking-[0.2em] whitespace-nowrap uppercase shadow-[0_10px_30px_-10px_rgb(244_198_0/0.8)] [writing-mode:vertical-rl] data-[done=true]:shadow-[0_0_0_8px_rgb(244_198_0/0.25),0_10px_30px_-10px_rgb(244_198_0/0.8)]"
-          >
-            {counterText(total)}
-          </span>
-        </div>
-
-        <div className="relative flex min-w-0 flex-1 flex-col bg-[linear-gradient(160deg,#ffffff_0%,#fff6d6_100%)] pt-[calc(var(--header-height)+clamp(1rem,3.5svh,3.5rem))] pr-[max(1.5rem,calc((100vw-90rem)/2+1.5rem))] pb-[clamp(1.25rem,4svh,4rem)] pl-[clamp(2.5rem,5vw,5rem)]">
-          <span className="text-sm font-semibold tracking-[0.14em] text-[#b88d00] uppercase">
-            {getLocalizedText(data.solutionEyebrow, locale)}
-          </span>
-          <p className="text-impact-blue mt-4 max-w-[26ch] text-[clamp(1.6rem,min(2.9vw,4.9svh),3.25rem)] leading-[1.1] font-semibold tracking-[-0.025em] text-balance">
-            {getLocalizedText(data.solution, locale)}
-          </p>
-          <div className="mt-auto flex flex-col gap-[clamp(0.75rem,2.4svh,1.75rem)] pt-[clamp(1rem,3svh,2rem)]">
-            <ul className="flex flex-col gap-[clamp(0.4rem,1.2svh,0.875rem)]">
-              {pairs.map((p, i) => (
-                <li
-                  key={i}
-                  data-answer
-                  className="text-impact-blue flex h-[clamp(2.75rem,6.6svh,4.5rem)] items-center gap-4 rounded-[18px] bg-white px-5 text-[clamp(0.95rem,2.2svh,1.3rem)] font-semibold shadow-[0_14px_30px_-18px_rgb(16_27_98/0.4)]"
-                >
-                  <span
-                    data-badge
-                    aria-hidden="true"
-                    className="bg-impact-yellow text-impact-blue inline-flex size-[clamp(1.75rem,4.4svh,2.25rem)] shrink-0 items-center justify-center rounded-full text-sm font-bold tabular-nums"
-                  >
-                    {num(i)}
-                  </span>
-                  {p.answer}
-                </li>
-              ))}
-            </ul>
-            <div data-button>
-              <Link
-                href={data.button.href}
-                className="bg-impact-blue focus-visible:outline-impact-blue inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2"
-              >
-                {getLocalizedText(data.button.label, locale)}
-                <ArrowRightIcon weight="bold" className="size-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Phones and tablets. */}
-      <div className="lg:hidden">
-        <div className="bg-impact-blue py-14 text-white md:py-20">
-          <Container>
             <span className="text-sm font-semibold tracking-[0.14em] text-[#f7886e] uppercase">
               {getLocalizedText(data.problemEyebrow, locale)}
             </span>
-            <p className="mt-4 text-[clamp(1.75rem,6vw,2.75rem)] leading-[1.12] font-semibold tracking-[-0.025em] text-balance">
+            <h2
+              id="home-gap-problem"
+              className="mt-4 max-w-[18ch] text-[clamp(1.6rem,min(2.9vw,4.9svh),3.25rem)] leading-[1.1] font-semibold tracking-[-0.025em] text-balance"
+            >
               {getLocalizedText(data.problem, locale)}
-            </p>
-          </Container>
-        </div>
-        <div className="bg-[linear-gradient(180deg,#ffffff_0%,#fff6d6_100%)] py-14 md:py-20">
-          <Container className="flex flex-col gap-8">
-            <div>
-              <span className="text-sm font-semibold tracking-[0.14em] text-[#b88d00] uppercase">
-                {getLocalizedText(data.solutionEyebrow, locale)}
-              </span>
-              <p className="text-impact-blue mt-4 text-[clamp(1.5rem,5vw,2.25rem)] leading-[1.15] font-semibold tracking-[-0.02em] text-balance">
-                {getLocalizedText(data.solution, locale)}
-              </p>
-            </div>
-            <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+            </h2>
+            <ul className="mt-auto flex flex-col gap-[clamp(0.4rem,1.2svh,0.875rem)] pt-[clamp(1rem,3svh,2rem)]">
               {pairs.map((p, i) => (
                 <li
                   key={i}
-                  data-pair
-                  className="flex flex-col gap-3 rounded-[20px] bg-white p-4 shadow-[0_14px_30px_-18px_rgb(16_27_98/0.4)]"
+                  data-gap
+                  className="relative flex h-[clamp(2.75rem,6.6svh,4.5rem)] items-center justify-end rounded-[18px] border border-dashed border-white/25 bg-white/[0.05] px-6 text-[clamp(0.95rem,2.2svh,1.3rem)] font-semibold text-white/60"
                 >
-                  <span
-                    data-gap-text
-                    className="text-impact-blue/45 relative w-fit text-sm font-semibold"
-                  >
+                  <span className="relative">
                     {p.gap}
                     <span
                       data-strike
                       aria-hidden="true"
-                      className="absolute inset-x-0 top-1/2 h-[2px] origin-left -translate-y-1/2 rounded-full bg-[#f7886e]"
+                      className="absolute inset-x-0 top-1/2 h-[2px] origin-right -translate-y-1/2 rounded-full bg-[#f7886e]"
                     />
-                  </span>
-                  <span
-                    data-answer
-                    className="text-impact-blue flex items-center gap-3 text-lg font-semibold"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="bg-impact-yellow inline-flex size-8 shrink-0 items-center justify-center rounded-full"
-                    >
-                      <CheckIcon weight="bold" className="size-4" />
-                    </span>
-                    {p.answer}
                   </span>
                 </li>
               ))}
             </ul>
-            <Link
-              href={data.button.href}
-              className="bg-impact-blue focus-visible:outline-impact-blue inline-flex w-fit items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2"
+
+            {/* Counter on the seam. */}
+            <span
+              ref={counterRef}
+              aria-hidden="true"
+              data-done="true"
+              className="bg-impact-yellow text-impact-blue absolute top-1/2 right-0 z-20 translate-x-1/2 -translate-y-1/2 rounded-full px-2.5 py-4 text-xs font-bold tracking-[0.2em] whitespace-nowrap uppercase shadow-[0_10px_30px_-10px_rgb(244_198_0/0.8)] [writing-mode:vertical-rl] data-[done=true]:shadow-[0_0_0_8px_rgb(244_198_0/0.25),0_10px_30px_-10px_rgb(244_198_0/0.8)]"
             >
-              {getLocalizedText(data.button.label, locale)}
-              <ArrowRightIcon weight="bold" className="size-4" />
-            </Link>
-          </Container>
+              {counterText(total)}
+            </span>
+          </div>
+
+          <div className="relative flex min-w-0 flex-1 flex-col bg-[linear-gradient(160deg,#ffffff_0%,#fff6d6_100%)] pt-[calc(var(--header-height)+clamp(1rem,3.5svh,3.5rem))] pr-[max(1.5rem,calc((100vw-90rem)/2+1.5rem))] pb-[clamp(1.25rem,4svh,4rem)] pl-[clamp(2.5rem,5vw,5rem)]">
+            <span className="text-sm font-semibold tracking-[0.14em] text-[#b88d00] uppercase">
+              {getLocalizedText(data.solutionEyebrow, locale)}
+            </span>
+            <p className="text-impact-blue mt-4 max-w-[26ch] text-[clamp(1.6rem,min(2.9vw,4.9svh),3.25rem)] leading-[1.1] font-semibold tracking-[-0.025em] text-balance">
+              {getLocalizedText(data.solution, locale)}
+            </p>
+            <div className="mt-auto flex flex-col gap-[clamp(0.75rem,2.4svh,1.75rem)] pt-[clamp(1rem,3svh,2rem)]">
+              <ul className="flex flex-col gap-[clamp(0.4rem,1.2svh,0.875rem)]">
+                {pairs.map((p, i) => (
+                  <li
+                    key={i}
+                    data-answer
+                    className="text-impact-blue flex h-[clamp(2.75rem,6.6svh,4.5rem)] items-center gap-4 rounded-[18px] bg-white px-5 text-[clamp(0.95rem,2.2svh,1.3rem)] font-semibold shadow-[0_14px_30px_-18px_rgb(16_27_98/0.4)]"
+                  >
+                    <span
+                      data-badge
+                      aria-hidden="true"
+                      className="bg-impact-yellow text-impact-blue inline-flex size-[clamp(1.75rem,4.4svh,2.25rem)] shrink-0 items-center justify-center rounded-full text-sm font-bold tabular-nums"
+                    >
+                      {num(i)}
+                    </span>
+                    {p.answer}
+                  </li>
+                ))}
+              </ul>
+              <div data-button>
+                <Link
+                  href={data.button.href}
+                  className="bg-impact-blue focus-visible:outline-impact-blue inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
+                  {getLocalizedText(data.button.label, locale)}
+                  <ArrowRightIcon weight="bold" className="size-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+
+        {/* Phones and tablets. */}
+        <div className="lg:hidden">
+          <div className="bg-impact-blue py-14 text-white md:py-20">
+            <Container>
+              <span className="text-sm font-semibold tracking-[0.14em] text-[#f7886e] uppercase">
+                {getLocalizedText(data.problemEyebrow, locale)}
+              </span>
+              <p className="mt-4 text-[clamp(1.75rem,6vw,2.75rem)] leading-[1.12] font-semibold tracking-[-0.025em] text-balance">
+                {getLocalizedText(data.problem, locale)}
+              </p>
+            </Container>
+          </div>
+          <div className="bg-[linear-gradient(180deg,#ffffff_0%,#fff6d6_100%)] py-14 md:py-20">
+            <Container className="flex flex-col gap-8">
+              <div>
+                <span className="text-sm font-semibold tracking-[0.14em] text-[#b88d00] uppercase">
+                  {getLocalizedText(data.solutionEyebrow, locale)}
+                </span>
+                <p className="text-impact-blue mt-4 text-[clamp(1.5rem,5vw,2.25rem)] leading-[1.15] font-semibold tracking-[-0.02em] text-balance">
+                  {getLocalizedText(data.solution, locale)}
+                </p>
+              </div>
+              <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+                {pairs.map((p, i) => (
+                  <li
+                    key={i}
+                    data-pair
+                    className="flex flex-col gap-3 rounded-[20px] bg-white p-4 shadow-[0_14px_30px_-18px_rgb(16_27_98/0.4)]"
+                  >
+                    <span
+                      data-gap-text
+                      className="text-impact-blue/45 relative w-fit text-sm font-semibold"
+                    >
+                      {p.gap}
+                      <span
+                        data-strike
+                        aria-hidden="true"
+                        className="absolute inset-x-0 top-1/2 h-[2px] origin-left -translate-y-1/2 rounded-full bg-[#f7886e]"
+                      />
+                    </span>
+                    <span
+                      data-answer
+                      className="text-impact-blue flex items-center gap-3 text-lg font-semibold"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="bg-impact-yellow inline-flex size-8 shrink-0 items-center justify-center rounded-full"
+                      >
+                        <CheckIcon weight="bold" className="size-4" />
+                      </span>
+                      {p.answer}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href={data.button.href}
+                className="bg-impact-blue focus-visible:outline-impact-blue inline-flex w-fit items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2"
+              >
+                {getLocalizedText(data.button.label, locale)}
+                <ArrowRightIcon weight="bold" className="size-4" />
+              </Link>
+            </Container>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }

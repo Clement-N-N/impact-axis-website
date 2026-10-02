@@ -130,162 +130,167 @@ export function OurApproachSection({
   }, [locale, n]);
 
   return (
-    <section
-      ref={sectionRef}
-      aria-labelledby="our-approach-title"
-      className="bg-impact-blue relative w-full overflow-hidden text-white"
-    >
-      {/* Soft glow behind the ring. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 right-[-10%] size-[70vw] max-w-[60rem] -translate-y-1/2 rounded-full bg-[#f4c600]/[0.07] blur-[120px]"
-      />
-
-      <Container className="py-section relative grid grid-cols-1 gap-12 lg:h-[100svh] lg:min-h-[34rem] lg:grid-cols-12 lg:items-center lg:gap-10 lg:pt-[var(--header-height)] lg:pb-[clamp(3rem,8svh,5rem)]">
-        <div className="flex flex-col gap-6 lg:col-span-6 lg:gap-[clamp(0.75rem,2.2svh,1.5rem)]">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="bg-impact-yellow rounded-full px-4 py-1.5 text-sm font-semibold whitespace-nowrap text-black">
-              {getLocalizedText(data.eyebrow, locale)}
-            </span>
-            <span className="text-sm font-semibold text-[#ffde75]">
-              {getLocalizedText(data.tagline, locale)}
-            </span>
-          </div>
-          <h2
-            id="our-approach-title"
-            ref={headlineRef}
-            className="text-5xl leading-[1.05] font-semibold tracking-[-0.03em] text-balance lg:text-[clamp(2.25rem,min(4vw,7svh),4.25rem)]"
-          >
-            {getLocalizedText(data.title, locale)}
-          </h2>
-          <p className="max-w-[52ch] text-lg text-pretty text-white/75 lg:text-[clamp(1rem,2.2svh,1.125rem)]">
-            {getLocalizedText(data.headline, locale)}
-          </p>
-
-          {/* Step details, desktop: one at a time in the same spot. */}
-          <div className="hidden border-t border-white/15 lg:mt-1 lg:grid lg:gap-8 lg:pt-[clamp(1rem,3svh,2rem)] lg:motion-safe:gap-0">
-            {data.steps.map((step, i) => (
-              <StepDetails
-                key={step.stepNumber}
-                index={i}
-                step={step}
-                locale={locale}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Stage: the ring (and, on phones, the step details under it). */}
+    // GSAP wraps the pinned <section> in a pin-spacer. This plain wrapper is
+    // what React removes on navigation, so it never tries to detach the
+    // section from a parent that is no longer its parent (removeChild error).
+    <div>
+      <section
+        ref={sectionRef}
+        aria-labelledby="our-approach-title"
+        className="bg-impact-blue relative w-full overflow-hidden text-white"
+      >
+        {/* Soft glow behind the ring. */}
         <div
-          ref={stageRef}
-          className="flex flex-col items-center gap-8 max-lg:motion-safe:min-h-[100svh] max-lg:motion-safe:justify-center max-lg:motion-safe:pt-[var(--header-height)] lg:col-span-6"
-        >
-          <div
-            data-ring
-            className="relative aspect-square w-[min(78vw,24rem)] lg:w-[min(40vw,36rem,calc(100svh-var(--header-height)-9rem))]"
-          >
-            <svg
-              viewBox="0 0 600 600"
-              aria-hidden="true"
-              className="absolute inset-0 size-full overflow-visible"
-            >
-              <defs>
-                <linearGradient id="loop-arc" x1="0" x2="1" y1="0" y2="1">
-                  <stop offset="0%" stopColor="#ffde75" />
-                  <stop offset="100%" stopColor="#f4c600" />
-                </linearGradient>
-              </defs>
-              <circle
-                cx={C}
-                cy={C}
-                r={R}
-                fill="none"
-                stroke="rgb(255 255 255 / 0.14)"
-                strokeWidth={3}
-              />
-              <circle
-                data-arc
-                cx={C}
-                cy={C}
-                r={R}
-                fill="none"
-                stroke="url(#loop-arc)"
-                strokeWidth={5}
-                strokeLinecap="round"
-                pathLength={1000}
-                strokeDasharray={1000}
-                transform={`rotate(-90 ${C} ${C})`}
-                className="drop-shadow-[0_0_10px_rgb(244_198_0/0.6)] [stroke-dashoffset:1000] motion-reduce:[stroke-dashoffset:0]"
-              />
-            </svg>
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/2 right-[-10%] size-[70vw] max-w-[60rem] -translate-y-1/2 rounded-full bg-[#f4c600]/[0.07] blur-[120px]"
+        />
 
-            {/* Centre photo, one per step, crossfading. */}
-            <div className="absolute inset-[19%] overflow-hidden rounded-full shadow-[0_30px_80px_-20px_rgb(0_0_0/0.6)]">
+        <Container className="py-section relative grid grid-cols-1 gap-12 lg:h-[100svh] lg:min-h-[34rem] lg:grid-cols-12 lg:items-center lg:gap-10 lg:pt-[var(--header-height)] lg:pb-[clamp(3rem,8svh,5rem)]">
+          <div className="flex flex-col gap-6 lg:col-span-6 lg:gap-[clamp(0.75rem,2.2svh,1.5rem)]">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="bg-impact-yellow rounded-full px-4 py-1.5 text-sm font-semibold whitespace-nowrap text-black">
+                {getLocalizedText(data.eyebrow, locale)}
+              </span>
+              <span className="text-sm font-semibold text-[#ffde75]">
+                {getLocalizedText(data.tagline, locale)}
+              </span>
+            </div>
+            <h2
+              id="our-approach-title"
+              ref={headlineRef}
+              className="text-5xl leading-[1.05] font-semibold tracking-[-0.03em] text-balance lg:text-[clamp(2.25rem,min(4vw,7svh),4.25rem)]"
+            >
+              {getLocalizedText(data.title, locale)}
+            </h2>
+            <p className="max-w-[52ch] text-lg text-pretty text-white/75 lg:text-[clamp(1rem,2.2svh,1.125rem)]">
+              {getLocalizedText(data.headline, locale)}
+            </p>
+
+            {/* Step details, desktop: one at a time in the same spot. */}
+            <div className="hidden border-t border-white/15 lg:mt-1 lg:grid lg:gap-8 lg:pt-[clamp(1rem,3svh,2rem)] lg:motion-safe:gap-0">
               {data.steps.map((step, i) => (
-                <div
+                <StepDetails
                   key={step.stepNumber}
-                  data-step={i}
-                  data-active={i === 0}
-                  className="absolute inset-0 transition-[opacity,scale] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[active=false]:scale-110 data-[active=false]:opacity-0"
-                >
-                  <Image
-                    src={step.image.src}
-                    alt={getLocalizedText(step.image.alt, locale)}
-                    fill
-                    quality={90}
-                    sizes="(min-width: 1024px) 24vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
+                  index={i}
+                  step={step}
+                  locale={locale}
+                />
               ))}
             </div>
+          </div>
 
-            {/* Nodes. */}
-            {data.steps.map((step, i) => {
-              const { left, top } = nodePos(i, n);
-              return (
-                <span
+          {/* Stage: the ring (and, on phones, the step details under it). */}
+          <div
+            ref={stageRef}
+            className="flex flex-col items-center gap-8 max-lg:motion-safe:min-h-[100svh] max-lg:motion-safe:justify-center max-lg:motion-safe:pt-[var(--header-height)] lg:col-span-6"
+          >
+            <div
+              data-ring
+              className="relative aspect-square w-[min(78vw,24rem)] lg:w-[min(40vw,36rem,calc(100svh-var(--header-height)-9rem))]"
+            >
+              <svg
+                viewBox="0 0 600 600"
+                aria-hidden="true"
+                className="absolute inset-0 size-full overflow-visible"
+              >
+                <defs>
+                  <linearGradient id="loop-arc" x1="0" x2="1" y1="0" y2="1">
+                    <stop offset="0%" stopColor="#ffde75" />
+                    <stop offset="100%" stopColor="#f4c600" />
+                  </linearGradient>
+                </defs>
+                <circle
+                  cx={C}
+                  cy={C}
+                  r={R}
+                  fill="none"
+                  stroke="rgb(255 255 255 / 0.14)"
+                  strokeWidth={3}
+                />
+                <circle
+                  data-arc
+                  cx={C}
+                  cy={C}
+                  r={R}
+                  fill="none"
+                  stroke="url(#loop-arc)"
+                  strokeWidth={5}
+                  strokeLinecap="round"
+                  pathLength={1000}
+                  strokeDasharray={1000}
+                  transform={`rotate(-90 ${C} ${C})`}
+                  className="drop-shadow-[0_0_10px_rgb(244_198_0/0.6)] [stroke-dashoffset:1000] motion-reduce:[stroke-dashoffset:0]"
+                />
+              </svg>
+
+              {/* Centre photo, one per step, crossfading. */}
+              <div className="absolute inset-[19%] overflow-hidden rounded-full shadow-[0_30px_80px_-20px_rgb(0_0_0/0.6)]">
+                {data.steps.map((step, i) => (
+                  <div
+                    key={step.stepNumber}
+                    data-step={i}
+                    data-active={i === 0}
+                    className="absolute inset-0 transition-[opacity,scale] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[active=false]:scale-110 data-[active=false]:opacity-0"
+                  >
+                    <Image
+                      src={step.image.src}
+                      alt={getLocalizedText(step.image.alt, locale)}
+                      fill
+                      quality={90}
+                      sizes="(min-width: 1024px) 24vw, 50vw"
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Nodes. */}
+              {data.steps.map((step, i) => {
+                const { left, top } = nodePos(i, n);
+                return (
+                  <span
+                    key={step.stepNumber}
+                    aria-hidden="true"
+                    data-step={i}
+                    data-lit={i === 0}
+                    data-active={i === 0}
+                    className="bg-impact-blue data-[lit=true]:border-impact-yellow data-[active=true]:bg-impact-yellow data-[active=true]:text-impact-blue motion-reduce:border-impact-yellow absolute flex size-[24%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-2 border-white/25 text-center transition-[background-color,border-color,color,box-shadow,scale] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] data-[active=true]:scale-110 data-[active=true]:shadow-[0_0_0_10px_rgb(244_198_0/0.18),0_0_40px_rgb(244_198_0/0.5)]"
+                    style={{ left: `${left}%`, top: `${top}%` }}
+                  >
+                    <span className="text-[0.65rem] font-semibold tabular-nums opacity-70 md:text-xs">
+                      {step.stepNumber}
+                    </span>
+                    <span className="text-xs font-semibold sm:text-sm md:text-lg">
+                      {getLocalizedText(step.title, locale)}
+                    </span>
+                  </span>
+                );
+              })}
+            </div>
+
+            {/* Step details, phones. */}
+            <div className="grid w-full gap-8 motion-safe:gap-0 lg:hidden">
+              {data.steps.map((step, i) => (
+                <StepDetails
                   key={step.stepNumber}
-                  aria-hidden="true"
-                  data-step={i}
-                  data-lit={i === 0}
-                  data-active={i === 0}
-                  className="bg-impact-blue data-[lit=true]:border-impact-yellow data-[active=true]:bg-impact-yellow data-[active=true]:text-impact-blue motion-reduce:border-impact-yellow absolute flex size-[24%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-2 border-white/25 text-center transition-[background-color,border-color,color,box-shadow,scale] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] data-[active=true]:scale-110 data-[active=true]:shadow-[0_0_0_10px_rgb(244_198_0/0.18),0_0_40px_rgb(244_198_0/0.5)]"
-                  style={{ left: `${left}%`, top: `${top}%` }}
-                >
-                  <span className="text-[0.65rem] font-semibold tabular-nums opacity-70 md:text-xs">
-                    {step.stepNumber}
-                  </span>
-                  <span className="text-xs font-semibold sm:text-sm md:text-lg">
-                    {getLocalizedText(step.title, locale)}
-                  </span>
-                </span>
-              );
-            })}
+                  index={i}
+                  step={step}
+                  locale={locale}
+                />
+              ))}
+            </div>
           </div>
 
-          {/* Step details, phones. */}
-          <div className="grid w-full gap-8 motion-safe:gap-0 lg:hidden">
-            {data.steps.map((step, i) => (
-              <StepDetails
-                key={step.stepNumber}
-                index={i}
-                step={step}
-                locale={locale}
-              />
-            ))}
-          </div>
-        </div>
-
-        <p
-          data-closing
-          data-shown="false"
-          className="text-xl font-medium text-balance text-white transition-[opacity,translate] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[shown=false]:translate-y-3 data-[shown=false]:opacity-0 motion-reduce:!translate-y-0 motion-reduce:!opacity-100 max-lg:!translate-y-0 max-lg:!opacity-100 lg:absolute lg:inset-x-0 lg:bottom-[clamp(1rem,3svh,2rem)] lg:text-center lg:text-[clamp(1rem,2.4svh,1.25rem)]"
-        >
-          {getLocalizedText(data.closingLine, locale)}
-        </p>
-      </Container>
-    </section>
+          <p
+            data-closing
+            data-shown="false"
+            className="text-xl font-medium text-balance text-white transition-[opacity,translate] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[shown=false]:translate-y-3 data-[shown=false]:opacity-0 motion-reduce:!translate-y-0 motion-reduce:!opacity-100 max-lg:!translate-y-0 max-lg:!opacity-100 lg:absolute lg:inset-x-0 lg:bottom-[clamp(1rem,3svh,2rem)] lg:text-center lg:text-[clamp(1rem,2.4svh,1.25rem)]"
+          >
+            {getLocalizedText(data.closingLine, locale)}
+          </p>
+        </Container>
+      </section>
+    </div>
   );
 }
 

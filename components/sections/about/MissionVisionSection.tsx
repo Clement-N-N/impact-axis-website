@@ -251,80 +251,85 @@ export function MissionVisionSection({
   ];
 
   return (
-    <section
-      ref={sectionRef}
-      aria-labelledby="mission-vision-eyebrow"
-      className="relative w-full overflow-hidden bg-white"
-    >
-      <Container className="py-section flex flex-col gap-10 lg:min-h-[100svh] lg:justify-center lg:gap-14 lg:pt-[calc(var(--header-height)+3rem)]">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2
-            id="mission-vision-eyebrow"
-            className="bg-impact-yellow w-fit rounded-full px-4 py-1.5 text-sm font-semibold whitespace-nowrap text-black"
-          >
-            {getLocalizedText(data.eyebrow, locale)}
-          </h2>
-          {/* Progress toggle (desktop): which statement you're reading. */}
-          <div
-            aria-hidden="true"
-            className="border-impact-blue/15 relative hidden items-center rounded-full border p-1 motion-safe:lg:flex"
-          >
-            <span
-              data-pill
-              className="bg-impact-blue absolute top-1 left-0 h-[calc(100%-0.5rem)] w-0 rounded-full"
-            />
-            {statements.map((s, i) => (
+    // GSAP wraps the pinned <section> in a pin-spacer. This plain wrapper is
+    // what React removes on navigation, so it never tries to detach the
+    // section from a parent that is no longer its parent (removeChild error).
+    <div>
+      <section
+        ref={sectionRef}
+        aria-labelledby="mission-vision-eyebrow"
+        className="relative w-full overflow-hidden bg-white"
+      >
+        <Container className="py-section flex flex-col gap-10 lg:min-h-[100svh] lg:justify-center lg:gap-14 lg:pt-[calc(var(--header-height)+3rem)]">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <h2
+              id="mission-vision-eyebrow"
+              className="bg-impact-yellow w-fit rounded-full px-4 py-1.5 text-sm font-semibold whitespace-nowrap text-black"
+            >
+              {getLocalizedText(data.eyebrow, locale)}
+            </h2>
+            {/* Progress toggle (desktop): which statement you're reading. */}
+            <div
+              aria-hidden="true"
+              className="border-impact-blue/15 relative hidden items-center rounded-full border p-1 motion-safe:lg:flex"
+            >
               <span
+                data-pill
+                className="bg-impact-blue absolute top-1 left-0 h-[calc(100%-0.5rem)] w-0 rounded-full"
+              />
+              {statements.map((s, i) => (
+                <span
+                  key={s.tone}
+                  data-tab
+                  className={`relative z-10 rounded-full px-5 py-2 text-sm font-semibold ${
+                    i === 0 ? "text-white" : "text-impact-blue"
+                  }`}
+                >
+                  {getLocalizedText(s.title, locale)}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* On desktop (with motion) both statements share one cell so Vision
+            replaces Mission; otherwise they stack. */}
+          <div className="grid gap-14 motion-safe:lg:gap-0">
+            {statements.map((s) => (
+              <div
                 key={s.tone}
-                data-tab
-                className={`relative z-10 rounded-full px-5 py-2 text-sm font-semibold ${
-                  i === 0 ? "text-white" : "text-impact-blue"
-                }`}
+                data-statement
+                className="flex flex-col gap-5 motion-safe:lg:col-start-1 motion-safe:lg:row-start-1"
               >
-                {getLocalizedText(s.title, locale)}
-              </span>
+                <h3
+                  className={`flex items-center gap-3 text-sm font-semibold tracking-[0.12em] uppercase ${
+                    s.tone === "mission" ? "text-impact-blue" : "text-[#d4583c]"
+                  } motion-safe:lg:sr-only`}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={`size-2 rounded-full ${
+                      s.tone === "mission" ? "bg-impact-yellow" : "bg-[#f7886e]"
+                    }`}
+                  />
+                  {getLocalizedText(s.title, locale)}
+                </h3>
+                <p
+                  className={`text-impact-blue leading-[1.12] font-medium tracking-[-0.025em] text-pretty ${
+                    locale === "fr"
+                      ? "max-w-[34ch] text-[clamp(1.75rem,3.5vw,3.6rem)]"
+                      : "max-w-[30ch] text-[clamp(2rem,4.2vw,4.25rem)]"
+                  }`}
+                >
+                  <Statement
+                    body={getLocalizedText(s.body, locale)}
+                    tone={s.tone}
+                  />
+                </p>
+              </div>
             ))}
           </div>
-        </div>
-
-        {/* On desktop (with motion) both statements share one cell so Vision
-            replaces Mission; otherwise they stack. */}
-        <div className="grid gap-14 motion-safe:lg:gap-0">
-          {statements.map((s) => (
-            <div
-              key={s.tone}
-              data-statement
-              className="flex flex-col gap-5 motion-safe:lg:col-start-1 motion-safe:lg:row-start-1"
-            >
-              <h3
-                className={`flex items-center gap-3 text-sm font-semibold tracking-[0.12em] uppercase ${
-                  s.tone === "mission" ? "text-impact-blue" : "text-[#d4583c]"
-                } motion-safe:lg:sr-only`}
-              >
-                <span
-                  aria-hidden="true"
-                  className={`size-2 rounded-full ${
-                    s.tone === "mission" ? "bg-impact-yellow" : "bg-[#f7886e]"
-                  }`}
-                />
-                {getLocalizedText(s.title, locale)}
-              </h3>
-              <p
-                className={`text-impact-blue leading-[1.12] font-medium tracking-[-0.025em] text-pretty ${
-                  locale === "fr"
-                    ? "max-w-[34ch] text-[clamp(1.75rem,3.5vw,3.6rem)]"
-                    : "max-w-[30ch] text-[clamp(2rem,4.2vw,4.25rem)]"
-                }`}
-              >
-                <Statement
-                  body={getLocalizedText(s.body, locale)}
-                  tone={s.tone}
-                />
-              </p>
-            </div>
-          ))}
-        </div>
-      </Container>
-    </section>
+        </Container>
+      </section>
+    </div>
   );
 }
