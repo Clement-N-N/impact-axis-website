@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { blogCategoryTitle, withBrand } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { BlogCategoryHero } from "@/components/sections/blog-category-hero";
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!category) return {};
 
   const categoryName = getLocalizedText(category.title, locale as Locale);
-  const title = `${categoryName} — Blog`;
+  const title = blogCategoryTitle(categoryName, locale as Locale);
   const description =
     locale === "fr"
       ? `Explorez les articles de la catégorie ${categoryName}.`
@@ -44,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title,
+      title: withBrand(title),
       description,
       url: canonical,
       siteName: "Impact Axis",
@@ -53,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: withBrand(title),
       description,
     },
   };

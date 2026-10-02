@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageTitle, withBrand } from "@/lib/seo";
 import { setRequestLocale } from "next-intl/server";
 import { BlogHero } from "@/components/sections/blog-hero";
 import { blogHeroContent } from "@/components/sections/blog-hero/data";
@@ -13,7 +14,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
-  const title = locale === "fr" ? "Blog & Actualités" : "Blog & News";
+  const title = pageTitle("blog", locale);
   const description =
     locale === "fr"
       ? "Découvrez nos derniers articles, actualités et réflexions sur le développement des talents en Afrique."
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title,
+      title: withBrand(title),
       description,
       url: canonical,
       siteName: "Impact Axis",
@@ -42,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: withBrand(title),
       description,
     },
   };

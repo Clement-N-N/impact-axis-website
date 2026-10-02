@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageTitle, withBrand } from "@/lib/seo";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 type Props = {
@@ -7,9 +8,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "programs" });
 
-  const title = t("title") || (locale === "fr" ? "Programmes" : "Programs");
+  const title = pageTitle("programs", locale);
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
   const canonical = `${baseUrl}/${locale}/programs`;
 
@@ -22,6 +22,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         fr: `${baseUrl}/fr/programs`,
       },
     },
+    openGraph: { title: withBrand(title) },
+    twitter: { title: withBrand(title) },
   };
 }
 

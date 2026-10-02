@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AUDIENCE_TITLES, withBrand } from "@/lib/seo";
 import { PartnerLogoStrip } from "@/components/sections/partners/PartnerLogoMarquee";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
@@ -61,7 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const loc = locale as Locale;
   const content = partnershipContent.audiences[audience];
-  const title = getLocalizedText(content.name, loc);
+  const title = getLocalizedText(AUDIENCE_TITLES[audience] ?? content.name, loc);
   const description = getLocalizedText(content.metaDescription, loc);
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
@@ -78,7 +79,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title,
+      title: withBrand(title),
       description,
       url: canonical,
       siteName: "Impact Axis",
@@ -87,7 +88,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: withBrand(title),
       description,
     },
   };

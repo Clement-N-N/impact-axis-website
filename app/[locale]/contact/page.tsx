@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageTitle, withBrand } from "@/lib/seo";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ContactFaq, ContactSection } from "@/components/sections/contact";
 import { getHomeFaqContent } from "@/components/sections/home-faq";
@@ -15,8 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "contact" });
 
-  const title =
-    t("title") || (locale === "fr" ? "Contactez-nous" : "Contact Us");
+  const title = pageTitle("contact", locale);
   const description =
     t("intro") ||
     (locale === "fr"
@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title,
+      title: withBrand(title),
       description,
       url: canonical,
       siteName: "Impact Axis",
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: withBrand(title),
       description,
     },
   };

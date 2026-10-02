@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageTitle, withBrand } from "@/lib/seo";
 import { setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { getImpactStats } from "@/sanity/home";
@@ -30,9 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const isFr = locale === "fr";
 
-  const title = isFr
-    ? "Travailler avec nous — Impact Axis"
-    : "Work With Us — Impact Axis";
+  const title = pageTitle("workWithUs", locale);
   const description = isFr
     ? "Impact Axis collabore avec des financeurs, des employeurs, des établissements d'enseignement et des professionnels pour élargir l'accès des jeunes aux compétences, à l'expérience et aux opportunités au Cameroun."
     : "Impact Axis partners with funders, employers, education institutions and professionals to expand young people's access to skills, experience and meaningful opportunities in Cameroon.";
@@ -51,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title,
+      title: withBrand(title),
       description,
       url: canonical,
       siteName: "Impact Axis",

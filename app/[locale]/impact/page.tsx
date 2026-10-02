@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageTitle, withBrand } from "@/lib/seo";
 import { setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { getReports } from "@/sanity/reports";
@@ -19,9 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const isFr = locale === "fr";
 
-  const title = isFr
-    ? "Impact et redevabilité — Impact Axis"
-    : "Impact & Accountability — Impact Axis";
+  const title = pageTitle("impact", locale);
   const description = isFr
     ? "Nos résultats, nos rapports annuels et nos documents de redevabilité : ce que nous avons accompli, ce que nous apprenons et où nous allons."
     : "Our results, annual reports and accountability documents: what we have done, what we are learning and where we are going next.";
@@ -40,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title,
+      title: withBrand(title),
       description,
       url: canonical,
       siteName: "Impact Axis",

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageTitle, withBrand } from "@/lib/seo";
 import { PartnerLogoStrip } from "@/components/sections/partners/PartnerLogoMarquee";
 import { setRequestLocale } from "next-intl/server";
 import { HomeHero } from "@/components/sections/home-hero";
@@ -19,8 +20,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
-  const title =
-    locale === "fr" ? "Accueil — Impact Axis" : "Home — Impact Axis";
+  const title = pageTitle("home", locale);
   const description =
     locale === "fr"
       ? "Donner aux jeunes Africains les compétences, le jugement et la confiance dont les employeurs ont réellement besoin."
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const canonical = `${baseUrl}/${locale}`;
 
   return {
-    title,
+    title: { absolute: withBrand(title) },
     description,
     alternates: {
       canonical,
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title,
+      title: withBrand(title),
       description,
       url: canonical,
       siteName: "Impact Axis",
@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: withBrand(title),
       description,
     },
   };

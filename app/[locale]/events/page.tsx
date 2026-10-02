@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageTitle, withBrand } from "@/lib/seo";
 import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
 import { eventsHeroContent } from "@/components/sections/events-hero/data";
@@ -13,7 +14,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
-  const title = locale === "fr" ? "Événements & Ateliers" : "Events & Workshops";
+  const title = pageTitle("events", locale);
   const description =
     locale === "fr"
       ? "Rejoignez nos événements, ateliers et webinaires pour connecter et développer les compétences des jeunes talents."
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title,
+      title: withBrand(title),
       description,
       url: canonical,
       siteName: "Impact Axis",
@@ -42,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: withBrand(title),
       description,
     },
   };

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cleanTitle, withBrand } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { BlogDetailsHero } from "@/components/sections/blog-details-hero";
@@ -48,7 +49,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPostBySlug(slug);
   if (!post) return {};
 
-  const title = getLocalizedText(post.title, locale as Locale);
+  const postTitle = getLocalizedText(post.title, locale as Locale);
+  const title = cleanTitle(postTitle);
   const description = getLocalizedText(post.excerpt, locale as Locale);
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
   const canonical = `${baseUrl}/${locale}/blog/${slug}`;
@@ -71,7 +73,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title,
+      title: withBrand(title),
       description,
       url: canonical,
       siteName: "Impact Axis",
@@ -80,13 +82,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [
         {
           url: ogImageUrl,
-          alt: title,
+          alt: postTitle,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: withBrand(title),
       description,
       images: [ogImageUrl],
     },

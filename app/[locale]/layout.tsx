@@ -9,6 +9,7 @@ import { Footer } from "@/components/layout/Footer";
 import { client } from "@/sanity/client";
 import { SOCIAL_LINKS_QUERY } from "@/sanity/queries";
 import type { SocialLinks } from "@/sanity/types";
+import { PAGE_TITLES, SITE_NAME, TITLE_TEMPLATE, withBrand } from "@/lib/seo";
 import "../globals.css";
 import "@/styles/_fonts.scss";
 import "@/styles/_base.scss";
@@ -18,15 +19,16 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Impact Axis — Empowering Young African Talent",
-    template: "%s | Impact Axis",
+    // Only pages without their own title (404, errors) fall back to this.
+    default: SITE_NAME,
+    template: TITLE_TEMPLATE,
   },
   description:
     "Giving young Africans the skills, judgment, and confidence employers actually need.",
   openGraph: {
     type: "website",
     siteName: "Impact Axis",
-    title: "Impact Axis — Empowering Young African Talent",
+    title: withBrand(PAGE_TITLES.home.en),
     description:
       "Giving young Africans the skills, judgment, and confidence employers actually need.",
     images: [
@@ -40,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Impact Axis — Empowering Young African Talent",
+    title: withBrand(PAGE_TITLES.home.en),
     description:
       "Giving young Africans the skills, judgment, and confidence employers actually need.",
     images: ["/logos/impact_axis_white_transparent.png"],

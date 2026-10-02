@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageTitle, withBrand } from "@/lib/seo";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { LegalPageLayout, type LegalPageContent } from "@/components/legal/LegalPageLayout";
 
@@ -8,9 +9,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "termsOfUse" });
 
-  const title = t("title") || (locale === "fr" ? "Conditions d'utilisation" : "Terms of Use");
+  const title = pageTitle("terms", locale);
   const description =
     locale === "fr"
       ? "Lisez les conditions d'utilisation d'Impact Axis."
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title,
+      title: withBrand(title),
       description,
       url: canonical,
       siteName: "Impact Axis",
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: withBrand(title),
       description,
     },
   };
