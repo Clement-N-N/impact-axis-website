@@ -1,0 +1,41 @@
+# Impact Axis
+
+> Impact Axis is a nonprofit youth workforce development organisation based in Yaoundé, Cameroon. Founded in 2021, it gives young Cameroonians the practical skills, work experience and professional mentors employers look for, and connects them to real jobs and opportunities. The website is in English and French.
+
+## Key facts
+
+- Type: nonprofit (NGO), founded 2021
+- Based in: Rond-point Express, Biyem-Assi, Yaoundé, Cameroon
+- Works with: young people in Cameroon, plus funders, employers, schools and universities, and volunteer mentors
+- 450+ young people reached
+- $1.5M+ in opportunities unlocked for participants
+- 65% of participants grow their employability skills
+- 55% reach an opportunity within six months
+- 67% of Goodwill Fellowship fellows are young women
+- Contact: info@impact-axis.org, +237 680 816 656. Partnership enquiries get a reply within two working days.
+
+## Programmes
+
+- Goodwill Fellowship: a four-month programme helping young Cameroonians build durable skills, practical experience and professional networks.
+- Skills & Employability Learning: experiential workshops where young people practise the skills they need to navigate work and opportunity.
+- The Hive: curated spaces for young people to connect, exchange ideas and expand their professional networks.
+- Industry mentorship: working professionals mentor young people, about two hours a week.
+
+## Main pages
+
+- [Home](https://impact-axis.org/en): what Impact Axis does and for whom
+- [What We Do](https://impact-axis.org/en/what-we-do): programmes, approach and event gallery
+- [About](https://impact-axis.org/en/about): mission, vision, story since 2021, team and advisory board
+- [Impact](https://impact-axis.org/en/impact): results, annual reports and accountability documents
+- [Work With Us](https://impact-axis.org/en/work-with-us): ways to partner, side by side
+- [Funders and development partners](https://impact-axis.org/en/work-with-us/funders-development-partners)
+- [Employers and corporate partners](https://impact-axis.org/en/work-with-us/employers-corporate-partners)
+- [Education and training institutions](https://impact-axis.org/en/work-with-us/education-training-institutions)
+- [Mentors and professionals](https://impact-axis.org/en/work-with-us/mentors-professionals)
+- [Events](https://impact-axis.org/en/events): career fairs, workshops and mentoring sessions
+- [Blog](https://impact-axis.org/en/blog): insights on youth employment and the future of work
+- [Contact](https://impact-axis.org/en/contact): contact details and frequently asked questions
+
+## French
+
+Every page is also available in French: replace `/en/` with `/fr/` in the URLs above, e.g. https://impact-axis.org/fr/about.

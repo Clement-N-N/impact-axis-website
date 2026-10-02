@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import { staticPageMetadata } from "@/lib/seo";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ContactFaq, ContactSection } from "@/components/sections/contact";
 import { getHomeFaqContent } from "@/components/sections/home-faq";
+import { getLocalizedText } from "@/components/sections/home-hero/types";
+import { FaqJsonLd } from "@/components/seo/JsonLd";
 import type { Locale } from "@/i18n/routing";
 import { client } from "@/sanity/client";
 import { SOCIAL_LINKS_QUERY } from "@/sanity/queries";
@@ -13,43 +16,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "contact" });
-
-  const title =
-    t("title") || (locale === "fr" ? "Contactez-nous" : "Contact Us");
-  const description =
-    t("intro") ||
-    (locale === "fr"
-      ? "Contactez l'équipe Impact Axis pour toute question ou partenariat."
-      : "Get in touch with the Impact Axis team for inquiries, support, or partnerships.");
-
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
-  const canonical = `${baseUrl}/${locale}/contact`;
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical,
-      languages: {
-        en: `${baseUrl}/en/contact`,
-        fr: `${baseUrl}/fr/contact`,
-      },
-    },
-    openGraph: {
-      title,
-      description,
-      url: canonical,
-      siteName: "Impact Axis",
-      locale: locale === "fr" ? "fr_FR" : "en_US",
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-    },
-  };
+  return staticPageMetadata("contact", "/contact", locale);
 }
 
 async function getSocialLinks(): Promise<SocialLinks> {
@@ -90,7 +57,17 @@ export default async function ContactPage({
         address={tFooter("address")}
         socialLinks={socialLinks}
       />
-      {faq && <ContactFaq faqs={faq.faqs} locale={loc} />}
+      {faq && (
+        <>
+          <ContactFaq faqs={faq.faqs} locale={loc} />
+          <FaqJsonLd
+            faqs={faq.faqs.map((f) => ({
+              question: getLocalizedText(f.question, loc),
+              answer: getLocalizedText(f.answer, loc),
+            }))}
+          />
+        </>
+      )}
     </div>
   );
 }

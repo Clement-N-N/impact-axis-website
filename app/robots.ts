@@ -6,7 +6,9 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: "/",
+      // /api/og is the social share card; X and LinkedIn won't show a
+      // preview image that robots.txt blocks.
+      allow: ["/", "/api/og"],
       disallow: ["/api/", "/studio/"],
     },
     sitemap: `${baseUrl}/sitemap.xml`,

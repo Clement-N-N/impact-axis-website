@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { staticPageMetadata } from "@/lib/seo";
 import { PartnerLogoStrip } from "@/components/sections/partners/PartnerLogoMarquee";
 import { setRequestLocale } from "next-intl/server";
 import { HomeHero } from "@/components/sections/home-hero";
@@ -18,41 +19,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-
-  const title =
-    locale === "fr" ? "Accueil — Impact Axis" : "Home — Impact Axis";
-  const description =
-    locale === "fr"
-      ? "Donner aux jeunes Africains les compétences, le jugement et la confiance dont les employeurs ont réellement besoin."
-      : "Giving young Africans the skills, judgment, and confidence employers actually need.";
-
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
-  const canonical = `${baseUrl}/${locale}`;
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical,
-      languages: {
-        en: `${baseUrl}/en`,
-        fr: `${baseUrl}/fr`,
-      },
-    },
-    openGraph: {
-      title,
-      description,
-      url: canonical,
-      siteName: "Impact Axis",
-      locale: locale === "fr" ? "fr_FR" : "en_US",
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-    },
-  };
+  return staticPageMetadata("home", "", locale);
 }
 
 export default async function Home({

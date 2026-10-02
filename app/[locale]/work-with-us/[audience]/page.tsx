@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AUDIENCE_TITLES, pageMetadata } from "@/lib/seo";
 import { PartnerLogoStrip } from "@/components/sections/partners/PartnerLogoMarquee";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
@@ -61,36 +62,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const loc = locale as Locale;
   const content = partnershipContent.audiences[audience];
-  const title = getLocalizedText(content.name, loc);
-  const description = getLocalizedText(content.metaDescription, loc);
-
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
-  const canonical = `${baseUrl}/${locale}/work-with-us/${audience}`;
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical,
-      languages: {
-        en: `${baseUrl}/en/work-with-us/${audience}`,
-        fr: `${baseUrl}/fr/work-with-us/${audience}`,
-      },
-    },
-    openGraph: {
-      title,
-      description,
-      url: canonical,
-      siteName: "Impact Axis",
-      locale: locale === "fr" ? "fr_FR" : "en_US",
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-    },
-  };
+  return pageMetadata({
+    locale,
+    path: `/work-with-us/${audience}`,
+    title: getLocalizedText(AUDIENCE_TITLES[audience] ?? content.name, loc),
+    description: getLocalizedText(content.metaDescription, loc),
+  });
 }
 
 export default async function PartnershipPage({ params }: Props) {

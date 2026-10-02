@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { staticPageMetadata } from "@/lib/seo";
 import { setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { getImpactStats } from "@/sanity/home";
@@ -28,37 +29,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const isFr = locale === "fr";
-
-  const title = isFr
-    ? "Travailler avec nous — Impact Axis"
-    : "Work With Us — Impact Axis";
-  const description = isFr
-    ? "Impact Axis collabore avec des financeurs, des employeurs, des établissements d'enseignement et des professionnels pour élargir l'accès des jeunes aux compétences, à l'expérience et aux opportunités au Cameroun."
-    : "Impact Axis partners with funders, employers, education institutions and professionals to expand young people's access to skills, experience and meaningful opportunities in Cameroon.";
-
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
-  const canonical = `${baseUrl}/${locale}/work-with-us`;
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical,
-      languages: {
-        en: `${baseUrl}/en/work-with-us`,
-        fr: `${baseUrl}/fr/work-with-us`,
-      },
-    },
-    openGraph: {
-      title,
-      description,
-      url: canonical,
-      siteName: "Impact Axis",
-      locale: isFr ? "fr_FR" : "en_US",
-      type: "website",
-    },
-  };
+  return staticPageMetadata("workWithUs", "/work-with-us", locale);
 }
 
 export default async function WorkWithUsPage({ params }: Props) {

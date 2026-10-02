@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { BASE_URL, cleanTitle, pageMetadata } from "@/lib/seo";
+import { ArticleJsonLd } from "@/components/seo/JsonLd";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { BlogDetailsHero } from "@/components/sections/blog-details-hero";
@@ -48,49 +50,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPostBySlug(slug);
   if (!post) return {};
 
-  const title = getLocalizedText(post.title, locale as Locale);
-  const description = getLocalizedText(post.excerpt, locale as Locale);
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://impact-axis.org";
-  const canonical = `${baseUrl}/${locale}/blog/${slug}`;
-
-  let ogImageUrl = "/logos/impact_axis_white_transparent.png";
+  const postTitle = getLocalizedText(post.title, locale as Locale);
+  let image: { url: string; alt: string } | undefined;
   if (typeof post.image === "string") {
-    ogImageUrl = post.image;
+    image = { url: post.image, alt: postTitle };
   } else if (post.image && typeof post.image === "object") {
-    ogImageUrl = urlFor(post.image).width(1200).height(630).url();
+    image = { url: urlFor(post.image).width(1200).height(630).url(), alt: postTitle };
   }
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical,
-      languages: {
-        en: `${baseUrl}/en/blog/${slug}`,
-        fr: `${baseUrl}/fr/blog/${slug}`,
-      },
-    },
-    openGraph: {
-      title,
-      description,
-      url: canonical,
-      siteName: "Impact Axis",
-      locale: locale === "fr" ? "fr_FR" : "en_US",
-      type: "article",
-      images: [
-        {
-          url: ogImageUrl,
-          alt: title,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [ogImageUrl],
-    },
-  };
+  return pageMetadata({
+    locale,
+    path: `/blog/${slug}`,
+    title: cleanTitle(postTitle),
+    description: getLocalizedText(post.excerpt, locale as Locale),
+    type: "article",
+    image,
+  });
 }
 
 export default async function BlogPostPage({ params }: Props) {
@@ -106,6 +81,21 @@ export default async function BlogPostPage({ params }: Props) {
     <>
       <BlogDetailsHero post={post} locale={locale as Locale} />
       <BlogDetailsBody post={post} relatedPost={relatedPost} locale={locale as Locale} />
+      <ArticleJsonLd
+        url={`${BASE_URL}/${locale}/blog/${slug}`}
+        headline={getLocalizedText(post.title, locale as Locale)}
+        description={getLocalizedText(post.excerpt, locale as Locale)}
+        datePublished={post.date}
+        authorName={post.author?.name}
+        image={
+          typeof post.image === "string"
+            ? post.image
+            : post.image
+              ? urlFor(post.image).width(1200).height(630).url()
+              : undefined
+        }
+        locale={locale as Locale}
+      />
     </>
   );
 }
