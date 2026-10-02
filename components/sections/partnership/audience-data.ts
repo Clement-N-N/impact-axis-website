@@ -52,10 +52,10 @@ export const audiencePages: Record<PartnershipAudience, AudiencePage> = {
       fr: "Discuter d'un financement",
     },
     image: {
-      src: "/images/gallery/gwf-2025-41.jpg",
+      src: "/images/partners/funders-handshake.jpg",
       alt: {
-        en: "The 2025 Goodwill Fellowship cohort in yellow t-shirts in front of the event banner",
-        fr: "La promotion 2025 de la Goodwill Fellowship en t-shirts jaunes devant la bannière de l'événement",
+        en: "Two people shaking hands across a desk",
+        fr: "Deux personnes se serrant la main",
       },
     },
     badge: {
@@ -144,10 +144,10 @@ export const audiencePages: Record<PartnershipAudience, AudiencePage> = {
       fr: "Construire votre vivier de talents",
     },
     image: {
-      src: "/images/gallery/gwf-2026-35.jpg",
+      src: "/images/partners/employers-interview.jpg",
       alt: {
-        en: "Two fellows in discussion, one gesturing as he explains an idea",
-        fr: "Deux fellows en discussion, l'un gesticulant pour expliquer une idée",
+        en: "A young man in conversation with an interviewer at her desk",
+        fr: "Un jeune homme en entretien avec une recruteuse à son bureau",
       },
     },
     badge: {
@@ -236,10 +236,10 @@ export const audiencePages: Record<PartnershipAudience, AudiencePage> = {
       fr: "Accueillir Impact Axis sur votre campus",
     },
     image: {
-      src: "/images/gallery/nsai-heroes-50.jpg",
+      src: "/images/partners/education-campus.jpg",
       alt: {
-        en: "A classroom of pupils in orange uniforms listening attentively",
-        fr: "Une classe d'élèves en uniforme orange écoutant attentivement",
+        en: "An aerial view of a university campus with red-brick buildings and green lawns",
+        fr: "Vue aérienne d'un campus universitaire aux bâtiments de brique et pelouses vertes",
       },
     },
     badge: {
@@ -325,10 +325,10 @@ export const audiencePages: Record<PartnershipAudience, AudiencePage> = {
     },
     cta: { en: "Become a mentor", fr: "Devenir mentor" },
     image: {
-      src: "/images/gallery/gwf-2025-37.jpg",
+      src: "/images/partners/mentors-conversation.jpg",
       alt: {
-        en: "Two fellows smiling as they take notes together at a table",
-        fr: "Deux fellows souriantes prenant des notes ensemble à une table",
+        en: "A mentor and a young professional in conversation across a desk",
+        fr: "Un mentor et un jeune professionnel en discussion autour d'un bureau",
       },
     },
     badge: {

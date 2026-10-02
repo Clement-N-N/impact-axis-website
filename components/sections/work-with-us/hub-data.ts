@@ -50,7 +50,7 @@ export const hubContent = {
         { en: "Expansion", fr: "Expansion" },
         { en: "Research", fr: "Recherche" },
       ],
-      image: "/images/gallery/gwf-2025-41.jpg",
+      image: "/images/partners/funders-handshake.jpg",
     },
     {
       audience: "employers-corporate-partners",
@@ -68,7 +68,7 @@ export const hubContent = {
         { en: "Projects", fr: "Projets" },
         { en: "Mentoring", fr: "Mentorat" },
       ],
-      image: "/images/gallery/gwf-2026-35.jpg",
+      image: "/images/partners/employers-interview.jpg",
     },
     {
       audience: "education-training-institutions",
@@ -86,7 +86,7 @@ export const hubContent = {
         { en: "Projects", fr: "Projets" },
         { en: "Mentors", fr: "Mentors" },
       ],
-      image: "/images/gallery/nsai-heroes-50.jpg",
+      image: "/images/partners/education-campus.jpg",
     },
     {
       audience: "mentors-professionals",
@@ -104,7 +104,7 @@ export const hubContent = {
         { en: "Talks", fr: "Interventions" },
         { en: "Feedback", fr: "Retours" },
       ],
-      image: "/images/gallery/gwf-2025-37.jpg",
+      image: "/images/partners/mentors-conversation.jpg",
     },
   ] satisfies HubAudienceCard[],
   proof: {
@@ -181,7 +181,7 @@ export const hubContent = {
           en: "Give fellows their first real taste of the workplace.",
           fr: "Offrez aux fellows leur première vraie expérience du monde du travail.",
         },
-        image: "/images/gallery/gwf-2026-33.jpg",
+        image: "/images/partners/employers-career-fair.jpg",
       },
       {
         audience: "education-training-institutions",
