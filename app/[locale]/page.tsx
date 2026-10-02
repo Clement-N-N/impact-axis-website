@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { PartnerLogoStrip } from "@/components/sections/partners/PartnerLogoMarquee";
 import { setRequestLocale } from "next-intl/server";
 import { HomeHero } from "@/components/sections/home-hero";
-import { WhyWeExist } from "@/components/sections/why-we-exist";
-import { ParallaxImage } from "@/components/sections/parallax-image";
-import { HomeSolution } from "@/components/sections/home-solution";
+import { HomeGapSection, homeGapContent } from "@/components/sections/home-gap";
 import { WhoWeServe } from "@/components/sections/who-we-serve";
 import { WhatWeBuild } from "@/components/sections/what-we-build";
 import { OurImpact } from "@/components/sections/our-impact";
@@ -72,14 +70,9 @@ export default async function Home({
   return (
     <>
       <HomeHero locale={loc} />
-      <WhyWeExist locale={loc} data={content.whyWeExist} />
-      <ParallaxImage src="/images/team-1.jpg" heightClass="h-[55vh]" />
-      <HomeSolution locale={loc} data={content.solution} />
-      <ParallaxImage
-        src="/images/pattern-1.png"
-        heightClass="h-[35vh]"
-        padded={false}
-      />
+      {/* "Why we exist" and "Our solution" are one section now; the full
+          story lives on the About page. */}
+      <HomeGapSection locale={loc} data={homeGapContent} />
       <WhoWeServe locale={loc} data={content.whoWeServe} />
       <WhatWeBuild locale={loc} data={content.whatWeBuild} />
       <OurImpact locale={loc} chrome={content.impactChrome} />
