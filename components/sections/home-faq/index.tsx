@@ -32,9 +32,13 @@ function isSanityFaqData(value: unknown): value is SanityFaqData {
   return true;
 }
 
-async function getHomeFaqContent(): Promise<HomeFaqContent | null> {
+export async function getHomeFaqContent(): Promise<HomeFaqContent | null> {
   try {
-    const result = await client.fetch(HOME_FAQ_QUERY, {}, { next: { revalidate: 60 } });
+    const result = await client.fetch(
+      HOME_FAQ_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    );
     if (isSanityFaqData(result)) {
       // Everything except the Q&A list stays hardcoded by design (kept out of
       // Sanity to avoid adding editing surface the site owner doesn't need).
