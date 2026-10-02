@@ -4,41 +4,27 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import clsx from "clsx";
 import { CaretDown } from "@phosphor-icons/react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { getLocalizedText } from "@/components/sections/home-hero/types";
+import { hubContent } from "@/components/sections/work-with-us/hub-data";
 import { Link, usePathname } from "@/i18n/navigation";
-import {
-  EcosystemIcon,
-  FundersIcon,
-  PartnersIcon,
-  TalentedIcon,
-} from "@/components/icons";
 import Image from "next/image";
 import { Container } from "./Container";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Logo } from "./Logo";
 
-const MEGA_ITEMS = [
-  {
-    key: "partners",
-    Icon: PartnersIcon,
-    href: "/work-with-us/funders-development-partners",
-  },
-  {
-    key: "funders",
-    Icon: FundersIcon,
-    href: "/work-with-us/employers-corporate-partners",
-  },
-  {
-    key: "ecosystem",
-    Icon: EcosystemIcon,
-    href: "/work-with-us/education-training-institutions",
-  },
-  {
-    key: "talented",
-    Icon: TalentedIcon,
-    href: "/work-with-us/mentors-professionals",
-  },
-] as const;
+const MOBILE_SHORT = {
+  "funders-development-partners": { en: "Funders", fr: "Financeurs" },
+  "employers-corporate-partners": { en: "Employers", fr: "Employeurs" },
+  "education-training-institutions": { en: "Educators", fr: "Établissements" },
+  "mentors-professionals": { en: "Mentors", fr: "Mentors" },
+} as const;
+const MOBILE_ALL = {
+  en: "See every way to work with us",
+  fr: "Toutes les façons de collaborer",
+};
+
+
 
 const navLinkStyles = clsx(
   "block py-3 transition-colors",
@@ -46,6 +32,7 @@ const navLinkStyles = clsx(
 
 export function MobileNav() {
   const t = useTranslations("nav");
+  const locale = useLocale() as "en" | "fr";
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isWorkOpen, setIsWorkOpen] = useState(false);
@@ -332,42 +319,55 @@ export function MobileNav() {
                   />
                 </button>
                 <ul ref={submenuRef} className="overflow-hidden">
-                  {/* The hub itself. The desktop trigger opens the mega menu on
-                      hover, which touch has no equivalent for, so without this
-                      entry the page would be unreachable on a phone. */}
-                  <li>
-                    <Link
-                      href="/work-with-us"
-                      onClick={close}
-                      className="flex items-center gap-4 py-3 pl-1 text-base font-normal text-black"
-                    >
-                      <Image
-                        src="/logos/impact_axis_symbol_black_transparent.png"
-                        alt=""
-                        width={48}
-                        height={48}
-                        className="h-6 w-6 shrink-0 object-contain"
-                      />
-                      {t("megaMenu.overview")}
-                    </Link>
-                  </li>
-                  {MEGA_ITEMS.map(({ key, Icon, href }, index) => (
+                  {/* The four audiences as compact photo cards (same photos
+                      and promises as the hub), then the hub itself. */}
+                  {hubContent.cards.map((card, index) => (
                     <li
-                      key={key}
+                      key={card.audience}
                       ref={(el) => {
                         submenuItemRefs.current[index] = el;
                       }}
+                      className="pt-2"
                     >
                       <Link
-                        href={href}
+                        href={`/work-with-us/${card.audience}`}
                         onClick={close}
-                        className="flex items-center gap-4 py-3 pl-1 text-base font-normal text-black"
+                        aria-current={
+                          isActive(`/work-with-us/${card.audience}`)
+                            ? "page"
+                            : undefined
+                        }
+                        className="flex items-center gap-3 rounded-[16px] bg-[#f4f6fc] p-2 pr-3 aria-[current=page]:outline aria-[current=page]:outline-2 aria-[current=page]:outline-impact-yellow"
                       >
-                        <Icon className="h-6 w-6" />
-                        {t(`megaMenu.items.${key}`)}
+                        <span className="relative size-14 shrink-0 overflow-hidden rounded-[12px]">
+                          <Image
+                            src={card.image}
+                            alt=""
+                            fill
+                            sizes="56px"
+                            className="object-cover"
+                          />
+                        </span>
+                        <span className="flex min-w-0 flex-1 flex-col">
+                          <span className="text-impact-blue text-base font-semibold">
+                            {getLocalizedText(MOBILE_SHORT[card.audience], locale)}
+                          </span>
+                          <span className="text-sm leading-snug font-normal text-black/60">
+                            {getLocalizedText(card.promise, locale)}
+                          </span>
+                        </span>
                       </Link>
                     </li>
                   ))}
+                  <li className="pt-3 pb-2">
+                    <Link
+                      href="/work-with-us"
+                      onClick={close}
+                      className="text-impact-blue inline-flex items-center gap-1.5 pl-1 text-sm font-semibold"
+                    >
+                      {getLocalizedText(MOBILE_ALL, locale)} →
+                    </Link>
+                  </li>
                 </ul>
               </li>
               {NAV_LINKS.slice(3).map(({ href, label }, index) => (
