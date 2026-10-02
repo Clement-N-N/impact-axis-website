@@ -116,6 +116,22 @@ export function Navbar({ socialLinks }: { socialLinks: SocialLinks }) {
   ] as const;
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastPointer = useRef<string | null>(null);
+  const openMenu = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setIsMegaMenuOpen(true);
+  };
+  const closeMenuSoon = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setIsMegaMenuOpen(false), 220);
+  };
+  useEffect(
+    () => () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    },
+    [],
+  );
   const headerRef = useRef<HTMLElement>(null);
   const linkRefs = useRef<Record<string, HTMLElement | null>>({});
 
@@ -156,8 +172,7 @@ export function Navbar({ socialLinks }: { socialLinks: SocialLinks }) {
       ref={headerRef}
       onClick={(e) => {
         if (!isMegaMenuOpen) return;
-        const toggleEl = linkRefs.current[MEGA_MENU_ID];
-        if (toggleEl && toggleEl.contains(e.target as Node)) return;
+        if ((e.target as HTMLElement).closest("[data-mega-toggle]")) return;
         const menuEl = document.getElementById(MEGA_MENU_ID);
         // Clicks inside the menu normally leave it open — but a link is the one
         // exception: following it should close the menu, or it stays open over
@@ -199,33 +214,59 @@ export function Navbar({ socialLinks }: { socialLinks: SocialLinks }) {
                 <NavLinkText label={label} isHovered={hoveredLink === href} />
               </Link>
             ))}
-            <button
-              type="button"
-              ref={(el) => {
-                linkRefs.current[MEGA_MENU_ID] = el;
-              }}
-              onClick={() => setIsMegaMenuOpen((v) => !v)}
-              onMouseEnter={() => setHoveredLink(MEGA_MENU_ID)}
-              onMouseLeave={() => setHoveredLink(null)}
-              aria-expanded={isMegaMenuOpen}
-              aria-controls={MEGA_MENU_ID}
-              className={clsx(
-                navLinkStyles({ active: isActive("/work-with-us") }),
-                "gap-1.5",
-              )}
+            {/* "Work With Us" is a real link to the hub. With a mouse,
+                hovering the link (or the menu) opens the mega menu, and
+                leaving both closes it after a short grace period. The caret
+                is a separate button that toggles the menu, for touch and
+                keyboard users, who have no hover. */}
+            <span
+              className="flex items-center gap-1"
+              onPointerEnter={(e) => e.pointerType === "mouse" && openMenu()}
+              onPointerLeave={(e) => e.pointerType === "mouse" && closeMenuSoon()}
             >
-              <NavLinkText
-                label={t("links.workWithUs")}
-                isHovered={hoveredLink === MEGA_MENU_ID}
-              />
-              <motion.span
-                animate={{ rotate: isMegaMenuOpen ? 180 : 0 }}
-                transition={{ duration: 0.2 }}
-                className="flex"
+              <Link
+                href="/work-with-us"
+                ref={(el) => {
+                  linkRefs.current[MEGA_MENU_ID] = el;
+                }}
+                onMouseEnter={() => setHoveredLink(MEGA_MENU_ID)}
+                onMouseLeave={() => setHoveredLink(null)}
+                onClick={() => setIsMegaMenuOpen(false)}
+                className={navLinkStyles({ active: isActive("/work-with-us") })}
               >
-                <CaretDownIcon className="h-3 w-3" weight="fill" />
-              </motion.span>
-            </button>
+                <NavLinkText
+                  label={t("links.workWithUs")}
+                  isHovered={hoveredLink === MEGA_MENU_ID}
+                />
+              </Link>
+              <button
+                type="button"
+                data-mega-toggle
+                onPointerDown={(e) => {
+                  lastPointer.current = e.pointerType;
+                }}
+                onClick={() => {
+                  // With a mouse, hover has already opened the menu, so a
+                  // click should keep it open rather than toggle it shut.
+                  // Touch and keyboard (no pointer) toggle as usual.
+                  if (lastPointer.current === "mouse") openMenu();
+                  else setIsMegaMenuOpen((v) => !v);
+                  lastPointer.current = null;
+                }}
+                aria-expanded={isMegaMenuOpen}
+                aria-controls={MEGA_MENU_ID}
+                aria-label={t("links.workWithUsMenu")}
+                className="focus-visible:outline-impact-blue -m-2 inline-flex items-center justify-center rounded-full p-2 focus-visible:outline-2"
+              >
+                <motion.span
+                  animate={{ rotate: isMegaMenuOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex"
+                >
+                  <CaretDownIcon className="h-3 w-3" weight="fill" />
+                </motion.span>
+              </button>
+            </span>
             {NAV_LINKS_AFTER.map(({ href, label }) => (
               <Link
                 key={href}
@@ -253,7 +294,12 @@ export function Navbar({ socialLinks }: { socialLinks: SocialLinks }) {
           </div>
         </div>
       </Container>
-      <MegaMenu id={MEGA_MENU_ID} isOpen={isMegaMenuOpen} socialLinks={socialLinks} />
+      <div
+        onPointerEnter={(e) => e.pointerType === "mouse" && isMegaMenuOpen && openMenu()}
+        onPointerLeave={(e) => e.pointerType === "mouse" && closeMenuSoon()}
+      >
+        <MegaMenu id={MEGA_MENU_ID} isOpen={isMegaMenuOpen} socialLinks={socialLinks} />
+      </div>
       <MegaMenuBackdrop
         isOpen={isMegaMenuOpen}
         onClick={() => setIsMegaMenuOpen(false)}
