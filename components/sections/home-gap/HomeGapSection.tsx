@@ -160,23 +160,23 @@ export function HomeGapSection({
       <div data-desk className="hidden h-[100svh] min-h-[36rem] lg:flex">
         <div
           data-left
-          className="bg-impact-blue relative z-10 flex w-1/2 shrink-0 flex-col pt-[calc(var(--header-height)+clamp(1.5rem,5svh,3.5rem))] pr-[clamp(2rem,4vw,4rem)] pb-[clamp(2rem,6svh,4rem)] pl-[max(1.5rem,calc((100vw-90rem)/2+1.5rem))] text-white"
+          className="bg-impact-blue relative z-10 flex w-1/2 shrink-0 flex-col pt-[calc(var(--header-height)+clamp(1rem,3.5svh,3.5rem))] pr-[clamp(2rem,4vw,4rem)] pb-[clamp(1.25rem,4svh,4rem)] pl-[max(1.5rem,calc((100vw-90rem)/2+1.5rem))] text-white"
         >
           <span className="text-sm font-semibold tracking-[0.14em] text-[#f7886e] uppercase">
             {getLocalizedText(data.problemEyebrow, locale)}
           </span>
           <h2
             id="home-gap-problem"
-            className="mt-4 max-w-[18ch] text-[clamp(1.75rem,min(3.1vw,5.6svh),3.25rem)] leading-[1.1] font-semibold tracking-[-0.025em] text-balance"
+            className="mt-4 max-w-[18ch] text-[clamp(1.6rem,min(2.9vw,4.9svh),3.25rem)] leading-[1.1] font-semibold tracking-[-0.025em] text-balance"
           >
             {getLocalizedText(data.problem, locale)}
           </h2>
-          <ul className="mt-auto flex flex-col gap-[clamp(0.5rem,1.4svh,0.875rem)] pt-8">
+          <ul className="mt-auto flex flex-col gap-[clamp(0.4rem,1.2svh,0.875rem)] pt-[clamp(1rem,3svh,2rem)]">
             {pairs.map((p, i) => (
               <li
                 key={i}
                 data-gap
-                className="relative flex h-[clamp(3.25rem,8svh,4.5rem)] items-center justify-end rounded-[18px] border border-dashed border-white/25 bg-white/[0.05] px-6 text-[clamp(1rem,2.4svh,1.3rem)] font-semibold text-white/60"
+                className="relative flex h-[clamp(2.75rem,6.6svh,4.5rem)] items-center justify-end rounded-[18px] border border-dashed border-white/25 bg-white/[0.05] px-6 text-[clamp(0.95rem,2.2svh,1.3rem)] font-semibold text-white/60"
               >
                 <span className="relative">
                   {p.gap}
@@ -201,25 +201,25 @@ export function HomeGapSection({
           </span>
         </div>
 
-        <div className="relative flex min-w-0 flex-1 flex-col bg-[linear-gradient(160deg,#ffffff_0%,#fff6d6_100%)] pt-[calc(var(--header-height)+clamp(1.5rem,5svh,3.5rem))] pr-[max(1.5rem,calc((100vw-90rem)/2+1.5rem))] pb-[clamp(2rem,6svh,4rem)] pl-[clamp(2.5rem,5vw,5rem)]">
+        <div className="relative flex min-w-0 flex-1 flex-col bg-[linear-gradient(160deg,#ffffff_0%,#fff6d6_100%)] pt-[calc(var(--header-height)+clamp(1rem,3.5svh,3.5rem))] pr-[max(1.5rem,calc((100vw-90rem)/2+1.5rem))] pb-[clamp(1.25rem,4svh,4rem)] pl-[clamp(2.5rem,5vw,5rem)]">
           <span className="text-sm font-semibold tracking-[0.14em] text-[#b88d00] uppercase">
             {getLocalizedText(data.solutionEyebrow, locale)}
           </span>
-          <p className="text-impact-blue mt-4 max-w-[22ch] text-[clamp(1.75rem,min(3.1vw,5.6svh),3.25rem)] leading-[1.1] font-semibold tracking-[-0.025em] text-balance">
+          <p className="text-impact-blue mt-4 max-w-[26ch] text-[clamp(1.6rem,min(2.9vw,4.9svh),3.25rem)] leading-[1.1] font-semibold tracking-[-0.025em] text-balance">
             {getLocalizedText(data.solution, locale)}
           </p>
-          <div className="mt-auto flex flex-col gap-[clamp(1rem,3svh,1.75rem)] pt-8">
-            <ul className="flex flex-col gap-[clamp(0.5rem,1.4svh,0.875rem)]">
+          <div className="mt-auto flex flex-col gap-[clamp(0.75rem,2.4svh,1.75rem)] pt-[clamp(1rem,3svh,2rem)]">
+            <ul className="flex flex-col gap-[clamp(0.4rem,1.2svh,0.875rem)]">
               {pairs.map((p, i) => (
                 <li
                   key={i}
                   data-answer
-                  className="text-impact-blue flex h-[clamp(3.25rem,8svh,4.5rem)] items-center gap-4 rounded-[18px] bg-white px-5 text-[clamp(1rem,2.4svh,1.3rem)] font-semibold shadow-[0_14px_30px_-18px_rgb(16_27_98/0.4)]"
+                  className="text-impact-blue flex h-[clamp(2.75rem,6.6svh,4.5rem)] items-center gap-4 rounded-[18px] bg-white px-5 text-[clamp(0.95rem,2.2svh,1.3rem)] font-semibold shadow-[0_14px_30px_-18px_rgb(16_27_98/0.4)]"
                 >
                   <span
                     data-badge
                     aria-hidden="true"
-                    className="bg-impact-yellow text-impact-blue inline-flex size-9 shrink-0 items-center justify-center rounded-full text-sm font-bold tabular-nums"
+                    className="bg-impact-yellow text-impact-blue inline-flex size-[clamp(1.75rem,4.4svh,2.25rem)] shrink-0 items-center justify-center rounded-full text-sm font-bold tabular-nums"
                   >
                     {num(i)}
                   </span>
