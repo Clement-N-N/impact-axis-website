@@ -222,10 +222,10 @@ export const whatWeDoPageContent: WhatWeDoPageContent = {
           fr: "Des espaces pensés pour que les jeunes se rencontrent, échangent des idées et élargissent leurs réseaux professionnels.",
         },
         image: {
-          src: "/images/prog-the-hive.jpg",
+          src: "/images/prog-the-hive-banner.jpg",
           alt: {
-            en: "Young women in matching blue T-shirts smiling and making peace signs together",
-            fr: "De jeunes femmes en T-shirts bleus assortis sourient et font ensemble le signe de la paix",
+            en: "A participant posing beside The Hive banner, one arm raised to the top of it",
+            fr: "Une participante posant à côté de la bannière The Hive, un bras levé vers le haut de celle-ci",
           },
         },
       },

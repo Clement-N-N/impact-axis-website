@@ -4,11 +4,10 @@ import { setRequestLocale } from "next-intl/server";
 import { HomeHero } from "@/components/sections/home-hero";
 import { HomeGapSection, homeGapContent } from "@/components/sections/home-gap";
 import { WhoWeServe } from "@/components/sections/who-we-serve";
-import { WhatWeBuild } from "@/components/sections/what-we-build";
+import { HomeProgrammes } from "@/components/sections/home-programmes";
 import { OurImpact } from "@/components/sections/our-impact";
 import { HomeTestimonials } from "@/components/sections/home-testimonials";
 import { HomeBlog } from "@/components/sections/home-blog";
-import { HomeFaq } from "@/components/sections/home-faq";
 import { BottomCta } from "@/components/sections/bottom-cta";
 import { getHomePageContent } from "@/sanity/home";
 import type { Locale } from "@/i18n/routing";
@@ -74,7 +73,7 @@ export default async function Home({
           story lives on the About page. */}
       <HomeGapSection locale={loc} data={homeGapContent} />
       <WhoWeServe locale={loc} data={content.whoWeServe} />
-      <WhatWeBuild locale={loc} data={content.whatWeBuild} />
+      <HomeProgrammes locale={loc} />
       <OurImpact locale={loc} chrome={content.impactChrome} />
       <PartnerLogoStrip
         locale={loc}
@@ -82,7 +81,7 @@ export default async function Home({
       />
       <HomeTestimonials locale={loc} />
       <HomeBlog locale={loc} />
-      <HomeFaq locale={loc} />
+      {/* The FAQ now lives on the Contact page. */}
       <BottomCta
         locale={loc}
         data={{

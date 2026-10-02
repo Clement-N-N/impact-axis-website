@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { ContactFaq, ContactSection } from "@/components/sections/contact";
+import { getHomeFaqContent } from "@/components/sections/home-faq";
+import type { Locale } from "@/i18n/routing";
+import { client } from "@/sanity/client";
+import { SOCIAL_LINKS_QUERY } from "@/sanity/queries";
+import type { SocialLinks } from "@/sanity/types";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -9,7 +15,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "contact" });
 
-  const title = t("title") || (locale === "fr" ? "Contactez-nous" : "Contact Us");
+  const title =
+    t("title") || (locale === "fr" ? "Contactez-nous" : "Contact Us");
   const description =
     t("intro") ||
     (locale === "fr"
@@ -45,6 +52,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+async function getSocialLinks(): Promise<SocialLinks> {
+  try {
+    const result = await client.fetch(
+      SOCIAL_LINKS_QUERY,
+      {},
+      { next: { revalidate: 60 } },
+    );
+    if (result && typeof result === "object") return result as SocialLinks;
+  } catch (error) {
+    console.error("Failed to fetch social links from Sanity.", error);
+  }
+  return {};
+}
+
 export default async function ContactPage({
   params,
 }: {
@@ -52,29 +73,24 @@ export default async function ContactPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const loc = locale as Locale;
 
-  const t = await getTranslations("contact");
   const tFooter = await getTranslations("footer");
+  const [socialLinks, faq] = await Promise.all([
+    getSocialLinks(),
+    getHomeFaqContent(),
+  ]);
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-8 py-32 text-center">
-      <div className="flex flex-col gap-4">
-        <h1 className="text-3xl font-semibold">{t("title")}</h1>
-        <p className="text-impact-gray max-w-md">{t("intro")}</p>
-      </div>
-
-      <div className="flex flex-col gap-2 text-impact-gray">
-        <p>{tFooter("address")}</p>
-        <p>
-          <span className="font-medium text-black">{tFooter("emailLabel")}</span>{" "}
-          <a href={`mailto:${tFooter("email")}`} className="underline">
-            {tFooter("email")}
-          </a>
-        </p>
-        <p>
-          <span className="font-medium text-black">{tFooter("telLabel")}</span> {tFooter("tel")}
-        </p>
-      </div>
+    <div className="w-full bg-white">
+      <ContactSection
+        locale={loc}
+        email={tFooter("email")}
+        phone={tFooter("tel")}
+        address={tFooter("address")}
+        socialLinks={socialLinks}
+      />
+      {faq && <ContactFaq faqs={faq.faqs} locale={loc} />}
     </div>
   );
 }
