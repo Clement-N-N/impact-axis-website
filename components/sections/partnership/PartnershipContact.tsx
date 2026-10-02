@@ -39,7 +39,11 @@ const SOCIALS = [
   { key: "x", Icon: XLogoIcon, label: "X" },
   { key: "linkedin", Icon: LinkedinLogoIcon, label: "LinkedIn" },
   { key: "youtube", Icon: YoutubeLogoIcon, label: "YouTube" },
-] as const satisfies readonly { key: keyof SocialLinks; Icon: unknown; label: string }[];
+] as const satisfies readonly {
+  key: keyof SocialLinks;
+  Icon: unknown;
+  label: string;
+}[];
 
 const inputStyles =
   "border border-border bg-white px-4 py-3 text-black transition-colors placeholder:text-impact-gray focus:border-impact-blue focus:ring-1 focus:ring-impact-blue focus:outline-none";
@@ -214,7 +218,10 @@ export function PartnershipContact({
     <section ref={sectionRef} className="py-section w-full bg-white">
       <Container className="gap-gutter grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12">
         <div className="hidden h-full lg:col-span-1 lg:block">
-          <div className="mt-[1vw] h-[8px] w-[8px] bg-black" aria-hidden="true" />
+          <div
+            className="mt-[1vw] h-[8px] w-[8px] bg-black"
+            aria-hidden="true"
+          />
         </div>
 
         <div className="col-span-4 flex flex-col gap-12 md:col-span-3 lg:col-span-4">
@@ -406,7 +413,7 @@ export function PartnershipContact({
               aria-invalid={Boolean(errors.message)}
               aria-describedby={describedBy("message")}
               className={clsx(
-                "resize-y bg-white px-4 py-3 text-black transition-colors placeholder:text-impact-gray focus:outline-none",
+                "placeholder:text-impact-gray resize-y bg-white px-4 py-3 text-black transition-colors focus:outline-none",
                 errors.message && "border-icon-peach border",
               )}
             />

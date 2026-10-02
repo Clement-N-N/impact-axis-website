@@ -2,10 +2,24 @@ import type { Metadata } from "next";
 import { PartnerLogoStrip } from "@/components/sections/partners/PartnerLogoMarquee";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
-import { ParallaxImage } from "@/components/sections/parallax-image";
 import {
-  PartnershipHero,
-  PartnershipStatement,
+  AudienceAlso,
+  AudienceFormIntro,
+  AudienceGets,
+  AudienceHero,
+  AudienceOptions,
+} from "@/components/sections/partnership/AudienceSections";
+import { HubSteps } from "@/components/sections/work-with-us/HubSections";
+import { FALLBACK_STATS } from "@/components/sections/work-with-us/hub-data";
+import { getImpactStats, type ImpactStatEntry } from "@/sanity/home";
+
+function pickStats(stats: ImpactStatEntry[]) {
+  // The money figure already sits on the funders hero; keep the rest.
+  return (stats.length ? stats : FALLBACK_STATS)
+    .filter((s) => !s.value.includes("$"))
+    .slice(0, 4);
+}
+import {
   PartnershipContact,
   partnershipContent,
   isPartnershipAudience,
@@ -91,22 +105,14 @@ export default async function PartnershipPage({ params }: Props) {
   const content = partnershipContent.audiences[audience];
   const socialLinks = await getSocialLinks();
 
+  const stats = pickStats(await getImpactStats());
+
   return (
     <div className="w-full bg-white">
-      <PartnershipHero
-        headline={content.headline}
-        paragraphs={content.paragraphs}
-        locale={loc}
-      />
-      <ParallaxImage
-        src={partnershipContent.image}
-        heightClass="h-[30vh] lg:h-[45vh]"
-        padded={false}
-      />
-      <PartnershipStatement
-        statement={partnershipContent.statement}
-        locale={loc}
-      />
+      <AudienceHero audience={audience} locale={loc} />
+      <AudienceOptions audience={audience} locale={loc} />
+      <AudienceGets audience={audience} locale={loc} stats={stats} />
+      <HubSteps locale={loc} compact />
       <PartnerLogoStrip
         locale={loc}
         label={{
@@ -114,11 +120,15 @@ export default async function PartnershipPage({ params }: Props) {
           fr: "Ils nous font confiance",
         }}
       />
-      <PartnershipContact
-        formSubject={content.formSubject}
-        locale={loc}
-        socialLinks={socialLinks}
-      />
+      <AudienceFormIntro audience={audience} locale={loc} />
+      <div className="bg-[#f4f6fc]">
+        <PartnershipContact
+          formSubject={content.formSubject}
+          locale={loc}
+          socialLinks={socialLinks}
+        />
+      </div>
+      <AudienceAlso audience={audience} locale={loc} />
     </div>
   );
 }

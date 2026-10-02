@@ -154,7 +154,7 @@ export function HowWePartnerSection({
                 aria-hidden="true"
                 className="bg-impact-yellow absolute -top-[5px] left-0 h-[9px] w-[9px] rounded-full"
               />
-              <span className="text-[0.75rem] tabular-nums text-white/40">
+              <span className="text-[0.75rem] text-white/40 tabular-nums">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <h3 className="text-[clamp(1.125rem,1.4vw,1.25rem)] font-medium text-white">
