@@ -13,8 +13,8 @@ export const homeGapContent: HomeGapContent = {
   },
   solutionEyebrow: { en: "How we close it", fr: "Comment nous le comblons" },
   solution: {
-    en: "We help them build the growth-focused, industry-neutral skills they need to land meaningful and dignified opportunities.",
-    fr: "Nous les aidons à développer des compétences tournées vers la croissance, valables dans tous les secteurs, pour accéder à des opportunités dignes et porteuses de sens.",
+    en: "We help them build the transferable skills, experience and connections that lead to meaningful, dignified work.",
+    fr: "Nous les aidons à développer les compétences transférables, l'expérience et les relations qui mènent à un travail digne et porteur de sens.",
   },
   counter: { en: "{n} / {total} closed", fr: "{n} / {total} comblés" },
   pairs: [
