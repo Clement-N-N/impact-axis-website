@@ -109,6 +109,121 @@ export const aboutPageContent: AboutPageContent = {
     },
   },
 
+  ourStory: {
+    eyebrow: { en: "Our Story", fr: "Notre histoire" },
+    headline: {
+      en: "A journey of evolution.",
+      fr: "Un parcours en constante évolution.",
+    },
+    intro: {
+      en: "Five years of building, stumbling, listening and building again.",
+      fr: "Cinq années à construire, trébucher, écouter, puis reconstruire.",
+    },
+    chapterLabel: { en: "Chapter {n}", fr: "Chapitre {n}" },
+    controls: {
+      tabs: { en: "Our story by year", fr: "Notre histoire, année par année" },
+      previous: { en: "Previous year", fr: "Année précédente" },
+      next: { en: "Next year", fr: "Année suivante" },
+      pause: { en: "Pause the story", fr: "Mettre l'histoire en pause" },
+      play: { en: "Play the story", fr: "Reprendre l'histoire" },
+    },
+    // Condensed from "A Journey of Evolution" in the 2025 Annual Report.
+    chapters: [
+      {
+        year: "2021",
+        title: { en: "Our Genesis", fr: "Nos origines" },
+        headline: {
+          en: "It started with a question.",
+          fr: "Tout a commencé par une question.",
+        },
+        body: {
+          en: "In his second year at Ashesi University, Clement took a research course to understand which skills young Cameroonians believed they needed to thrive at work. That research led to the launch of Impact Axis and the first Goodwill Fellowship pilot, with support from Global Changemakers and the Melton Foundation.",
+          fr: "Pendant sa deuxième année à l'université Ashesi, Clement a suivi un cours de recherche pour comprendre quelles compétences les jeunes Camerounais estimaient nécessaires pour réussir dans le monde du travail. Cette recherche a donné naissance à Impact Axis et au premier pilote de la Goodwill Fellowship, avec le soutien de Global Changemakers et de la Melton Foundation.",
+        },
+        image: {
+          src: "/images/story-2021.jpg",
+          alt: {
+            en: "The first Goodwill Fellowship cohort in blue and black t-shirts in front of the programme banner",
+            fr: "La première promotion de la Goodwill Fellowship en t-shirts bleus et noirs devant la bannière du programme",
+          },
+        },
+      },
+      {
+        year: "2022",
+        title: { en: "A Failed Experiment", fr: "Une expérience manquée" },
+        headline: {
+          en: "Growing too fast taught us to grow well.",
+          fr: "Grandir trop vite nous a appris à bien grandir.",
+        },
+        body: {
+          en: "After a successful pilot with 16 fellows, Clement used his savings to double the next cohort. The ambition was strong, but a high-touch model and a lean team made that growth hard to sustain. It was a difficult year, and an important lesson in scaling responsibly.",
+          fr: "Après un pilote réussi avec 16 fellows, Clement a utilisé ses économies pour doubler la promotion suivante. L'ambition était forte, mais un modèle très exigeant en accompagnement et une équipe réduite ont rendu cette croissance difficile à soutenir. Ce fut une année difficile, et une leçon importante sur la croissance responsable.",
+        },
+        image: {
+          src: "/images/story-2022.jpg",
+          alt: {
+            en: "Fellows celebrating outdoors, holding up their certificates",
+            fr: "Des fellows célébrant en plein air, brandissant leurs certificats",
+          },
+        },
+      },
+      {
+        year: "2023",
+        title: {
+          en: "Reflection & Learning",
+          fr: "Réflexion et apprentissage",
+        },
+        headline: {
+          en: "Stepping back to see clearly.",
+          fr: "Prendre du recul pour voir clair.",
+        },
+        body: {
+          en: "With support from the Kofi Annan Foundation, we hosted a retreat in Limbe with alumni of the fellowship. It gave us space to reflect honestly on what had worked, what had not, and how the programme could be redesigned for deeper impact.",
+          fr: "Avec le soutien de la Fondation Kofi Annan, nous avons organisé une retraite à Limbe avec les anciens de la fellowship. Elle nous a permis de réfléchir honnêtement à ce qui avait fonctionné, à ce qui n'avait pas fonctionné, et à la manière de repenser le programme pour un impact plus profond.",
+        },
+        image: {
+          src: "/images/story-2023.jpg",
+          alt: {
+            en: "Alumni standing in a circle in conversation on a terrace",
+            fr: "Des anciens réunis en cercle pour échanger sur une terrasse",
+          },
+        },
+      },
+      {
+        year: "2024",
+        title: { en: "Year of Return", fr: "L'année du retour" },
+        headline: { en: "Back, and stronger.", fr: "De retour, plus forts." },
+        body: {
+          en: "We resumed the Goodwill Fellowship with stronger programming, a clearer focus and a deeper understanding of the change we aim to create, thanks to continued support from the Kofi Annan Foundation.",
+          fr: "Nous avons relancé la Goodwill Fellowship avec un programme renforcé, un cap plus clair et une meilleure compréhension du changement que nous voulons créer, grâce au soutien continu de la Fondation Kofi Annan.",
+        },
+        image: {
+          src: "/images/gallery/gwf-2024-42.jpg",
+          alt: {
+            en: "The 2024 Goodwill Fellowship cohort in blue t-shirts making peace signs",
+            fr: "La promotion 2024 de la Goodwill Fellowship en t-shirts bleus faisant le signe de la paix",
+          },
+        },
+      },
+      {
+        year: "2025",
+        title: { en: "Laying the Foundations", fr: "Poser les fondations" },
+        headline: { en: "Building to last.", fr: "Construire pour durer." },
+        body: {
+          en: "With support from Global Youth Mobilization, we tested running more than one fellowship cohort a year, while beginning to build the systems and partnerships needed for long-term sustainability.",
+          fr: "Avec le soutien de Global Youth Mobilization, nous avons testé l'organisation de plusieurs promotions de la fellowship par an, tout en commençant à bâtir les systèmes et les partenariats nécessaires à notre pérennité.",
+        },
+        image: {
+          src: "/images/gallery/gwf-2025-41.jpg",
+          alt: {
+            en: "The 2025 Goodwill Fellowship cohort in yellow t-shirts in front of the event banner",
+            fr: "La promotion 2025 de la Goodwill Fellowship en t-shirts jaunes devant la bannière de l'événement",
+          },
+        },
+      },
+    ],
+  },
+
   missionVision: {
     eyebrow: { en: "Mission & Vision", fr: "Mission et vision" },
     missionTitle: { en: "Our Mission", fr: "Notre mission" },

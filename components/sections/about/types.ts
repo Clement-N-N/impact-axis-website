@@ -115,10 +115,36 @@ export type PartnershipContent = {
   cta: { label: LocalizedText; href: string };
 };
 
+export type StoryChapter = {
+  year: string;
+  /** The chapter's name from the annual report, e.g. "Year of Return". */
+  title: LocalizedText;
+  headline: LocalizedText;
+  body: LocalizedText;
+  image: AboutImage;
+};
+
+export type OurStoryContent = {
+  eyebrow: LocalizedText;
+  headline: LocalizedText;
+  intro: LocalizedText;
+  /** "Chapter {n}" */
+  chapterLabel: LocalizedText;
+  controls: {
+    tabs: LocalizedText;
+    previous: LocalizedText;
+    next: LocalizedText;
+    pause: LocalizedText;
+    play: LocalizedText;
+  };
+  chapters: StoryChapter[];
+};
+
 export type AboutPageContent = {
   hero: AboutHeroContent;
   imageBand: AboutImageBandContent;
   whyWeExist: WhyWeExistAboutContent;
+  ourStory: OurStoryContent;
   missionVision: MissionVisionContent;
   photoStrip: PhotoStripContent;
   ourApproach: OurApproachContent;

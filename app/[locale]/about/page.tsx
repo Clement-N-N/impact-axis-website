@@ -4,6 +4,7 @@ import type { Locale } from "@/i18n/routing";
 import {
   AboutHero,
   WhyWeExistAbout,
+  OurStorySection,
   MissionVisionSection,
   PhotoStrip,
   OurApproachSection,
@@ -20,7 +21,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const isFr = locale === "fr";
 
-  const title = isFr ? "À propos de nous — Impact Axis" : "About Us — Impact Axis";
+  const title = isFr
+    ? "À propos de nous — Impact Axis"
+    : "About Us — Impact Axis";
   const description = isFr
     ? "Impact Axis est une organisation à but non lucratif basée au Cameroun qui développe l'employabilité des jeunes et renforce leur passage de l'éducation vers un travail porteur de sens."
     : "Impact Axis is a Cameroon-based nonprofit youth workforce development organisation building stronger pathways from education to meaningful work.";
@@ -62,6 +65,7 @@ export default async function AboutPage({ params }: Props) {
       {/* The "Youth workforce development in Cameroon" image band
           (AboutImageBand) is hidden for now; component and content kept. */}
       <WhyWeExistAbout data={content.whyWeExist} locale={loc} />
+      <OurStorySection data={content.ourStory} locale={loc} />
       <MissionVisionSection data={content.missionVision} locale={loc} />
       <PhotoStrip data={content.photoStrip} locale={loc} />
       <OurApproachSection data={content.ourApproach} locale={loc} />
