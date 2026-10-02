@@ -128,8 +128,6 @@ export const aboutPageContent: AboutPageContent = {
       play: { en: "Play the story", fr: "Reprendre l'histoire" },
     },
     // Condensed from "A Journey of Evolution" in the 2025 Annual Report.
-    // Photos for 2021–2023 are stand-ins from the event gallery until
-    // photos from those years are available.
     chapters: [
       {
         year: "2021",
@@ -143,10 +141,10 @@ export const aboutPageContent: AboutPageContent = {
           fr: "Pendant sa deuxième année à l'université Ashesi, Clement a suivi un cours de recherche pour comprendre quelles compétences les jeunes Camerounais estimaient nécessaires pour réussir dans le monde du travail. Cette recherche a donné naissance à Impact Axis et au premier pilote de la Goodwill Fellowship, avec le soutien de Global Changemakers et de la Melton Foundation.",
         },
         image: {
-          src: "/images/gallery/hive-001-28.jpg",
+          src: "/images/story-2021.jpg",
           alt: {
-            en: "A black-and-white photo of two participants deep in conversation",
-            fr: "Une photo en noir et blanc de deux participants en pleine conversation",
+            en: "The first Goodwill Fellowship cohort in blue and black t-shirts in front of the programme banner",
+            fr: "La première promotion de la Goodwill Fellowship en t-shirts bleus et noirs devant la bannière du programme",
           },
         },
       },
@@ -162,10 +160,10 @@ export const aboutPageContent: AboutPageContent = {
           fr: "Après un pilote réussi avec 16 fellows, Clement a utilisé ses économies pour doubler la promotion suivante. L'ambition était forte, mais un modèle très exigeant en accompagnement et une équipe réduite ont rendu cette croissance difficile à soutenir. Ce fut une année difficile, et une leçon importante sur la croissance responsable.",
         },
         image: {
-          src: "/images/gallery/hive-001-27.jpg",
+          src: "/images/story-2022.jpg",
           alt: {
-            en: "Two participants sharing a warm hug",
-            fr: "Deux participantes partageant une chaleureuse accolade",
+            en: "Fellows celebrating outdoors, holding up their certificates",
+            fr: "Des fellows célébrant en plein air, brandissant leurs certificats",
           },
         },
       },
@@ -184,10 +182,10 @@ export const aboutPageContent: AboutPageContent = {
           fr: "Avec le soutien de la Fondation Kofi Annan, nous avons organisé une retraite à Limbe avec les anciens de la fellowship. Elle nous a permis de réfléchir honnêtement à ce qui avait fonctionné, à ce qui n'avait pas fonctionné, et à la manière de repenser le programme pour un impact plus profond.",
         },
         image: {
-          src: "/images/gallery/hive-001-30.jpg",
+          src: "/images/story-2023.jpg",
           alt: {
-            en: "Participants in a group discussion outdoors among palm trees",
-            fr: "Des participants en discussion de groupe en plein air, parmi les palmiers",
+            en: "Alumni standing in a circle in conversation on a terrace",
+            fr: "Des anciens réunis en cercle pour échanger sur une terrasse",
           },
         },
       },
