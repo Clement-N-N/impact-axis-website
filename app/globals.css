@@ -60,10 +60,10 @@
   --color-overlay-dark: #0d0d0d;
 
   /* Icon colors */
-  --color-icon-blue: #0078D7;
-  --color-icon-green: #10893E;
-  --color-icon-peach: #EF6950;
-  --color-icon-purple: #744DA9;
+  --color-icon-blue: #0078d7;
+  --color-icon-green: #10893e;
+  --color-icon-peach: #ef6950;
+  --color-icon-purple: #744da9;
 
   /* Fluid type scale: clamp(min, vw, max) so each step is legible on mobile and scales up to reference px value on desktop */
   --text-xs: clamp(0.75rem, 0.8125vw, 0.875rem);
@@ -177,5 +177,14 @@
   }
   .animate-marquee {
     animation: none;
+  }
+}
+/* Our Story: the bar under the active year fills over one chapter's time. */
+@keyframes story-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }

@@ -1,6 +1,7 @@
 export { AboutHero } from "./AboutHero";
 export { AboutImageBand } from "./AboutImageBand";
 export { WhyWeExistAbout } from "./WhyWeExistAbout";
+export { OurStorySection } from "./OurStorySection";
 export { MissionVisionSection } from "./MissionVisionSection";
 export { PhotoStrip } from "./PhotoStrip";
 export { OurApproachSection } from "./OurApproachSection";
