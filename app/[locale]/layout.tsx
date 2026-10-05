@@ -6,7 +6,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Navbar } from "@/components/layout/Navbar";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { Footer } from "@/components/layout/Footer";
-import { client } from "@/sanity/client";
+import { client, sanityFetchOptions } from "@/sanity/client";
 import { SOCIAL_LINKS_QUERY } from "@/sanity/queries";
 import type { SocialLinks } from "@/sanity/types";
 import { Analytics } from "@vercel/analytics/next";
@@ -59,7 +59,7 @@ export function generateStaticParams() {
 
 async function getSocialLinks(): Promise<SocialLinks> {
   try {
-    const result = await client.fetch(SOCIAL_LINKS_QUERY, {}, { next: { revalidate: 60 } });
+    const result = await client.fetch(SOCIAL_LINKS_QUERY, {}, sanityFetchOptions);
     if (result && typeof result === "object") return result as SocialLinks;
   } catch (error) {
     console.error("Failed to fetch social links from Sanity.", error);

@@ -1,7 +1,7 @@
 import type { LocalizedText } from "@/components/sections/home-hero/types";
 import { isEventItem, type EventItem } from "@/components/sections/events-list/types";
 import type { EventDetail } from "@/components/sections/event-details/types";
-import { client } from "./client";
+import { client, sanityFetchOptions } from "./client";
 import { EVENT_DETAILS_QUERY, EVENTS_QUERY, HOME_IMPACT_QUERY } from "./queries";
 
 export type ImpactStatItem = {
@@ -11,7 +11,7 @@ export type ImpactStatItem = {
 
 export async function getEvents(): Promise<EventItem[]> {
   try {
-    const result = await client.fetch(EVENTS_QUERY, {}, { next: { revalidate: 60 } });
+    const result = await client.fetch(EVENTS_QUERY, {}, sanityFetchOptions);
     if (Array.isArray(result) && result.every(isEventItem)) {
       return result;
     }
@@ -23,7 +23,7 @@ export async function getEvents(): Promise<EventItem[]> {
 
 export async function getEventDetails(): Promise<Record<string, EventDetail>> {
   try {
-    const result = await client.fetch(EVENT_DETAILS_QUERY, {}, { next: { revalidate: 60 } });
+    const result = await client.fetch(EVENT_DETAILS_QUERY, {}, sanityFetchOptions);
     if (Array.isArray(result)) {
       return Object.fromEntries(
         (result as (EventDetail & { slug: string })[]).map(({ slug, ...detail }) => [slug, detail]),
@@ -37,7 +37,7 @@ export async function getEventDetails(): Promise<Record<string, EventDetail>> {
 
 export async function getHomeImpactStat(): Promise<ImpactStatItem | null> {
   try {
-    const result = await client.fetch(HOME_IMPACT_QUERY, {}, { next: { revalidate: 60 } });
+    const result = await client.fetch(HOME_IMPACT_QUERY, {}, sanityFetchOptions);
     if (result?.metrics && Array.isArray(result.metrics) && result.metrics.length > 0) {
       const match =
         result.metrics.find(

@@ -1,6 +1,6 @@
 import type { Locale } from "@/i18n/routing";
 import type { LocalizedText } from "@/components/sections/home-hero/types";
-import { client } from "@/sanity/client";
+import { client, sanityFetchOptions } from "@/sanity/client";
 import { HOME_TESTIMONIALS_QUERY } from "@/sanity/queries";
 import { homeTestimonialsChrome } from "./data";
 import type { Testimonial, HomeTestimonialsContent } from "./types";
@@ -37,7 +37,7 @@ function isSanityTestimonialsData(value: unknown): value is { testimonials: Sani
 
 async function getHomeTestimonialsContent(): Promise<HomeTestimonialsContent | null> {
   try {
-    const result = await client.fetch(HOME_TESTIMONIALS_QUERY, {}, { next: { revalidate: 60 } });
+    const result = await client.fetch(HOME_TESTIMONIALS_QUERY, {}, sanityFetchOptions);
     if (isSanityTestimonialsData(result)) {
       const testimonials: Testimonial[] = result.testimonials.map((item) => ({
         quote: item.summary,

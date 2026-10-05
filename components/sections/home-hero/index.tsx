@@ -1,5 +1,5 @@
 import type { Locale } from "@/i18n/routing";
-import { client } from "@/sanity/client";
+import { client, sanityFetchOptions } from "@/sanity/client";
 import { HOME_SETTINGS_QUERY } from "@/sanity/queries";
 import { heroConfig } from "@/components/sections/home-hero/data";
 import { isHeroVariantId } from "./types";
@@ -16,7 +16,7 @@ async function getActiveHeroVariant() {
     const settings = await client.fetch<HomeSettingsQueryResult>(
       HOME_SETTINGS_QUERY,
       {},
-      { next: { revalidate: 60 } },
+      sanityFetchOptions,
     );
     if (settings && isHeroVariantId(settings.heroVariant)) {
       return settings.heroVariant;
