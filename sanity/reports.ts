@@ -1,5 +1,5 @@
 import type { LocalizedText } from "@/components/sections/home-hero/types";
-import { client } from "./client";
+import { client, sanityFetchOptions } from "./client";
 import { REPORTS_QUERY } from "./queries";
 
 export type ReportCategory = "annual" | "midYear" | "financial";
@@ -50,7 +50,7 @@ export async function getReports(): Promise<Report[]> {
     const result = await client.fetch(
       REPORTS_QUERY,
       {},
-      { next: { revalidate: 300 } },
+      sanityFetchOptions,
     );
     if (Array.isArray(result)) {
       return result.filter(isReport);

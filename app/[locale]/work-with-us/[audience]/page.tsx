@@ -28,13 +28,17 @@ import {
 } from "@/components/sections/partnership";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import { routing, type Locale } from "@/i18n/routing";
-import { client } from "@/sanity/client";
+import { client, sanityFetchOptions } from "@/sanity/client";
 import { SOCIAL_LINKS_QUERY } from "@/sanity/queries";
 import type { SocialLinks } from "@/sanity/types";
 
 type Props = {
   params: Promise<{ locale: string; audience: string }>;
 };
+
+// Only the four audience pages exist; any other slug is a plain 404 that
+// isn't rendered or cached.
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) =>
@@ -47,7 +51,7 @@ async function getSocialLinks(): Promise<SocialLinks> {
     const result = await client.fetch(
       SOCIAL_LINKS_QUERY,
       {},
-      { next: { revalidate: 60 } },
+      sanityFetchOptions,
     );
     if (result && typeof result === "object") return result as SocialLinks;
   } catch (error) {

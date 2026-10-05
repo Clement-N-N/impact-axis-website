@@ -1,6 +1,6 @@
 import type { Locale } from "@/i18n/routing";
 import type { LocalizedText } from "@/components/sections/home-hero/types";
-import { client } from "@/sanity/client";
+import { client, sanityFetchOptions } from "@/sanity/client";
 import { HOME_FAQ_QUERY } from "@/sanity/queries";
 import { homeFaqChrome } from "./data";
 import type { FaqItem, HomeFaqContent } from "./types";
@@ -37,7 +37,7 @@ export async function getHomeFaqContent(): Promise<HomeFaqContent | null> {
     const result = await client.fetch(
       HOME_FAQ_QUERY,
       {},
-      { next: { revalidate: 60 } },
+      sanityFetchOptions,
     );
     if (isSanityFaqData(result)) {
       // Everything except the Q&A list stays hardcoded by design (kept out of

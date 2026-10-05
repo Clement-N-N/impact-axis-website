@@ -1,5 +1,5 @@
 import type { Locale } from "@/i18n/routing";
-import { client } from "@/sanity/client";
+import { client, sanityFetchOptions } from "@/sanity/client";
 import { BLOG_POSTS_QUERY } from "@/sanity/queries";
 import { isBlogPost } from "@/components/sections/blog-card/types";
 import { homeBlogChrome } from "./data";
@@ -13,7 +13,7 @@ async function getHomeBlogContent(): Promise<HomeBlogContent | null> {
     const result = await client.fetch(
       BLOG_POSTS_QUERY,
       { categorySlug: null },
-      { next: { revalidate: 60 } },
+      sanityFetchOptions,
     );
     if (Array.isArray(result) && result.length > 0 && result.every(isBlogPost)) {
       return { ...homeBlogChrome, posts: result.slice(0, FEATURED_POST_COUNT) };

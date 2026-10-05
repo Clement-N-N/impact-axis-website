@@ -1,6 +1,6 @@
 import { isBlogPost, type BlogPost } from "@/components/sections/blog-card/types";
 import type { BlogCategory } from "@/components/sections/blog-body/types";
-import { client } from "./client";
+import { client, sanityFetchOptions } from "./client";
 import { BLOG_CATEGORIES_QUERY, BLOG_CATEGORY_BY_SLUG_QUERY, BLOG_POSTS_QUERY } from "./queries";
 
 export async function getBlogPosts(categorySlug: string | null): Promise<BlogPost[]> {
@@ -8,7 +8,7 @@ export async function getBlogPosts(categorySlug: string | null): Promise<BlogPos
     const result = await client.fetch(
       BLOG_POSTS_QUERY,
       { categorySlug },
-      { next: { revalidate: 60 } },
+      sanityFetchOptions,
     );
     if (Array.isArray(result) && result.every(isBlogPost)) {
       return result;
@@ -21,7 +21,7 @@ export async function getBlogPosts(categorySlug: string | null): Promise<BlogPos
 
 export async function getBlogCategories(): Promise<BlogCategory[]> {
   try {
-    const result = await client.fetch(BLOG_CATEGORIES_QUERY, {}, { next: { revalidate: 60 } });
+    const result = await client.fetch(BLOG_CATEGORIES_QUERY, {}, sanityFetchOptions);
     if (Array.isArray(result)) return result as BlogCategory[];
   } catch (error) {
     console.error("Failed to fetch blog categories from Sanity.", error);
@@ -34,7 +34,7 @@ export async function getBlogCategoryBySlug(slug: string): Promise<BlogCategory 
     const result = await client.fetch(
       BLOG_CATEGORY_BY_SLUG_QUERY,
       { slug },
-      { next: { revalidate: 60 } },
+      sanityFetchOptions,
     );
     return (result as BlogCategory | null) ?? null;
   } catch (error) {

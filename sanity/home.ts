@@ -1,4 +1,4 @@
-import { client } from "./client";
+import { client, sanityFetchOptions } from "./client";
 import { HOME_IMPACT_QUERY, HOME_PAGE_QUERY } from "./queries";
 import type { LocalizedText } from "@/components/sections/home-hero/types";
 import { whyWeExistContent as defaultWhyWeExist } from "@/components/sections/why-we-exist/data";
@@ -84,7 +84,7 @@ export async function getHomePageContent(): Promise<HomePageData> {
   };
 
   try {
-    const data = await client.fetch(HOME_PAGE_QUERY, {}, { next: { revalidate: 60 } });
+    const data = await client.fetch(HOME_PAGE_QUERY, {}, sanityFetchOptions);
     if (!data) return fallback;
 
     return {
@@ -179,7 +179,7 @@ export async function getImpactStats(): Promise<ImpactStatEntry[]> {
     const result = await client.fetch(
       HOME_IMPACT_QUERY,
       {},
-      { next: { revalidate: 300 } },
+      sanityFetchOptions,
     );
     const metrics = result?.metrics;
     if (Array.isArray(metrics)) {

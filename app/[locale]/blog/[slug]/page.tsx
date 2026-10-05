@@ -7,7 +7,7 @@ import { BlogDetailsHero } from "@/components/sections/blog-details-hero";
 import { BlogDetailsBody } from "@/components/sections/blog-details-body";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
-import { client } from "@/sanity/client";
+import { client, sanityFetchOptions } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
 import { BLOG_POST_BY_SLUG_QUERY, BLOG_POSTS_QUERY, BLOG_SLUGS_QUERY } from "@/sanity/queries";
 import type { BlogPost, BlogPostDetail } from "@/components/sections/blog-card/types";
@@ -18,7 +18,7 @@ type Props = {
 
 async function getPostBySlug(slug: string): Promise<BlogPostDetail | null> {
   try {
-    const result = await client.fetch(BLOG_POST_BY_SLUG_QUERY, { slug });
+    const result = await client.fetch(BLOG_POST_BY_SLUG_QUERY, { slug }, sanityFetchOptions);
     return (result as BlogPostDetail | null) ?? null;
   } catch (error) {
     console.error("Failed to fetch blog post from Sanity.", error);
@@ -31,7 +31,7 @@ async function getRelatedPost(slug: string): Promise<BlogPost | null> {
     const posts = (await client.fetch(
       BLOG_POSTS_QUERY,
       { categorySlug: null },
-      { next: { revalidate: 60 } },
+      sanityFetchOptions,
     )) as BlogPost[];
     return posts.find((candidate) => candidate.id !== slug) ?? null;
   } catch (error) {

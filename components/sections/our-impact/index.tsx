@@ -1,6 +1,6 @@
 import type { Locale } from "@/i18n/routing";
 import type { LocalizedText } from "@/components/sections/home-hero/types";
-import { client } from "@/sanity/client";
+import { client, sanityFetchOptions } from "@/sanity/client";
 import { HOME_IMPACT_QUERY } from "@/sanity/queries";
 import { ourImpactChrome, ourImpactCopy, IMPACT_CARD_DESIGNS } from "./data";
 import type { ImpactMetric, ImpactStat, OurImpactContent } from "./types";
@@ -35,7 +35,7 @@ async function getOurImpactContent(
     const result = await client.fetch(
       HOME_IMPACT_QUERY,
       {},
-      { next: { revalidate: 60 } },
+      sanityFetchOptions,
     );
     if (isSanityImpactData(result)) {
       // Card visuals (image, background) stay hardcoded by position and repeat
