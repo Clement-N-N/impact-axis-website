@@ -454,7 +454,7 @@ export function AudienceAlso({
                     src={card.image}
                     alt=""
                     fill
-                    quality={85}
+                    quality={90}
                     sizes="(min-width: 768px) 33vw, 100vw"
                     className="object-cover grayscale transition-[filter,scale] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105 group-hover:grayscale-0"
                   />

@@ -134,7 +134,7 @@ export function MegaMenu({
                       src={card.image}
                       alt=""
                       fill
-                      quality={80}
+                      quality={75}
                       sizes="20vw"
                       className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.07]"
                     />
