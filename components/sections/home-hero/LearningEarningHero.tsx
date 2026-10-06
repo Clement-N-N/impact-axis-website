@@ -119,7 +119,7 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
       />
 
       <Container className="flex h-full flex-col justify-between gap-10 pt-[clamp(3rem,8vw,6rem)] pb-8 lg:min-h-[inherit] lg:gap-12 lg:pt-[clamp(3.5rem,8vh,6rem)] lg:pb-12">
-        <div className="flex max-w-[56rem] flex-col">
+        <div className="flex max-w-[66rem] flex-col">
           <h1 id="hero-title" className="sr-only">
             {t(data.headline)}
           </h1>
@@ -132,7 +132,7 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
           <p
             data-rise
             aria-hidden="true"
-            className="mt-4 text-[clamp(2.5rem,7vw,6rem)] leading-[0.98] font-semibold tracking-[-0.045em] text-white"
+            className="mt-4 text-[clamp(2.5rem,8.2vw,8.5rem)] leading-[0.98] font-semibold tracking-[-0.045em] text-white"
           >
             <span className="block">{t(data.lead)}</span>
             <span className="mt-[0.06em] flex items-center gap-[0.22em]">
@@ -165,13 +165,13 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
 
           <p
             data-rise
-            className="mt-6 max-w-[38ch] text-[clamp(1.0625rem,1.45vw,1.25rem)] leading-relaxed text-pretty text-white/85 lg:mt-8"
+            className="mt-6 max-w-[38ch] text-[clamp(1.0625rem,1.45vw,1.25rem)] leading-relaxed text-pretty text-white/85 lg:mt-10"
           >
             {t(data.description)}
           </p>
         </div>
 
-        <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-[1fr_1fr_1.1fr] lg:gap-3.5">
+        <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-[1fr_1fr_1.1fr] xl:gap-3.5">
           {data.paths.map((path) => (
             <li key={path.href} data-rise>
               <Link
@@ -192,7 +192,7 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
               </Link>
             </li>
           ))}
-          <li data-rise className="md:col-span-2 lg:col-span-1">
+          <li data-rise className="md:col-span-2 xl:col-span-1">
             <dl className="border-impact-yellow/25 bg-impact-yellow/12 grid h-full grid-cols-3 content-center items-start gap-4 rounded-[20px] border px-[22px] py-5 backdrop-blur-md">
               {data.proof.map((p) => (
                 <div key={p.value} className="flex flex-col-reverse justify-end gap-1">
