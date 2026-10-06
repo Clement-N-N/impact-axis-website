@@ -16,6 +16,8 @@
 }
 
 :root {
+  /* Light only: stops browsers' automatic dark mode repainting the site. */
+  color-scheme: only light;
   --background: #ffffff;
   --foreground: #171717;
 
