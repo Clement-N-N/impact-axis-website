@@ -15,3 +15,15 @@ export const bottomCtaContent: BottomCtaContent = {
     buttonVariant: "white",
   },
 };
+
+/** Supporting copy for the closing band, kept in code (not in Sanity). */
+export const bottomCtaChrome = {
+  note: {
+    en: "Tell us what you have in mind. We reply within two working days.",
+    fr: "Dites-nous ce que vous avez en tête. Nous répondons sous deux jours ouvrés.",
+  },
+  secondary: {
+    label: { en: "Or see ways to partner", fr: "Ou découvrez comment collaborer" },
+    href: "/work-with-us",
+  },
+};
