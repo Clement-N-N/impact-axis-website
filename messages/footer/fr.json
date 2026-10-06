@@ -1,11 +1,15 @@
 {
   "subscribe": {
     "title": "Rejoignez le mouvement",
-    "subtitle": "Abonnez-vous à notre newsletter et tentez de faire partie de quelque chose d'extraordinaire.",
+    "subtitle": "Nos actualités mensuelles : programmes, événements et impact. Désinscription à tout moment.",
     "firstName": "Prénom",
     "lastName": "Nom",
     "emailPlaceholder": "johndoe@email.com",
-    "button": "S'abonner"
+    "button": "S'abonner",
+    "sending": "Inscription…",
+    "done": "Vous êtes inscrit·e. Merci !",
+    "error": "Vérifiez votre adresse e-mail et réessayez.",
+    "confirm": "Presque fini : confirmez votre inscription depuis votre boîte mail."
   },
   "columns": {
     "learnMore": "En savoir plus",

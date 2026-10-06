@@ -1,5 +1,5 @@
 {
-  "getInTouch": "Get In Touch",
+  "getInTouch": "Prefer email or phone?",
   "contactLabel": "Contact",
   "socialLabel": "Social Platforms",
   "backToWorkWithUs": "Work With Us",
@@ -15,7 +15,7 @@
     "sending": "Sending…",
     "required": "This field is required.",
     "invalidEmail": "Enter a valid email address.",
-    "success": "Thank you — your message has been received. We'll be in touch shortly.",
+    "success": "Thank you, your message is on its way. We've emailed you a copy and will reply within two working days.",
     "errorSummary": "Please correct the highlighted fields."
   }
 }

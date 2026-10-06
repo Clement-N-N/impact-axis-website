@@ -104,6 +104,7 @@ export default async function PartnershipPage({ params }: Props) {
       <AudienceFormIntro audience={audience} locale={loc} />
       <div className="bg-[#f4f6fc]">
         <PartnershipContact
+          audience={audience}
           formSubject={content.formSubject}
           locale={loc}
           socialLinks={socialLinks}

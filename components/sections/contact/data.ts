@@ -66,13 +66,14 @@ export const contactContent = {
     message: { en: "Your message", fr: "Votre message" },
   },
   submit: { en: "Send message", fr: "Envoyer le message" },
+  sending: { en: "Sending…", fr: "Envoi en cours…" },
   submitNote: {
-    en: "This opens your email app with your message ready to send.",
-    fr: "Votre application de messagerie s'ouvrira avec votre message prêt à être envoyé.",
+    en: "We reply within two working days.",
+    fr: "Nous répondons sous deux jours ouvrés.",
   },
   sent: {
-    en: "Your email app should now be open. If it didn't open, write to us directly at",
-    fr: "Votre application de messagerie devrait être ouverte. Si ce n'est pas le cas, écrivez-nous directement à",
+    en: "Thanks, your message is on its way. We've emailed you a copy and will reply within two working days.",
+    fr: "Merci, votre message est bien parti. Nous vous en avons envoyé une copie et vous répondrons sous deux jours ouvrés.",
   },
   errors: {
     required: {

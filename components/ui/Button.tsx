@@ -55,9 +55,11 @@ type ButtonProps = VariantProps<typeof buttonStyles> & {
   /** Only applies when there's no `href`. Defaults to "button" so an
       instance inside a <form> can't submit it by accident. */
   type?: "button" | "submit";
+  /** Only applies when there's no `href`, e.g. while a form is sending. */
+  disabled?: boolean;
 };
 
-export function Button({ children, icon, href, variant, width, className, onClick, type = "button" }: ButtonProps) {
+export function Button({ children, icon, href, variant, width, className, onClick, type = "button", disabled }: ButtonProps) {
   const resolvedVariant = variant ?? "primary";
   const resolvedWidth = width ?? "fit";
 
@@ -192,7 +194,12 @@ export function Button({ children, icon, href, variant, width, className, onClic
   }
 
   return (
-    <button type={type} onClick={onClick} className={clsx(buttonStyles({ variant, width }), className)}>
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={clsx(buttonStyles({ variant, width }), "disabled:cursor-wait disabled:opacity-70", className)}
+    >
       {content}
     </button>
   );
