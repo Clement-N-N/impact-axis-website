@@ -32,3 +32,28 @@ export const whoWeServeContent: WhoWeServeContent = {
     },
   ],
 };
+
+/**
+ * Section copy kept in code rather than Sanity: the headline, and where each
+ * card leads (in card order: young people, funders, employers & educators).
+ */
+export const whoWeServeChrome = {
+  headline: {
+    en: "Three groups, one goal: young people in work.",
+    fr: "Trois publics, un seul objectif : l'emploi des jeunes.",
+  },
+  links: [
+    {
+      href: "/what-we-do",
+      label: { en: "See our programmes", fr: "Voir nos programmes" },
+    },
+    {
+      href: "/work-with-us/funders-development-partners",
+      label: { en: "Partner as a funder", fr: "Devenir partenaire financier" },
+    },
+    {
+      href: "/work-with-us",
+      label: { en: "Partner with us", fr: "Devenir partenaire" },
+    },
+  ],
+};

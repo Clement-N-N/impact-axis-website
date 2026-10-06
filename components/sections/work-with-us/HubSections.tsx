@@ -489,7 +489,7 @@ export function HubExamples({ locale }: { locale: Locale }) {
                       src={ex.image}
                       alt=""
                       fill
-                      quality={85}
+                      quality={90}
                       sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                       className="object-cover"
                     />
