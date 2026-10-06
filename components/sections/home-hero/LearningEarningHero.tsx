@@ -22,15 +22,16 @@ const REDUCED = {
 };
 
 /**
- * "From learning to earning." The last word rolls through doing, building and
- * leading before landing on earning, and the full-bleed photo changes with
- * it; once it lands a yellow underline draws in and everything holds.
+ * "From learning to earning." The last word sits in a tilted yellow box and
+ * rolls through doing, building and leading before landing on earning; the
+ * box resizes to each word and the full-bleed photo changes with it, then
+ * everything holds.
  *
- * Below the headline, two path cards split the audience (young people go to
- * the programmes, organisations to partnering), then a proof strip. The h1
- * holds the whole sentence for screen readers and search; the rolling words
- * are decoration. With reduced motion it shows the final word and photo
- * straight away.
+ * Along the bottom: two glass path cards that split the audience (young
+ * people go to the programmes, organisations to partnering) and a card of
+ * headline figures. The h1 holds the whole sentence for screen readers and
+ * search; the rolling words are decoration. With reduced motion it shows the
+ * final word and photo straight away.
  */
 export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningEarningHeroContent>) {
   const t = (v: { en: string; fr: string }) => getLocalizedText(v, locale);
@@ -39,7 +40,7 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
   const [step, setStep] = useState(0);
   const reduced = useSyncExternalStore(REDUCED.subscribe, REDUCED.get, () => false);
   const index = reduced ? last : step;
-  const landed = index === last;
+  const boxRef = useRef<HTMLSpanElement>(null);
 
   // Roll the word until it lands on the last one, then hold.
   useEffect(() => {
@@ -47,6 +48,20 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
     const id = window.setTimeout(() => setStep((s) => s + 1), step === 0 ? WORD_MS + 600 : WORD_MS);
     return () => window.clearTimeout(id);
   }, [reduced, step, last]);
+
+  // Size the yellow box to the current word, so it glides between widths.
+  // Set on the element directly; re-measured when the font size changes.
+  useEffect(() => {
+    const box = boxRef.current;
+    if (!box) return;
+    const fit = () => {
+      const word = box.querySelector<HTMLElement>(`[data-word="${index}"]`);
+      if (word) box.style.width = `${word.offsetWidth}px`;
+    };
+    fit();
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, [index]);
 
   // Entrance.
   useEffect(() => {
@@ -100,119 +115,96 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
       {/* Navy wash: solid behind the text, opening up towards the photo. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(16_27_98/0.55)_0%,rgb(16_27_98/0.8)_45%,#101b62_100%)] lg:bg-[linear-gradient(90deg,#101b62_0%,rgb(16_27_98/0.88)_38%,rgb(16_27_98/0.35)_70%,rgb(16_27_98/0.2)_100%)]"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 -z-10 hidden h-48 bg-[linear-gradient(0deg,rgb(16_27_98/0.85),transparent)] lg:block"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(11_18_70/0.6)_0%,rgb(11_18_70/0.82)_50%,rgb(11_18_70/0.95)_100%)] lg:bg-[linear-gradient(90deg,rgb(11_18_70/0.93)_0%,rgb(11_18_70/0.72)_45%,rgb(11_18_70/0.18)_100%)]"
       />
 
-      <Container className="flex h-full flex-col justify-between gap-10 pt-[clamp(3.5rem,9vw,7rem)] pb-8 lg:min-h-[inherit] lg:gap-12 lg:pt-[clamp(4rem,9vh,7rem)] lg:pb-10">
-        <div className="flex max-w-[56rem] flex-col gap-6 lg:gap-7">
+      <Container className="flex h-full flex-col justify-between gap-10 pt-[clamp(3rem,8vw,6rem)] pb-8 lg:min-h-[inherit] lg:gap-12 lg:pt-[clamp(3.5rem,8vh,6rem)] lg:pb-12">
+        <div className="flex max-w-[56rem] flex-col">
           <h1 id="hero-title" className="sr-only">
             {t(data.headline)}
           </h1>
           <p
             data-rise
+            className="text-impact-yellow text-[13px] font-bold tracking-[0.14em] uppercase sm:text-sm"
+          >
+            {t(data.eyebrow)}
+          </p>
+          <p
+            data-rise
             aria-hidden="true"
-            className="text-[clamp(2.75rem,7.2vw,6.25rem)] leading-[0.98] font-semibold tracking-[-0.04em] text-white"
+            className="mt-4 text-[clamp(2.5rem,7vw,6rem)] leading-[0.98] font-semibold tracking-[-0.045em] text-white"
           >
             <span className="block">{t(data.lead)}</span>
-            {/* Every word sits in one grid cell, so the line is always as wide
-                as the longest and nothing below it shifts as they roll. */}
-            <span className="-mt-[0.18em] grid h-[1.36em] w-fit overflow-hidden leading-[1.36]">
-              {data.words.map((w, i) => (
+            <span className="mt-[0.06em] flex items-center gap-[0.22em]">
+              {t(data.connector) && <span>{t(data.connector)}</span>}
+              {/* The words share one box; only the current one is in flow,
+                  the rest wait above or below it, clipped. */}
+              <span className="bg-impact-yellow text-impact-blue inline-block -rotate-[1.5deg] rounded-[0.19em] px-[0.19em] py-[0.02em]">
                 <span
-                  key={w.image}
-                  className={clsx(
-                    "text-impact-yellow col-start-1 row-start-1 whitespace-nowrap transition-[translate,opacity] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
-                    i === index
-                      ? "translate-y-0 opacity-100"
-                      : i < index
-                        ? "-translate-y-full opacity-0"
-                        : "translate-y-full opacity-0",
-                  )}
+                  ref={boxRef}
+                  className="relative block overflow-hidden leading-[1.14] transition-[width] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
                 >
-                  <span className="relative">
-                    {t(w.text)}
-                    {i === last && (
-                      <span
-                        className={clsx(
-                          "bg-impact-yellow absolute right-[0.3em] bottom-[0.02em] left-0 h-[0.07em] origin-left rounded-full transition-transform delay-500 duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
-                          landed ? "scale-x-100" : "scale-x-0",
-                        )}
-                      />
-                    )}
-                  </span>
+                  {data.words.map((w, i) => (
+                    <span
+                      key={w.image}
+                      data-word={i}
+                      className={clsx(
+                        "block w-max whitespace-nowrap transition-[translate,opacity] ease-[cubic-bezier(0.22,1,0.36,1)] [transition-duration:700ms,350ms]",
+                        i === index
+                          ? "relative translate-y-0 opacity-100"
+                          : clsx("absolute top-0 left-0 opacity-0", i < index ? "-translate-y-[115%]" : "translate-y-[115%]"),
+                      )}
+                    >
+                      {t(w.text)}
+                    </span>
+                  ))}
                 </span>
-              ))}
+              </span>
             </span>
           </p>
 
-          <p data-rise className="max-w-[36ch] text-[clamp(1.0625rem,1.5vw,1.3125rem)] leading-relaxed text-pretty text-white/85">
+          <p
+            data-rise
+            className="mt-6 max-w-[38ch] text-[clamp(1.0625rem,1.45vw,1.25rem)] leading-relaxed text-pretty text-white/85 lg:mt-8"
+          >
             {t(data.description)}
           </p>
-
-          {/* Word progress: which step of the journey the photo shows. */}
-          <ol data-rise aria-hidden="true" className="flex gap-1.5">
-            {data.words.map((w, i) => (
-              <li
-                key={w.image}
-                className={clsx(
-                  "h-1 rounded-full transition-[width,background-color] duration-700",
-                  i === index ? "bg-impact-yellow w-10" : i < index ? "w-4 bg-white/60" : "w-4 bg-white/25",
-                )}
-              />
-            ))}
-          </ol>
         </div>
 
-        <div className="flex flex-col gap-8 lg:gap-10">
-          <ul className="grid max-w-[46rem] grid-cols-1 gap-3 sm:grid-cols-2">
-            {data.paths.map((path, i) => (
-              <li key={path.href} data-rise>
-                <Link
-                  href={path.href}
-                  className={clsx(
-                    "group flex h-full items-center justify-between gap-4 rounded-[20px] px-6 py-5 transition-[background-color,translate,box-shadow] duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white hover:-translate-y-0.5",
-                    i === 0
-                      ? "bg-impact-yellow text-impact-blue shadow-[0_18px_40px_-18px_rgb(244_198_0/0.8)]"
-                      : "border border-white/25 bg-white/10 text-white backdrop-blur-md hover:bg-white/15",
-                  )}
-                >
-                  <span className="flex flex-col gap-1">
-                    <span className={clsx("text-sm font-medium", i === 0 ? "text-impact-blue/75" : "text-white/70")}>
-                      {t(path.kicker)}
-                    </span>
-                    <span className="text-lg leading-tight font-semibold">{t(path.label)}</span>
-                  </span>
-                  <span
-                    className={clsx(
-                      "grid size-10 shrink-0 place-items-center rounded-full transition-transform duration-300 group-hover:translate-x-1",
-                      i === 0 ? "bg-impact-blue text-white" : "text-impact-blue bg-white",
-                    )}
-                  >
-                    <ArrowRightIcon weight="bold" className="size-4" />
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          <dl data-rise className="grid grid-cols-3 border-t border-white/20 pt-5 sm:max-w-[46rem]">
-            {data.proof.map((p, i) => (
-              <div
-                key={p.value}
-                className={clsx("flex flex-col-reverse justify-end gap-1 pr-3", i > 0 && "border-l border-white/20 pl-3 sm:pl-6")}
+        <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-[1fr_1fr_1.1fr] lg:gap-3.5">
+          {data.paths.map((path) => (
+            <li key={path.href} data-rise>
+              <Link
+                href={path.href}
+                className="group flex h-full flex-col gap-1 rounded-[20px] border border-white/20 bg-white/10 px-[22px] py-5 text-white backdrop-blur-md transition-[background-color,translate] duration-300 hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
               >
-                <dt className="text-xs leading-snug text-white/70 sm:text-sm">{t(p.label)}</dt>
-                <dd className="text-[clamp(1.375rem,2.4vw,2rem)] leading-none font-bold tracking-[-0.03em] text-white">
-                  {p.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+                <span className="text-[13px] text-white/70">{t(path.kicker)}</span>
+                <span className="text-[1.375rem] leading-tight font-semibold tracking-[-0.01em]">
+                  {t(path.title)}
+                </span>
+                <span className="text-impact-yellow mt-2 inline-flex items-center gap-1.5 font-bold">
+                  {t(path.label)}
+                  <ArrowRightIcon
+                    weight="bold"
+                    className="size-4 transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                </span>
+              </Link>
+            </li>
+          ))}
+          <li data-rise className="md:col-span-2 lg:col-span-1">
+            <dl className="border-impact-yellow/25 bg-impact-yellow/12 grid h-full grid-cols-3 content-center items-start gap-4 rounded-[20px] border px-[22px] py-5 backdrop-blur-md">
+              {data.proof.map((p) => (
+                <div key={p.value} className="flex flex-col-reverse justify-end gap-1">
+                  <dt className="text-xs leading-snug text-white/75">{t(p.label)}</dt>
+                  <dd className="text-impact-yellow text-[clamp(1.5rem,2.3vw,2.125rem)] leading-none font-bold tracking-[-0.03em]">
+                    {p.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </li>
+        </ul>
       </Container>
     </section>
   );

@@ -6,7 +6,9 @@ export const heroConfig: HeroConfig = {
     "learning-earning": {
       type: "learning-earning",
       headline: { en: "From learning to earning.", fr: "De l'apprentissage à l'emploi." },
-      lead: { en: "From learning to", fr: "De l'apprentissage" },
+      eyebrow: { en: "Impact Axis · Cameroon", fr: "Impact Axis · Cameroun" },
+      lead: { en: "From learning", fr: "De l'apprentissage" },
+      connector: { en: "to", fr: "" },
       words: [
         {
           text: { en: "doing.", fr: "à l'action." },
@@ -37,11 +39,13 @@ export const heroConfig: HeroConfig = {
       paths: [
         {
           kicker: { en: "I'm a young person", fr: "Je suis un·e jeune" },
+          title: { en: "Find a programme", fr: "Trouver un programme" },
           label: { en: "See our programmes", fr: "Voir nos programmes" },
           href: "/what-we-do",
         },
         {
           kicker: { en: "We're an organisation", fr: "Nous sommes une organisation" },
+          title: { en: "Fund, hire or mentor", fr: "Financer, recruter ou mentorer" },
           label: { en: "Partner with us", fr: "Devenir partenaire" },
           href: "/work-with-us",
         },
@@ -51,7 +55,7 @@ export const heroConfig: HeroConfig = {
         { value: "$1.5M+", label: { en: "in opportunities unlocked", fr: "d'opportunités débloquées" } },
         {
           value: "55%",
-          label: { en: "reach an opportunity within 6 months", fr: "accèdent à une opportunité sous 6 mois" },
+          label: { en: "reach an opportunity in 6 months", fr: "accèdent à une opportunité en 6 mois" },
         },
       ],
     },
