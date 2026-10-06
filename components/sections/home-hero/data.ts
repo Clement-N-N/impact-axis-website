@@ -1,8 +1,60 @@
 import type { HeroConfig } from "@/components/sections/home-hero/types";
 
 export const heroConfig: HeroConfig = {
-  activeHero: "collage-description",
+  activeHero: "learning-earning",
   heroes: {
+    "learning-earning": {
+      type: "learning-earning",
+      headline: { en: "From learning to earning.", fr: "De l'apprentissage à l'emploi." },
+      lead: { en: "From learning to", fr: "De l'apprentissage" },
+      words: [
+        {
+          text: { en: "doing.", fr: "à l'action." },
+          image: "/images/focus-applied-learning.jpg",
+          position: "60% 40%",
+        },
+        {
+          text: { en: "building.", fr: "à la création." },
+          image: "/images/focus-digital-ai.jpg",
+          position: "60% 35%",
+        },
+        {
+          text: { en: "leading.", fr: "au leadership." },
+          image: "/images/gallery/hive-001-30.jpg",
+          position: "50% 30%",
+          flip: true,
+        },
+        {
+          text: { en: "earning.", fr: "à l'emploi." },
+          image: "/images/gallery/gwf-2026-34.jpg",
+          position: "65% 30%",
+        },
+      ],
+      description: {
+        en: "We give young Cameroonians the skills, experience and mentors employers look for.",
+        fr: "Nous donnons aux jeunes Camerounais les compétences, l'expérience et les mentors que recherchent les employeurs.",
+      },
+      paths: [
+        {
+          kicker: { en: "I'm a young person", fr: "Je suis un·e jeune" },
+          label: { en: "See our programmes", fr: "Voir nos programmes" },
+          href: "/what-we-do",
+        },
+        {
+          kicker: { en: "We're an organisation", fr: "Nous sommes une organisation" },
+          label: { en: "Partner with us", fr: "Devenir partenaire" },
+          href: "/work-with-us",
+        },
+      ],
+      proof: [
+        { value: "450+", label: { en: "young people reached", fr: "jeunes accompagnés" } },
+        { value: "$1.5M+", label: { en: "in opportunities unlocked", fr: "d'opportunités débloquées" } },
+        {
+          value: "55%",
+          label: { en: "reach an opportunity within 6 months", fr: "accèdent à une opportunité sous 6 mois" },
+        },
+      ],
+    },
     "promo-card": {
       type: "promo-card",
       backgroundImages: ["/images/team-1.jpg", "/images/alumni-1.jpg", "/images/girls-2.jpg"],

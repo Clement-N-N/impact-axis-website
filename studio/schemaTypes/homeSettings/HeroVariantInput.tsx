@@ -7,6 +7,7 @@ import overlayWelcomeThumb from "./thumbnails/overlay-welcome.svg";
 import collageDarkThumb from "./thumbnails/collage-dark.svg";
 import collageDescriptionThumb from "./thumbnails/collage-description.svg";
 import fullbleedOverlayThumb from "./thumbnails/fullbleed-overlay.svg";
+import learningEarningThumb from "./thumbnails/learning-earning.svg";
 
 interface HeroVariantOption {
   value: string;
@@ -15,6 +16,7 @@ interface HeroVariantOption {
 }
 
 const HERO_VARIANT_OPTIONS: HeroVariantOption[] = [
+  { value: "learning-earning", title: "Learning to Earning", thumbnail: learningEarningThumb },
   { value: "promo-card", title: "Promo Card", thumbnail: promoCardThumb },
   { value: "overlay-welcome", title: "Overlay Welcome", thumbnail: overlayWelcomeThumb },
   { value: "collage-dark", title: "Collage Dark", thumbnail: collageDarkThumb },

@@ -61,7 +61,29 @@ export type FullbleedOverlayHeroContent = {
   seeAllStoriesButton: HeroButton;
 };
 
+export type LearningEarningHeroContent = {
+  type: "learning-earning";
+  /** The whole sentence, as read by screen readers and search engines. */
+  headline: LocalizedText;
+  /** The fixed start of the visible headline: "From learning to". */
+  lead: LocalizedText;
+  /** The rolling last word, each with its own photo. The last one stays. */
+  words: {
+    text: LocalizedText;
+    image: string;
+    position?: string;
+    /** Mirror the photo so its subject sits clear of the headline. */
+    flip?: boolean;
+  }[];
+  description: LocalizedText;
+  paths: [HeroPath, HeroPath];
+  proof: { value: string; label: LocalizedText }[];
+};
+
+export type HeroPath = HeroButton & { kicker: LocalizedText };
+
 export type HeroContent =
+  | LearningEarningHeroContent
   | PromoCardHeroContent
   | OverlayWelcomeHeroContent
   | CollageDarkHeroContent
@@ -81,6 +103,7 @@ export type HeroVariantProps<T extends HeroContent> = {
 };
 
 export const HERO_VARIANT_IDS: readonly HeroVariantId[] = [
+  "learning-earning",
   "promo-card",
   "overlay-welcome",
   "collage-dark",
