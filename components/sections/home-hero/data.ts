@@ -6,7 +6,8 @@ export const heroConfig: HeroConfig = {
     "learning-earning": {
       type: "learning-earning",
       headline: { en: "From learning to earning.", fr: "De l'apprentissage à l'emploi." },
-      eyebrow: { en: "Impact Axis · Cameroon", fr: "Impact Axis · Cameroun" },
+      // Non-breaking spaces keep "· Cameroon" with the word before it.
+      eyebrow: { en: "Youth Workforce Development\u00a0·\u00a0Cameroon", fr: "Insertion professionnelle des jeunes\u00a0·\u00a0Cameroun" },
       lead: { en: "From learning", fr: "De l'apprentissage" },
       connector: { en: "to", fr: "" },
       words: [

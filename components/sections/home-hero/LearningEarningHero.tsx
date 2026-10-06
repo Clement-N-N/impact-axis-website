@@ -125,7 +125,7 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
           </h1>
           <p
             data-rise
-            className="text-impact-yellow text-[13px] font-bold tracking-[0.14em] uppercase sm:text-sm"
+            className="text-impact-yellow text-[11.5px] font-bold tracking-[0.1em] uppercase sm:text-sm sm:tracking-[0.14em]"
           >
             {t(data.eyebrow)}
           </p>
