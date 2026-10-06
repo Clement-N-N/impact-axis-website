@@ -6,23 +6,15 @@ export const impactPageContent: ImpactPageContent = {
   hero: {
     eyebrow: { en: "Reports & Accountability", fr: "Rapports et redevabilité" },
     headline: {
-      en: "Progress should be visible.",
-      fr: "Les progrès doivent être visibles.",
+      en: "Our numbers, in the open.",
+      fr: "Nos chiffres, en toute transparence.",
     },
-    paragraphs: [
-      {
-        en: "As a nonprofit youth workforce development organisation in Cameroon, Impact Axis is committed to being transparent about our programmes, progress, finances and the outcomes we are working to achieve with young people.",
-        fr: "En tant qu'organisation à but non lucratif dédiée au développement de l'employabilité des jeunes au Cameroun, Impact Axis s'engage à être transparente sur ses programmes, ses progrès, ses finances et les résultats qu'elle vise avec les jeunes.",
-      },
-      {
-        en: "Explore our reports and accountability documents to see what we have done, what we are learning and where we are going next.",
-        fr: "Consultez nos rapports et documents de redevabilité pour découvrir ce que nous avons accompli, ce que nous apprenons et la direction que nous prenons.",
-      },
-    ],
-    cta: {
-      label: { en: "View our latest report", fr: "Voir notre dernier rapport" },
-      href: "#latest-report",
+    intro: {
+      en: "Explore our results and reports to see what we have done, what we are learning and where we are going next.",
+      fr: "Consultez nos résultats et nos rapports pour découvrir ce que nous avons accompli, ce que nous apprenons et la direction que nous prenons.",
     },
+    readLatest: { en: "Read the latest report", fr: "Lire le dernier rapport" },
+    browse: { en: "Browse all reports", fr: "Voir tous les rapports" },
   },
 
   stats: {
@@ -41,6 +33,7 @@ export const impactPageContent: ImpactPageContent = {
       },
       {
         value: "65%",
+        visual: "ring",
         label: {
           en: "Growth in employability skills",
           fr: "Progression des compétences d'employabilité",
@@ -48,6 +41,7 @@ export const impactPageContent: ImpactPageContent = {
       },
       {
         value: "55%",
+        visual: "ring",
         label: {
           en: "Access meaningful opportunities within 6 months",
           fr: "Accèdent à des opportunités porteuses de sens sous 6 mois",
@@ -55,6 +49,7 @@ export const impactPageContent: ImpactPageContent = {
       },
       {
         value: "$1.5M+",
+        featured: true,
         label: {
           en: "Value of opportunities unlocked",
           fr: "Valeur des opportunités débloquées",
@@ -62,6 +57,7 @@ export const impactPageContent: ImpactPageContent = {
       },
       {
         value: "67%",
+        visual: "bar",
         label: {
           en: "Young women represented",
           fr: "De jeunes femmes représentées",
@@ -70,58 +66,29 @@ export const impactPageContent: ImpactPageContent = {
     ],
   },
 
-  latest: {
-    eyebrow: { en: "Latest report", fr: "Dernier rapport" },
+  library: {
+    eyebrow: { en: "Document library", fr: "Bibliothèque de documents" },
     headline: {
-      en: "A closer look at our progress.",
-      fr: "Un regard plus attentif sur nos progrès.",
-    },
-    emptyState: {
-      en: "Our next report will be published here.",
-      fr: "Notre prochain rapport sera publié ici.",
-    },
-    viewLabel: { en: "Read report", fr: "Lire le rapport" },
-    downloadLabel: { en: "Download PDF", fr: "Télécharger le PDF" },
-  },
-
-  reports: {
-    eyebrow: { en: "Our reports", fr: "Nos rapports" },
-    headline: {
-      en: "Following our progress over time.",
-      fr: "Suivre nos progrès dans la durée.",
+      en: "Every report, in one place.",
+      fr: "Tous nos rapports, au même endroit.",
     },
     intro: {
-      en: "We report at key points throughout the year to help our community, partners and funders understand what we are doing, what is changing and how our organisation is developing.",
-      fr: "Nous publions des rapports à des moments clés de l'année afin d'aider notre communauté, nos partenaires et nos financeurs à comprendre ce que nous faisons, ce qui évolue et comment notre organisation se développe.",
+      en: "We report at key points in the year so our community, partners and funders can see what we are doing, what is changing and how we are growing.",
+      fr: "Nous publions des rapports à des moments clés de l'année pour que notre communauté, nos partenaires et nos financeurs voient ce que nous faisons, ce qui évolue et comment nous grandissons.",
     },
-    // A group is only rendered when a report of that category exists, so
-    // nothing here promises a document that has not been published.
-    groups: [
-      {
-        category: "annual",
-        title: { en: "Annual reports", fr: "Rapports annuels" },
-        description: {
-          en: "Our annual reports bring together programme delivery, participant outcomes, organisational milestones, partnerships, finances, challenges and the lessons shaping our next year of work.",
-          fr: "Nos rapports annuels réunissent la mise en œuvre des programmes, les résultats des participants, les étapes organisationnelles, les partenariats, les finances, les difficultés et les enseignements qui façonnent l'année suivante.",
-        },
-      },
-      {
-        category: "midYear",
-        title: { en: "Mid-year progress reports", fr: "Rapports de mi-parcours" },
-        description: {
-          en: "A shorter view of programme implementation, progress against priorities and key organisational developments during the period.",
-          fr: "Une vue plus concise de la mise en œuvre des programmes, des progrès réalisés et des principales évolutions de l'organisation sur la période.",
-        },
-      },
-      {
-        category: "financial",
-        title: { en: "Financial reports", fr: "Rapports financiers" },
-        description: {
-          en: "Information on the resources entrusted to Impact Axis, where our funding comes from and how it is used to support our mission and programmes.",
-          fr: "Des informations sur les ressources confiées à Impact Axis, l'origine de nos financements et la manière dont ils soutiennent notre mission et nos programmes.",
-        },
-      },
-    ],
+    all: { en: "All", fr: "Tous" },
+    categories: {
+      annual: { en: "Annual", fr: "Annuel" },
+      midYear: { en: "Mid-year", fr: "Mi-parcours" },
+      financial: { en: "Financial", fr: "Financier" },
+    },
+    latest: { en: "Latest", fr: "Le plus récent" },
+    read: { en: "Read", fr: "Lire" },
+    download: { en: "Download PDF", fr: "Télécharger le PDF" },
+    empty: {
+      en: "Our first report will be published here.",
+      fr: "Notre premier rapport sera publié ici.",
+    },
   },
 
   commitment: {

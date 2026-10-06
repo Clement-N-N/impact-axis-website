@@ -18,7 +18,10 @@ export const HOME_FAQ_QUERY = defineQuery(`*[_type == "homeFaq"][0]{
 export const HOME_IMPACT_QUERY = defineQuery(`*[_type == "homeImpact"][0]{
   metrics[]{
     number,
-    label{en, fr}
+    label{en, fr},
+    visual,
+    featured,
+    detail{en, fr}
   }
 }`);
 

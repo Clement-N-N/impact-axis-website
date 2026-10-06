@@ -5,9 +5,8 @@ import type { Locale } from "@/i18n/routing";
 import { getReports } from "@/sanity/reports";
 import { getImpactStats } from "@/sanity/home";
 import {
-  ImpactStatsHero,
-  LatestReport,
-  ReportsList,
+  ImpactDataRoom,
+  ReportLibrary,
   CommitmentSection,
   impactPageContent,
 } from "@/components/sections/impact";
@@ -35,9 +34,7 @@ export default async function ImpactPage({ params }: Props) {
   // The figures live in the `homeImpact` singleton so this page and the home
   // page cannot disagree. The static copy stays as a fallback for when Sanity
   // is unreachable, matching how the home page sections behave.
-  const stats = liveStats.length
-    ? { ...content.stats, stats: liveStats }
-    : content.stats;
+  const stats = liveStats.length ? liveStats : content.stats.stats;
 
   // An explicitly featured report wins; otherwise the most recently published
   // one, since the query already returns them newest first.
@@ -45,9 +42,13 @@ export default async function ImpactPage({ params }: Props) {
 
   return (
     <div className="w-full bg-white">
-      <ImpactStatsHero hero={content.hero} stats={stats} locale={loc} />
-      <LatestReport data={content.latest} report={latest} locale={loc} />
-      <ReportsList data={content.reports} reports={reports} locale={loc} />
+      <ImpactDataRoom hero={content.hero} stats={stats} latest={latest} locale={loc} />
+      <ReportLibrary
+        data={content.library}
+        reports={reports}
+        latestId={latest?.id ?? null}
+        locale={loc}
+      />
       <CommitmentSection data={content.commitment} locale={loc} />
     </div>
   );

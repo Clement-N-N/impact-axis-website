@@ -15,13 +15,17 @@ export type ImpactCta = {
 export type ImpactHeroContent = {
   eyebrow: LocalizedText;
   headline: LocalizedText;
-  paragraphs: LocalizedText[];
-  cta: ImpactCta;
+  intro: LocalizedText;
+  readLatest: LocalizedText;
+  browse: LocalizedText;
 };
 
 export type ImpactStat = {
   value: string;
   label: LocalizedText;
+  visual?: "number" | "ring" | "bar";
+  featured?: boolean;
+  detail?: LocalizedText;
 };
 
 export type ImpactStatsContent = {
@@ -30,27 +34,17 @@ export type ImpactStatsContent = {
   stats: ImpactStat[];
 };
 
-export type LatestReportContent = {
-  eyebrow: LocalizedText;
-  headline: LocalizedText;
-  /** Shown when nothing has been published yet. */
-  emptyState: LocalizedText;
-  viewLabel: LocalizedText;
-  downloadLabel: LocalizedText;
-};
-
-export type ReportGroupCopy = {
-  category: ReportCategory;
-  title: LocalizedText;
-  description: LocalizedText;
-};
-
-export type ReportsListContent = {
+export type ReportLibraryContent = {
   eyebrow: LocalizedText;
   headline: LocalizedText;
   intro: LocalizedText;
-  /** Only rendered for categories that actually have a published report. */
-  groups: ReportGroupCopy[];
+  all: LocalizedText;
+  categories: Record<ReportCategory, LocalizedText>;
+  latest: LocalizedText;
+  read: LocalizedText;
+  download: LocalizedText;
+  /** Shown when nothing has been published yet. */
+  empty: LocalizedText;
 };
 
 export type CommitmentContent = {
@@ -62,8 +56,8 @@ export type CommitmentContent = {
 
 export type ImpactPageContent = {
   hero: ImpactHeroContent;
+  /** Fallback figures for when Sanity can't be reached. */
   stats: ImpactStatsContent;
-  latest: LatestReportContent;
-  reports: ReportsListContent;
+  library: ReportLibraryContent;
   commitment: CommitmentContent;
 };
