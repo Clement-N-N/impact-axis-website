@@ -166,6 +166,12 @@ export async function getHomePageContent(): Promise<HomePageData> {
 export type ImpactStatEntry = {
   value: string;
   label: LocalizedText;
+  /** Impact page only: how the figure is drawn. */
+  visual?: "number" | "ring" | "bar";
+  /** Impact page only: shown as the large featured tile. */
+  featured?: boolean;
+  /** Impact page only: an optional line of context. */
+  detail?: LocalizedText;
 };
 
 /**
@@ -185,12 +191,30 @@ export async function getImpactStats(): Promise<ImpactStatEntry[]> {
     if (Array.isArray(metrics)) {
       return metrics
         .filter(
-          (metric): metric is { number: string; label: LocalizedText } =>
+          (
+            metric,
+          ): metric is {
+            number: string;
+            label: LocalizedText;
+            visual?: string;
+            featured?: boolean;
+            detail?: LocalizedText;
+          } =>
             typeof metric?.number === "string" &&
             typeof metric?.label?.en === "string" &&
             typeof metric?.label?.fr === "string",
         )
-        .map((metric) => ({ value: metric.number, label: metric.label }));
+        .map((metric) => ({
+          value: metric.number,
+          label: metric.label,
+          visual:
+            metric.visual === "ring" || metric.visual === "bar" ? metric.visual : "number",
+          featured: metric.featured === true,
+          detail:
+            typeof metric.detail?.en === "string" && typeof metric.detail?.fr === "string"
+              ? metric.detail
+              : undefined,
+        }));
     }
   } catch (error) {
     console.error("Failed to fetch impact stats from Sanity.", error);
