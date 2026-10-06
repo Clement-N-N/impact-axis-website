@@ -26,8 +26,15 @@ export function TestimonialCard({
   prefersReducedMotion: boolean;
 }) {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
-  const imageSrc = resolveImageSrc(testimonial.image);
-  const video = testimonial.video?.asset;
+  const youtube = testimonial.youtubeId;
+  const file = youtube ? null : (testimonial.video?.asset ?? null);
+  const hasVideo = Boolean(youtube || file);
+  // Photo first; otherwise the YouTube thumbnail. An uploaded file with no
+  // photo shows its own first frame instead (below).
+  const imageSrc =
+    resolveImageSrc(testimonial.image) ??
+    (youtube ? `https://i.ytimg.com/vi/${youtube}/hqdefault.jpg` : null);
+  const playLabel = `${locale === "fr" ? "Lire la vidéo de" : "Play video from"} ${testimonial.name}`;
 
   return (
     <motion.div
@@ -42,21 +49,32 @@ export function TestimonialCard({
         ease: [0.215, 0.61, 0.355, 1],
       }}
     >
-      {imageSrc && (
+      {(imageSrc || hasVideo) && (
         <div
           className={clsx(
-            "group relative aspect-[4/5] w-2/5 shrink-0 overflow-hidden",
-            video && "cursor-pointer",
+            "group relative aspect-[4/5] w-2/5 shrink-0 overflow-hidden bg-[#101B62]",
+            hasVideo && "cursor-pointer",
           )}
-          onClick={video ? () => setIsVideoOpen(true) : undefined}
+          onClick={hasVideo ? () => setIsVideoOpen(true) : undefined}
         >
-          <Image src={imageSrc} alt="" fill className="object-cover" />
-          {video && (
+          {imageSrc ? (
+            <Image src={imageSrc} alt="" fill sizes="(min-width: 1024px) 20vw, 40vw" className="object-cover" />
+          ) : file ? (
+            <video
+              src={`${file.url}#t=1`}
+              muted
+              playsInline
+              preload="metadata"
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          ) : null}
+          {hasVideo && (
             <>
               <div className="absolute inset-0 bg-[#101B62]/35" />
               <button
                 type="button"
-                aria-label="Play video"
+                aria-label={playLabel}
                 onClick={() => setIsVideoOpen(true)}
                 className="bg-impact-yellow/50 absolute top-1/2 left-1/2 flex h-[50px] w-[50px] -translate-x-1/2 -translate-y-1/2 items-center justify-center transition-transform duration-300 group-hover:scale-[1.2]"
               >
@@ -98,10 +116,12 @@ export function TestimonialCard({
       </div>
 
       <AnimatePresence>
-        {isVideoOpen && video && (
+        {isVideoOpen && hasVideo && (
           <VideoModal
-            videoUrl={video.url}
-            mimeType={video.mimeType}
+            youtubeId={youtube}
+            videoUrl={file?.url}
+            mimeType={file?.mimeType}
+            title={testimonial.name}
             onClose={() => setIsVideoOpen(false)}
             prefersReducedMotion={prefersReducedMotion}
           />

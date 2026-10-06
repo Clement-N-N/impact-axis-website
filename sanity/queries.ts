@@ -97,6 +97,7 @@ export const HOME_TESTIMONIALS_QUERY = defineQuery(`*[_type == "homeTestimonials
     title{en, fr},
     summary{en, fr},
     image,
+    youtubeUrl,
     video{
       asset->{
         url,

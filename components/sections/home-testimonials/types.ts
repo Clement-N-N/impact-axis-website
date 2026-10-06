@@ -13,6 +13,8 @@ export type Testimonial = {
   title: LocalizedText;
   image: string | SanityImageValue;
   video?: TestimonialVideo;
+  /** YouTube video id; preferred over `video` when both are set. */
+  youtubeId?: string;
   description?: LocalizedPortableText;
 };
 

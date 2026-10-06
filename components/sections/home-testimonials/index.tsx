@@ -12,7 +12,15 @@ type SanityTestimonial = {
   summary: LocalizedText;
   image: unknown;
   video: unknown;
+  youtubeUrl?: unknown;
 };
+
+/** The 11-character id from any common YouTube link form. */
+function youtubeId(url: unknown): string | undefined {
+  if (typeof url !== "string") return undefined;
+  const m = url.match(/(?:youtu\.be\/|[?&]v=|\/(?:embed|shorts|live)\/)([\w-]{11})/);
+  return m?.[1];
+}
 
 function isLocalizedText(value: unknown): value is LocalizedText {
   if (typeof value !== "object" || value === null) return false;
@@ -45,6 +53,7 @@ async function getHomeTestimonialsContent(): Promise<HomeTestimonialsContent | n
         title: item.title,
         image: (item.image as Testimonial["image"]) ?? "",
         video: item.video as Testimonial["video"],
+        youtubeId: youtubeId(item.youtubeUrl),
       }));
       // Section heading/CTA stay hardcoded by design, matching the FAQ pattern.
       return {

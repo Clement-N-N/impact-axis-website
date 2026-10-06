@@ -50,8 +50,21 @@ export const testimonial = defineType({
       ],
     }),
     defineField({
+      name: "youtubeUrl",
+      title: "YouTube link",
+      description:
+        "Preferred for videos: paste the YouTube link (e.g. https://www.youtube.com/watch?v=…). It streams at the right quality for each visitor and is used instead of an uploaded video. Its thumbnail is shown when there's no image.",
+      type: "url",
+      validation: (Rule) =>
+        Rule.uri({ scheme: ["https"] }).custom((value) =>
+          !value || /(?:youtube\.com|youtu\.be)\//.test(value) ? true : "Use a YouTube link",
+        ),
+    }),
+    defineField({
       name: "video",
-      title: "Video",
+      title: "Video file (optional)",
+      description:
+        "Only if the video isn't on YouTube. Large files load slowly on phones, so keep them short.",
       type: "file",
       options: { accept: "video/*" },
     }),
