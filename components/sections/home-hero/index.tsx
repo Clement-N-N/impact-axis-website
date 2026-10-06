@@ -8,6 +8,7 @@ import { OverlayWelcomeHero } from "./OverlayWelcomeHero";
 import { CollageDarkHero } from "./CollageDarkHero";
 import { CollageDescriptionHero } from "./CollageDescriptionHero";
 import { FullbleedOverlayHero } from "./FullbleedOverlayHero";
+import { LearningEarningHero } from "./LearningEarningHero";
 
 type HomeSettingsQueryResult = { heroVariant: string } | null;
 
@@ -35,6 +36,8 @@ export async function HomeHero({ locale }: { locale: Locale }) {
   const data = heroConfig.heroes[activeHero];
 
   switch (data.type) {
+    case "learning-earning":
+      return <LearningEarningHero data={data} locale={locale} />;
     case "promo-card":
       return <PromoCardHero data={data} locale={locale} />;
     case "overlay-welcome":
