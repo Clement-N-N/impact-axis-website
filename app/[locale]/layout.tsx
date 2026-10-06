@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
@@ -24,6 +24,13 @@ import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import "../globals.css";
 import "@/styles/_fonts.scss";
 import "@/styles/_base.scss";
+
+// The site is designed light only. Without this, phone browsers with an
+// automatic "dark mode for websites" (Samsung Internet, Chrome on Android)
+// repaint it themselves, e.g. turning navy text on yellow into white.
+export const viewport: Viewport = {
+  colorScheme: "only light",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
