@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -170,7 +169,7 @@ export function Footer({ socialLinks }: { socialLinks: SocialLinks }) {
   }, []);
 
   return (
-    <footer ref={footerRef} className="w-full bg-[#141416] pt-16">
+    <footer ref={footerRef} className="w-full bg-[#141416] pt-16 pb-12">
       <Container className="grid grid-cols-4 gap-gutter md:grid-cols-8 lg:grid-cols-12">
         <div className="col-span-4 flex flex-col justify-between gap-10 md:col-span-8 lg:col-span-6 lg:h-full">
           <div className="flex w-full max-w-[500px] flex-col gap-6">
@@ -308,16 +307,6 @@ export function Footer({ socialLinks }: { socialLinks: SocialLinks }) {
               </Link>
             ))}
           </div>
-        </div>
-
-        <div className="relative col-span-4 mt-16 aspect-[6/1] w-full md:col-span-8 lg:col-span-12">
-          <Image
-            src="/logos/impact_axis_white_transparent.png"
-            alt=""
-            width={2000}
-            height={1000}
-            className="object-contain object-left opacity-10 w-full"
-          />
         </div>
       </Container>
     </footer>

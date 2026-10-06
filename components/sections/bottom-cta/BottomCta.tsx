@@ -12,7 +12,7 @@ export function BottomCta({
 }) {
   const block = propData?.block ?? bottomCtaContent.block;
   return (
-    <section className="flex aspect-auto w-full overflow-hidden md:aspect-[24/5]">
+    <section aria-labelledby="bottom-cta-title" className="w-full bg-white py-[clamp(2.5rem,5vw,4.5rem)]">
       <BottomCtaBlock block={block} locale={locale} />
     </section>
   );
