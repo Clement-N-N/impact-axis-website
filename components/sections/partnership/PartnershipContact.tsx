@@ -16,6 +16,8 @@ import {
 } from "@phosphor-icons/react";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
+import { EnquiryExtras, sendEnquiry } from "@/components/forms/EnquiryExtras";
+import { ENQUIRY_STATUS, type EnquirySource } from "@/lib/enquiry";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { LocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
@@ -55,12 +57,15 @@ const FIELDS = ["firstName", "lastName", "email", "message"] as const;
 type FieldName = (typeof FIELDS)[number];
 
 type PartnershipContactProps = {
+  /** Audience page slug: tags the enquiry and tailors the opt-in. */
+  audience: Exclude<EnquirySource, "contact">;
   formSubject: LocalizedText;
   locale: Locale;
   socialLinks: SocialLinks;
 };
 
 export function PartnershipContact({
+  audience,
   formSubject,
   locale,
   socialLinks,
@@ -70,7 +75,11 @@ export function PartnershipContact({
 
   const fieldId = useId();
   const [errors, setErrors] = useState<Partial<Record<FieldName, string>>>({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error" | "unavailable">("idle");
+  const shownAt = useRef(0);
+  useEffect(() => {
+    shownAt.current = Date.now();
+  }, []);
 
   // COUNTRIES ships sorted by English name; FR_ORDER carries the French
   // collation so "Allemagne" sorts under A rather than wherever "Germany"
@@ -159,8 +168,9 @@ export function PartnershipContact({
     };
   }, []);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (status === "sending") return;
     const form = event.currentTarget;
     const formData = new FormData(form);
 
@@ -184,10 +194,31 @@ export function PartnershipContact({
       return;
     }
 
-    // TODO: wire up to a real provider. `newsletter_integration_plan.md`
-    // sketches a Brevo-backed server action that this form can reuse.
-    setIsSubmitted(true);
-    form.reset();
+    const dial = COUNTRIES.find(
+      (c) => c.code === String(formData.get("countryCode") ?? ""),
+    )?.dial;
+    const phone = String(formData.get("phone") ?? "").trim();
+
+    setStatus("sending");
+    const result = await sendEnquiry({
+      source: audience,
+      locale,
+      firstName: String(formData.get("firstName") ?? "").trim(),
+      lastName: String(formData.get("lastName") ?? "").trim(),
+      email: String(formData.get("email") ?? "").trim(),
+      phone: phone ? `${dial ? `+${dial} ` : ""}${phone}` : "",
+      subject: String(formData.get("subject") ?? ""),
+      message: String(formData.get("message") ?? "").trim(),
+      newsletter: formData.get("newsletter") === "on",
+      website: String(formData.get("website") ?? ""),
+      elapsed: Date.now() - shownAt.current,
+    });
+    if (result === "ok") {
+      form.reset();
+      setStatus("sent");
+    } else {
+      setStatus(result);
+    }
   }
 
   function describedBy(field: FieldName) {
@@ -274,14 +305,18 @@ export function PartnershipContact({
           noValidate
           className="col-span-4 mt-10 flex flex-col gap-3 md:col-span-5 lg:col-span-6 lg:col-start-7 lg:mt-0"
         >
-          {isSubmitted && (
-            <p
-              role="status"
-              className="border-impact-blue text-impact-blue border px-4 py-3"
-            >
-              {t("form.success")}
-            </p>
-          )}
+          <div aria-live="polite">
+            {status === "sent" && (
+              <p className="border-impact-blue text-impact-blue border px-4 py-3">
+                {t("form.success")}
+              </p>
+            )}
+            {(status === "error" || status === "unavailable") && (
+              <p className={clsx("border border-[#B42318] px-4 py-3", ERROR_TEXT_COLOR)}>
+                {getLocalizedText(ENQUIRY_STATUS[status], locale)}
+              </p>
+            )}
+          </div>
 
           <div className="gap-gutter grid grid-cols-1 sm:grid-cols-2">
             <div className="flex flex-col">
@@ -413,13 +448,18 @@ export function PartnershipContact({
           </div>
           {renderError("message")}
 
+          <div className="mt-2">
+            <EnquiryExtras source={audience} locale={locale} tone="plain" />
+          </div>
+
           <div className="mt-3">
             <Button
               type="submit"
               variant="primary"
+              disabled={status === "sending"}
               icon={<ArrowRightIcon weight="bold" className="h-5 w-5" />}
             >
-              {t("form.send")}
+              {status === "sending" ? t("form.sending") : t("form.send")}
             </Button>
           </div>
         </form>

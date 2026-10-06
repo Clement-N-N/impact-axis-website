@@ -15,9 +15,11 @@ import {
   YoutubeLogoIcon,
 } from "@phosphor-icons/react/dist/ssr";
 import { Container } from "@/components/layout/Container";
+import { EnquiryExtras, sendEnquiry } from "@/components/forms/EnquiryExtras";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
 import type { SocialLinks } from "@/sanity/types";
+import { ENQUIRY_STATUS } from "@/lib/enquiry";
 import { contactContent as c } from "./data";
 
 if (typeof window !== "undefined") {
@@ -38,10 +40,8 @@ type Field = "name" | "email" | "message";
  * Contact: a topic picker and short form beside a navy card of direct
  * contact details.
  *
- * Choosing a topic tailors the message prompt. The site has no mail
- * provider yet, so sending composes the message in the visitor's own
- * email app (addressed, subject set from the topic) rather than pretending
- * to submit; the note under the button says so.
+ * Choosing a topic tailors the message prompt. Sending posts to
+ * /api/enquiry (Brevo), which emails the team and confirms to the sender.
  */
 export function ContactSection({
   locale,
@@ -62,9 +62,14 @@ export function ContactSection({
   const sectionRef = useRef<HTMLElement>(null);
   const [topic, setTopic] = useState(c.topics[0].id);
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error" | "unavailable">("idle");
+  const shownAt = useRef(0);
   const current = c.topics.find((x) => x.id === topic) ?? c.topics[0];
   const socials = SOCIALS.filter((s) => socialLinks?.[s.key]);
+
+  useEffect(() => {
+    shownAt.current = Date.now();
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -100,8 +105,9 @@ export function ContactSection({
     };
   }, [locale]);
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (status === "sending") return;
     const form = e.currentTarget;
     const data = new FormData(form);
     const values = {
@@ -120,12 +126,26 @@ export function ContactSection({
       form.querySelector<HTMLElement>("[aria-invalid='true']")?.focus();
       return;
     }
-    const subject = `${t(current.label)}: ${values.name}`;
-    const body = `${values.message}\n\n${values.name}\n${values.email}`;
-    window.location.assign(
-      `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
-    );
-    setSent(true);
+    const [firstName, ...rest] = values.name.split(/\s+/);
+    setStatus("sending");
+    const result = await sendEnquiry({
+      source: "contact",
+      locale,
+      firstName,
+      lastName: rest.join(" "),
+      email: values.email,
+      subject: topic,
+      message: values.message,
+      newsletter: data.get("newsletter") === "on",
+      website: String(data.get("website") ?? ""),
+      elapsed: Date.now() - shownAt.current,
+    });
+    if (result === "ok") {
+      form.reset();
+      setStatus("sent");
+    } else {
+      setStatus(result);
+    }
   }
 
   const input =
@@ -248,15 +268,20 @@ export function ContactSection({
               {err("message")}
             </div>
 
+            <div data-rise>
+              <EnquiryExtras source="contact" locale={locale} />
+            </div>
+
             <div
               data-rise
               className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-5"
             >
               <button
                 type="submit"
-                className="bg-impact-yellow text-impact-blue focus-visible:outline-impact-blue group inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-base font-semibold shadow-[0_14px_30px_-14px_rgb(244_198_0/0.9)] transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2"
+                disabled={status === "sending"}
+                className="bg-impact-yellow text-impact-blue focus-visible:outline-impact-blue group inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-base font-semibold shadow-[0_14px_30px_-14px_rgb(244_198_0/0.9)] transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-wait disabled:opacity-70 disabled:hover:scale-100"
               >
-                {t(c.submit)}
+                {status === "sending" ? t(c.sending) : t(c.submit)}
                 <ArrowRightIcon
                   weight="bold"
                   className="size-4 transition-transform group-hover:translate-x-0.5"
@@ -264,18 +289,18 @@ export function ContactSection({
               </button>
               <p className="text-sm text-black/55">{t(c.submitNote)}</p>
             </div>
-            {sent && (
-              <p
-                role="status"
-                className="text-impact-blue rounded-[14px] bg-[#fff6d6] px-4 py-3 text-sm"
-              >
-                {t(c.sent)}{" "}
-                <a href={`mailto:${email}`} className="font-semibold underline">
-                  {email}
-                </a>
-                .
-              </p>
-            )}
+            <div aria-live="polite">
+              {status === "sent" && (
+                <p className="text-impact-blue rounded-[14px] bg-[#fff6d6] px-4 py-3 text-sm">
+                  {t(c.sent)}
+                </p>
+              )}
+              {(status === "error" || status === "unavailable") && (
+                <p className="rounded-[14px] bg-[#fdecea] px-4 py-3 text-sm text-[#B42318]">
+                  {t(ENQUIRY_STATUS[status])}
+                </p>
+              )}
+            </div>
           </form>
         </div>
 

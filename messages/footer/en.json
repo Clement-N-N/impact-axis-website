@@ -1,11 +1,15 @@
 {
   "subscribe": {
     "title": "Join the movement",
-    "subtitle": "Subscribe to our news letter and get the chance to be part of something amazing.",
+    "subtitle": "Our monthly update on programmes, events and impact. Unsubscribe anytime.",
     "firstName": "First name",
     "lastName": "Last name",
     "emailPlaceholder": "johndoe@email.com",
-    "button": "Subscribe"
+    "button": "Subscribe",
+    "sending": "Subscribing…",
+    "done": "You're subscribed. Thank you!",
+    "error": "Please check your email address and try again.",
+    "confirm": "Almost there: check your inbox to confirm your subscription."
   },
   "columns": {
     "learnMore": "Learn more",

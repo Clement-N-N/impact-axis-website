@@ -1,5 +1,5 @@
 {
-  "getInTouch": "Nous contacter",
+  "getInTouch": "Vous préférez l'e-mail ou le téléphone ?",
   "contactLabel": "Contact",
   "socialLabel": "Réseaux sociaux",
   "backToWorkWithUs": "Travailler avec nous",
@@ -15,7 +15,7 @@
     "sending": "Envoi en cours…",
     "required": "Ce champ est obligatoire.",
     "invalidEmail": "Saisissez une adresse e-mail valide.",
-    "success": "Merci — votre message a bien été reçu. Nous vous recontacterons très prochainement.",
+    "success": "Merci, votre message est bien parti. Nous vous en avons envoyé une copie et vous répondrons sous deux jours ouvrés.",
     "errorSummary": "Veuillez corriger les champs signalés."
   }
 }

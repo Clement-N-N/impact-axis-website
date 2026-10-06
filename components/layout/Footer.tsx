@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
@@ -40,6 +40,45 @@ export function Footer({ socialLinks }: { socialLinks: SocialLinks }) {
   const tNav = useTranslations("nav");
   const currentYear = new Date().getFullYear();
   const formIdPrefix = useId();
+  const locale = useLocale();
+  const [subStatus, setSubStatus] = useState<"idle" | "sending" | "done" | "confirm" | "error">("idle");
+  const shownAt = useRef(0);
+  useEffect(() => {
+    shownAt.current = Date.now();
+  }, []);
+
+  async function onSubscribe(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (subStatus === "sending") return;
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const email = String(data.get("email") ?? "").trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setSubStatus("error");
+      form.querySelector<HTMLInputElement>("input[name=email]")?.focus();
+      return;
+    }
+    setSubStatus("sending");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          locale,
+          firstName: String(data.get("firstName") ?? ""),
+          lastName: String(data.get("lastName") ?? ""),
+          email,
+          website: String(data.get("website") ?? ""),
+          elapsed: Date.now() - shownAt.current,
+        }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      form.reset();
+      setSubStatus("done");
+    } catch {
+      setSubStatus("error");
+    }
+  }
 
   const learnMoreLinks = [
     { href: "/", label: tNav("links.home") },
@@ -143,12 +182,15 @@ export function Footer({ socialLinks }: { socialLinks: SocialLinks }) {
             </p>
             <form
               ref={formRef}
-              onSubmit={(e) => {
-                e.preventDefault();
-                // TODO: wire up to a real newsletter subscription service.
-              }}
-              className="flex flex-col gap-3"
+              onSubmit={onSubscribe}
+              noValidate
+              className="relative flex flex-col gap-3"
             >
+              {/* Honeypot: people never see it; bots fill it and are ignored. */}
+              <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+                <label htmlFor={`${formIdPrefix}-website`}>Website</label>
+                <input id={`${formIdPrefix}-website`} name="website" tabIndex={-1} autoComplete="off" />
+              </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label htmlFor={`${formIdPrefix}-firstName`} className="sr-only">
@@ -180,15 +222,21 @@ export function Footer({ socialLinks }: { socialLinks: SocialLinks }) {
                 id={`${formIdPrefix}-email`}
                 type="email"
                 name="email"
+                autoComplete="email"
                 placeholder={t("subscribe.emailPlaceholder")}
+                aria-invalid={subStatus === "error"}
                 className={inputStyles}
               />
               <button
                 type="submit"
-                className="bg-impact-yellow py-3 text-center font-medium text-black"
+                disabled={subStatus === "sending"}
+                className="bg-impact-yellow py-3 text-center font-medium text-black disabled:cursor-wait disabled:opacity-70"
               >
-                {t("subscribe.button")}
+                {subStatus === "sending" ? t("subscribe.sending") : t("subscribe.button")}
               </button>
+              <p aria-live="polite" className="text-sm text-white/80 empty:hidden">
+                {subStatus === "done" || subStatus === "confirm" || subStatus === "error" ? t(`subscribe.${subStatus}`) : ""}
+              </p>
             </form>
           </div>
           <p ref={copyrightRef} className="text-sm text-white/50">
