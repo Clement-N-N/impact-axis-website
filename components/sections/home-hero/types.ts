@@ -65,8 +65,11 @@ export type LearningEarningHeroContent = {
   type: "learning-earning";
   /** The whole sentence, as read by screen readers and search engines. */
   headline: LocalizedText;
-  /** The fixed start of the visible headline: "From learning to". */
+  eyebrow: LocalizedText;
+  /** First line of the visible headline: "From learning". */
   lead: LocalizedText;
+  /** Starts the second line, before the yellow box: "to" (empty in French). */
+  connector: LocalizedText;
   /** The rolling last word, each with its own photo. The last one stays. */
   words: {
     text: LocalizedText;
@@ -80,7 +83,7 @@ export type LearningEarningHeroContent = {
   proof: { value: string; label: LocalizedText }[];
 };
 
-export type HeroPath = HeroButton & { kicker: LocalizedText };
+export type HeroPath = HeroButton & { kicker: LocalizedText; title: LocalizedText };
 
 export type HeroContent =
   | LearningEarningHeroContent
