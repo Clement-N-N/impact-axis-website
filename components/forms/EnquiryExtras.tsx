@@ -4,6 +4,7 @@ import { useId } from "react";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { optInCopy, type EnquirySource } from "@/lib/enquiry";
+import { trackConversion } from "@/lib/analytics";
 
 /**
  * The bits every enquiry form shares: an unticked "keep me posted" opt-in
@@ -65,7 +66,11 @@ export async function sendEnquiry(body: object): Promise<"ok" | "unavailable" | 
       headers: { "content-type": "application/json" },
       body: JSON.stringify(body),
     });
-    if (res.ok) return "ok";
+    if (res.ok) {
+      const source = (body as { source?: unknown }).source;
+      trackConversion("generate_lead", typeof source === "string" ? { form: source } : {});
+      return "ok";
+    }
     return res.status === 503 ? "unavailable" : "error";
   } catch {
     return "error";
