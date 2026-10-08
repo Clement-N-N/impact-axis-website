@@ -5,8 +5,8 @@ export type { BlogPost };
 
 export type HomeBlogChrome = {
   eyebrow: LocalizedText;
-  readMoreLabel: LocalizedText;
-  moreNewsButton: { label: LocalizedText; href: string };
+  headline: LocalizedText;
+  allPosts: { label: LocalizedText; href: string };
 };
 
 export type HomeBlogContent = HomeBlogChrome & {
