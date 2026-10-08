@@ -5,7 +5,13 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true,
+  // Read straight from Sanity, not its API CDN. The site already caches
+  // every page itself (see SANITY_REVALIDATE below), so the CDN adds no
+  // speed for visitors. It did cause stale pages: on publish the webhook
+  // refreshes the site at once, but the CDN can still hold the previous
+  // version for a short while, and that stale copy then stayed cached for a
+  // day. Fetches only happen when a page is rebuilt, so API use stays low.
+  useCdn: false,
 });
 
 /**
