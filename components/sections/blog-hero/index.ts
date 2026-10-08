@@ -1,1 +1,0 @@
-export { BlogHero } from "./BlogHero";

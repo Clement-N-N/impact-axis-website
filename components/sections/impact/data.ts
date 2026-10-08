@@ -1,7 +1,7 @@
 import type { ImpactPageContent } from "./types";
 
 // TODO: the French here is a first-pass translation and needs native review,
-// matching the note on `blog-body/data.ts`.
+// flagged for native French review.
 export const impactPageContent: ImpactPageContent = {
   hero: {
     eyebrow: { en: "Reports & Accountability", fr: "Rapports et redevabilité" },

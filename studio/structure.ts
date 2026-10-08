@@ -9,6 +9,7 @@ import { HOME_IMPACT_ID, HOME_IMPACT_TYPE } from "./schemaTypes/homeImpact";
 import { SOCIAL_LINKS_ID, SOCIAL_LINKS_TYPE } from "./schemaTypes/socialLinks";
 import { TESTIMONIAL_TYPE } from "./schemaTypes/testimonial";
 import { BLOG_POST_TYPE } from "./schemaTypes/blogPost";
+import { BLOG_PAGE_ID, BLOG_PAGE_TYPE } from "./schemaTypes/blogPage";
 import { BLOG_AUTHOR_TYPE } from "./schemaTypes/blogAuthor";
 import { BLOG_CATEGORY_TYPE } from "./schemaTypes/blogCategory";
 import { EVENT_TYPE } from "./schemaTypes/event";
@@ -29,6 +30,7 @@ const EXPLICITLY_PLACED_TYPES = new Set([
   SOCIAL_LINKS_TYPE,
   TESTIMONIAL_TYPE,
   BLOG_POST_TYPE,
+  BLOG_PAGE_TYPE,
   BLOG_AUTHOR_TYPE,
   BLOG_CATEGORY_TYPE,
   EVENT_TYPE,
@@ -110,7 +112,17 @@ export const structure: StructureResolver = (S) =>
           S.list()
             .title("Blog")
             .items([
-              S.documentTypeListItem(BLOG_POST_TYPE).title("Posts"),
+              S.listItem()
+                .id(BLOG_PAGE_ID)
+                .title("Blog Page (banner, featured post, call to action)")
+                .child(S.document().schemaType(BLOG_PAGE_TYPE).documentId(BLOG_PAGE_ID)),
+              S.documentTypeListItem(BLOG_POST_TYPE)
+                .title("Posts")
+                .child(
+                  S.documentTypeList(BLOG_POST_TYPE)
+                    .title("Posts")
+                    .defaultOrdering([{ field: "date", direction: "desc" }]),
+                ),
               S.documentTypeListItem(BLOG_AUTHOR_TYPE).title("Authors"),
               S.documentTypeListItem(BLOG_CATEGORY_TYPE).title("Categories"),
             ]),

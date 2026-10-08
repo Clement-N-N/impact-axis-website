@@ -3,42 +3,17 @@ import { BASE_URL, cleanTitle, pageMetadata } from "@/lib/seo";
 import { ArticleJsonLd } from "@/components/seo/JsonLd";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
-import { BlogDetailsHero } from "@/components/sections/blog-details-hero";
-import { BlogDetailsBody } from "@/components/sections/blog-details-body";
+import { BlogArticle } from "@/components/sections/blog/BlogArticle";
 import { getLocalizedText } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
-import { client, sanityFetchOptions } from "@/sanity/client";
+import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
-import { BLOG_POST_BY_SLUG_QUERY, BLOG_POSTS_QUERY, BLOG_SLUGS_QUERY } from "@/sanity/queries";
-import type { BlogPost, BlogPostDetail } from "@/components/sections/blog-card/types";
+import { BLOG_SLUGS_QUERY } from "@/sanity/queries";
+import { getBlogPage, getBlogPost, getBlogPosts, pickRelated } from "@/sanity/blog";
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
 };
-
-async function getPostBySlug(slug: string): Promise<BlogPostDetail | null> {
-  try {
-    const result = await client.fetch(BLOG_POST_BY_SLUG_QUERY, { slug }, sanityFetchOptions);
-    return (result as BlogPostDetail | null) ?? null;
-  } catch (error) {
-    console.error("Failed to fetch blog post from Sanity.", error);
-    return null;
-  }
-}
-
-async function getRelatedPost(slug: string): Promise<BlogPost | null> {
-  try {
-    const posts = (await client.fetch(
-      BLOG_POSTS_QUERY,
-      { categorySlug: null },
-      sanityFetchOptions,
-    )) as BlogPost[];
-    return posts.find((candidate) => candidate.id !== slug) ?? null;
-  } catch (error) {
-    console.error("Failed to fetch related blog post from Sanity.", error);
-    return null;
-  }
-}
 
 export async function generateStaticParams() {
   const slugs = await client.fetch(BLOG_SLUGS_QUERY);
@@ -47,7 +22,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
-  const post = await getPostBySlug(slug);
+  const post = await getBlogPost(slug);
   if (!post) return {};
 
   const postTitle = getLocalizedText(post.title, locale as Locale);
@@ -72,15 +47,14 @@ export default async function BlogPostPage({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const post = await getPostBySlug(slug);
+  const post = await getBlogPost(slug);
   if (!post) notFound();
 
-  const relatedPost = await getRelatedPost(slug);
+  const [page, posts] = await Promise.all([getBlogPage(), getBlogPosts(null)]);
 
   return (
     <>
-      <BlogDetailsHero post={post} locale={locale as Locale} />
-      <BlogDetailsBody post={post} relatedPost={relatedPost} locale={locale as Locale} />
+      <BlogArticle post={post} related={pickRelated(posts, post)} page={page} locale={locale as Locale} />
       <ArticleJsonLd
         url={`${BASE_URL}/${locale}/blog/${slug}`}
         headline={getLocalizedText(post.title, locale as Locale)}
