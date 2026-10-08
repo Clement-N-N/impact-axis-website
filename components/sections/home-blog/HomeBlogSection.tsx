@@ -1,99 +1,57 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Container } from "@/components/layout/Container";
 import { Link } from "@/i18n/navigation";
-import { getLocalizedText } from "@/components/sections/home-hero/types";
+import { getLocalizedText as t } from "@/components/sections/home-hero/types";
 import type { Locale } from "@/i18n/routing";
-import { BlogCard } from "@/components/ui/BlogCard";
+import { PostRow } from "@/components/sections/blog/PostCard";
+import { Rise } from "@/components/sections/blog/Rise";
 import type { HomeBlogContent } from "./types";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
+/**
+ * Compact home page blog teaser: one heading row with a link to the blog,
+ * then three posts as small photo-and-title rows (side by side on large
+ * screens, stacked on phones). Kept short on purpose so it doesn't add much
+ * scrolling to the home page.
+ */
 export function HomeBlogSection({ data, locale }: { data: HomeBlogContent; locale: Locale }) {
-  const [featuredPost, ...secondaryPosts] = data.posts;
-
-  const sectionRef = useRef<HTMLElement>(null);
-  const eyebrowRef = useRef<HTMLSpanElement>(null);
-  const mainCardRef = useRef<HTMLDivElement>(null);
-  const secondaryColRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    const ctx = gsap.context(() => {
-      const targets = [eyebrowRef.current, mainCardRef.current, secondaryColRef.current];
-
-      if (prefersReducedMotion) {
-        gsap.set(targets, { opacity: 1, y: 0 });
-        return;
-      }
-
-      gsap.set(targets, { opacity: 0, y: 20 });
-      gsap.to(targets, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        ease: "power3.out",
-        stagger: 0.08,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          once: true,
-        },
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+  const allPosts = (className: string) => (
+    <Link
+      href={data.allPosts.href}
+      className={`text-impact-blue decoration-impact-yellow focus-visible:outline-impact-blue items-center gap-2 font-semibold decoration-2 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 ${className}`}
+    >
+      {t(data.allPosts.label, locale)}
+      <ArrowRightIcon weight="bold" className="size-4" />
+    </Link>
+  );
 
   return (
-    <section ref={sectionRef} className="w-full bg-[#F5F1E8] py-section">
-      <Container className="grid grid-cols-4 gap-gutter md:grid-cols-8 lg:grid-cols-12">
-        <div className="hidden h-full lg:col-span-1 lg:row-start-1 lg:block">
-          <div className="mt-[1vw] h-[8px] w-[8px] bg-black" />
-        </div>
+    <section aria-labelledby="home-blog-title" className="w-full bg-[#f4f6fc] py-[clamp(3rem,6vw,4.5rem)]">
+      <Rise>
+        <Container>
+          <div data-rise className="flex items-end justify-between gap-6">
+            <div className="flex flex-col items-start gap-3">
+              <span className="bg-impact-yellow rounded-full px-3.5 py-1 text-sm font-semibold whitespace-nowrap text-black">
+                {t(data.eyebrow, locale)}
+              </span>
+              <h2
+                id="home-blog-title"
+                className="text-impact-blue text-[clamp(1.75rem,3vw,2.25rem)] leading-[1.1] font-semibold tracking-[-0.025em] text-balance"
+              >
+                {t(data.headline, locale)}
+              </h2>
+            </div>
+            {allPosts("hidden shrink-0 md:inline-flex")}
+          </div>
 
-        <div className="col-span-4 md:col-span-8 lg:col-span-4 lg:row-start-1">
-          <span ref={eyebrowRef} className="text-[clamp(0.875rem,1.3125vw,1.1875rem)] text-black">
-            {getLocalizedText(data.eyebrow, locale)}
-          </span>
-        </div>
+          <div className="mt-8 grid grid-cols-1 gap-6 lg:mt-10 lg:grid-cols-3 lg:gap-8">
+            {data.posts.map((post) => (
+              <PostRow key={post.id} post={post} locale={locale} />
+            ))}
+          </div>
 
-        <div
-          ref={mainCardRef}
-          className="col-span-4 md:col-span-8 lg:col-span-7 lg:row-start-2 lg:border-r lg:border-border lg:pr-10"
-        >
-          <BlogCard post={featuredPost} locale={locale} readMoreLabel={data.readMoreLabel} />
-        </div>
-
-        <div
-          ref={secondaryColRef}
-          className="col-span-4 flex flex-col justify-between gap-8 md:col-span-8 lg:col-span-5 lg:row-start-2 lg:pl-5"
-        >
-          {secondaryPosts.map((post) => (
-            <BlogCard
-              key={post.id}
-              post={post}
-              locale={locale}
-              readMoreLabel={data.readMoreLabel}
-              variant="horizontal"
-            />
-          ))}
-          <Link
-            href={data.moreNewsButton.href}
-            className="border border-border px-8 py-3 text-center text-sm text-black"
-          >
-            {getLocalizedText(data.moreNewsButton.label, locale)}
-          </Link>
-        </div>
-      </Container>
+          {allPosts("mt-8 inline-flex md:hidden")}
+        </Container>
+      </Rise>
     </section>
   );
 }
