@@ -9,6 +9,7 @@ import { HOME_FAQ_TYPE } from "./schemaTypes/homeFaq";
 import { HOME_TESTIMONIALS_TYPE } from "./schemaTypes/homeTestimonials";
 import { HOME_IMPACT_TYPE } from "./schemaTypes/homeImpact";
 import { SOCIAL_LINKS_TYPE } from "./schemaTypes/socialLinks";
+import { BLOG_PAGE_TYPE } from "./schemaTypes/blogPage";
 
 const SINGLETON_ACTIONS_TO_HIDE = new Set(["duplicate", "delete"]);
 const SINGLETON_TYPES = new Set([
@@ -18,6 +19,7 @@ const SINGLETON_TYPES = new Set([
   HOME_TESTIMONIALS_TYPE,
   HOME_IMPACT_TYPE,
   SOCIAL_LINKS_TYPE,
+  BLOG_PAGE_TYPE,
 ]);
 
 export default defineConfig({

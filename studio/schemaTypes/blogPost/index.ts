@@ -1,7 +1,7 @@
 import { defineField, defineType } from "sanity";
 import { LOCALIZED_STRING_TYPE } from "../objects/localizedString";
 import { LOCALIZED_TEXT_TYPE } from "../objects/localizedText";
-import { LOCALIZED_PORTABLE_TEXT_TYPE } from "../objects/localizedPortableText";
+import { LOCALIZED_BLOG_BODY_TYPE } from "../objects/localizedBlogBody";
 import { BLOG_AUTHOR_TYPE } from "../blogAuthor";
 import { BLOG_CATEGORY_TYPE } from "../blogCategory";
 
@@ -49,6 +49,12 @@ export const blogPost = defineType({
           type: "string",
           description: "Important for accessibility and SEO.",
         }),
+        defineField({
+          name: "caption",
+          title: "Caption",
+          type: "string",
+          description: "Optional. Shown under the cover photo on the article page.",
+        }),
       ],
     }),
     defineField({
@@ -75,7 +81,9 @@ export const blogPost = defineType({
     defineField({
       name: "body",
       title: "Body",
-      type: LOCALIZED_PORTABLE_TEXT_TYPE,
+      description:
+        "Use the + Insert menu to add images, quotes, highlighted numbers, tip boxes, buttons and videos between paragraphs. Section headings (H2) build the article's \"On this page\" menu.",
+      type: LOCALIZED_BLOG_BODY_TYPE,
       validation: (Rule) => Rule.required(),
     }),
   ],

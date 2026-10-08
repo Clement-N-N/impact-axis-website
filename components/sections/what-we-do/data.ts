@@ -1,7 +1,7 @@
 import type { WhatWeDoPageContent } from "./types";
 
 // TODO: the French throughout this file is a first-pass translation and needs
-// native review before launch, matching the note already on `blog-body/data.ts`.
+// native review before launch, flagged for native French review.
 export const whatWeDoPageContent: WhatWeDoPageContent = {
   hero: {
     headline: {

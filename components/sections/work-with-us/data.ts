@@ -1,7 +1,7 @@
 import type { WorkWithUsPageContent } from "./types";
 
 // TODO: the French here is a first-pass translation and needs native review,
-// matching the note on `blog-body/data.ts`.
+// flagged for native French review.
 export const workWithUsPageContent: WorkWithUsPageContent = {
   hero: {
     eyebrow: { en: "Work With Us", fr: "Travailler avec nous" },

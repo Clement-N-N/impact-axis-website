@@ -25,16 +25,37 @@ export const HOME_IMPACT_QUERY = defineQuery(`*[_type == "homeImpact"][0]{
   }
 }`);
 
-export const BLOG_POSTS_QUERY = defineQuery(`*[
-  _type == "blogPost" &&
-  (!defined($categorySlug) || category->slug.current == $categorySlug)
-] | order(date desc){
+// Card fields shared by every blog list. `chars` (body length per language)
+// gives the "x min read" estimate without fetching whole bodies.
+const BLOG_CARD_FIELDS = `
   "id": slug.current,
   title{en, fr},
   excerpt{en, fr},
   date,
   image,
-  "href": "/blog/" + slug.current
+  "href": "/blog/" + slug.current,
+  category->{title{en, fr}, "slug": slug.current},
+  "chars": {"en": length(pt::text(body.en)), "fr": length(pt::text(body.fr))}
+`;
+
+export const BLOG_POSTS_QUERY = defineQuery(`*[
+  _type == "blogPost" &&
+  (!defined($categorySlug) || category->slug.current == $categorySlug)
+] | order(date desc){${BLOG_CARD_FIELDS}}`);
+
+export const BLOG_PAGE_QUERY = defineQuery(`*[_id == "blogPage"][0]{
+  eyebrow{en, fr},
+  title{en, fr},
+  intro{en, fr},
+  featuredPost->{${BLOG_CARD_FIELDS}},
+  cta{
+    eyebrow{en, fr},
+    title{en, fr},
+    text{en, fr},
+    buttonLabel{en, fr},
+    buttonHref,
+    image
+  }
 }`);
 
 export const BLOG_CATEGORIES_QUERY = defineQuery(`*[_type == "blogCategory"] | order(title.en asc){
@@ -50,17 +71,18 @@ export const BLOG_CATEGORY_SLUGS_QUERY = defineQuery(
   `*[_type == "blogCategory"]{ "slug": slug.current }`,
 );
 
+// Inline images also bring their pixel size so they render at their own
+// proportions instead of being cropped.
+const BLOG_BODY_PROJECTION = `[]{
+  ...,
+  _type == "blogImage" => {..., "dims": asset->metadata.dimensions{width, height}}
+}`;
+
 export const BLOG_POST_BY_SLUG_QUERY = defineQuery(`*[_type == "blogPost" && slug.current == $slug][0]{
-  "id": slug.current,
-  title{en, fr},
-  excerpt{en, fr},
-  date,
-  image,
-  "href": "/blog/" + slug.current,
+  ${BLOG_CARD_FIELDS},
   authorRole{en, fr},
   author->{name, image},
-  category->{title{en, fr}},
-  body{en, fr}
+  body{"en": en${BLOG_BODY_PROJECTION}, "fr": fr${BLOG_BODY_PROJECTION}}
 }`);
 
 export const BLOG_SLUGS_QUERY = defineQuery(`*[_type == "blogPost"]{ "slug": slug.current }`);

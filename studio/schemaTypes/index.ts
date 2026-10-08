@@ -8,6 +8,7 @@ import { testimonial } from "./testimonial";
 import { blogAuthor } from "./blogAuthor";
 import { blogCategory } from "./blogCategory";
 import { blogPost } from "./blogPost";
+import { blogPage } from "./blogPage";
 import { eventPerson } from "./eventPerson";
 import { eventPartner } from "./eventPartner";
 import { event } from "./event";
@@ -18,6 +19,7 @@ import { report } from "./report";
 import { localizedString } from "./objects/localizedString";
 import { localizedText } from "./objects/localizedText";
 import { localizedPortableText } from "./objects/localizedPortableText";
+import { localizedBlogBody } from "./objects/localizedBlogBody";
 import { eventPersonRole } from "./objects/eventPersonRole";
 
 export const schemaTypes: SchemaTypeDefinition[] = [
@@ -33,6 +35,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   blogAuthor,
   blogCategory,
   blogPost,
+  blogPage,
   eventPerson,
   eventPartner,
   event,
@@ -40,5 +43,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   localizedString,
   localizedText,
   localizedPortableText,
+  localizedBlogBody,
   eventPersonRole,
 ];

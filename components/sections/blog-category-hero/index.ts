@@ -1,1 +1,0 @@
-export { BlogCategoryHero } from "./BlogCategoryHero";

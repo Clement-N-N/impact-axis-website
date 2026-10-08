@@ -4,12 +4,20 @@ import type { LocalizedPortableText, SanityImageValue } from "@/sanity/types";
 
 export type BlogPost = {
   id: string;
-  image?: SanityImageValue;
+  image?: SanityImageValue & { caption?: string };
   title: LocalizedText;
   excerpt: LocalizedText;
   /** ISO date string, e.g. "2026-06-13" — formatted per-locale at render time. */
   date: string;
   href: string;
+  category?: { title: LocalizedText; slug: string } | null;
+  /** Length of the body text per language, for the reading-time estimate. */
+  chars?: { en: number | null; fr: number | null };
+};
+
+export type BlogCategory = {
+  title: LocalizedText;
+  slug: string;
 };
 
 export type BlogAuthor = {
@@ -20,9 +28,14 @@ export type BlogAuthor = {
 export type BlogPostDetail = BlogPost & {
   author: BlogAuthor;
   authorRole: LocalizedText;
-  category?: { title: LocalizedText };
   body: LocalizedPortableText;
 };
+
+/** Rough minutes to read, from the body's character count (about 1,100 characters a minute). */
+export function readingMinutes(post: BlogPost, locale: Locale): number | null {
+  const chars = post.chars?.[locale] ?? post.chars?.en;
+  return chars ? Math.max(1, Math.round(chars / 1100)) : null;
+}
 
 export function formatBlogDate(date: string, locale: Locale): string {
   return new Intl.DateTimeFormat(locale, { year: "numeric", month: "short", day: "numeric" }).format(
