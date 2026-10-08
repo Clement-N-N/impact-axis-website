@@ -100,7 +100,13 @@ export function FeaturedCard({ post, locale }: { post: BlogPost; locale: Locale 
         </h2>
         <p className="text-[17px] leading-relaxed text-pretty text-black/65">{t(post.excerpt, locale)}</p>
         <PostMeta post={post} locale={locale} />
-        <span className="bg-impact-yellow text-impact-blue inline-flex w-fit items-center gap-2 rounded-full px-5 py-3 font-bold transition-transform group-hover:scale-[1.03]">
+        {/* Looks like a button but the whole card is the link (the title's
+            ::after covers it). pointer-events-none keeps clicks going to that
+            link: the hover scale lifts this above the overlay otherwise. */}
+        <span
+          aria-hidden="true"
+          className="bg-impact-yellow text-impact-blue pointer-events-none inline-flex w-fit items-center gap-2 rounded-full px-5 py-3 font-bold transition-transform group-hover:scale-[1.03]"
+        >
           {t(blogLabels.readStory, locale)}
           <ArrowRightIcon weight="bold" className="size-4" />
         </span>
