@@ -20,6 +20,7 @@ import {
   withBrand,
 } from "@/lib/seo";
 import { SiteJsonLd } from "@/components/seo/JsonLd";
+import { GoogleTag } from "@/components/seo/GoogleTag";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import "../globals.css";
 import "@/styles/_fonts.scss";
@@ -110,6 +111,7 @@ export default async function RootLayout({
           )}
         </NextIntlClientProvider>
         <Analytics />
+        <GoogleTag />
       </body>
     </html>
   );

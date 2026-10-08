@@ -15,6 +15,7 @@ import {
 import { Link } from "@/i18n/navigation";
 import type { SocialLinks } from "@/sanity/types";
 import { Container } from "./Container";
+import { trackConversion } from "@/lib/analytics";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -74,6 +75,7 @@ export function Footer({ socialLinks }: { socialLinks: SocialLinks }) {
       if (!res.ok) throw new Error(String(res.status));
       form.reset();
       setSubStatus("done");
+      trackConversion("sign_up", { form: "newsletter" });
     } catch {
       setSubStatus("error");
     }
