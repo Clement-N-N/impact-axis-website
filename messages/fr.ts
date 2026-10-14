@@ -7,6 +7,7 @@ import { footerTranslations } from "./footer";
 import { termsOfUseTranslations } from "./terms-of-use";
 import { privacyPolicyTranslations } from "./privacy-policy";
 import { contactTranslations } from "./contact";
+import { cookiesTranslations } from "./cookies";
 import { partnershipTranslations } from "./partnership";
 import { notFoundTranslations } from "./not-found";
 import { errorTranslations } from "./error";
@@ -21,6 +22,7 @@ const messages = {
   termsOfUse: termsOfUseTranslations.fr,
   privacyPolicy: privacyPolicyTranslations.fr,
   contact: contactTranslations.fr,
+  cookies: cookiesTranslations.fr,
   partnership: partnershipTranslations.fr,
   notFound: notFoundTranslations.fr,
   error: errorTranslations.fr,
