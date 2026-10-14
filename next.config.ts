@@ -1,20 +1,18 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import { securityHeaders } from "./lib/security-headers";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
-  // LOCAL ONLY — do not commit. Required to test on a real phone over the LAN:
-  // Next blocks cross-origin requests to dev-only assets, so loading the site
-  // from this machine's network address has its HMR socket refused and React
-  // never hydrates. The page still server-renders, so it looks fine while
-  // everything interactive is silently dead.
-  //
-  // Update if the machine's LAN IP changes; `next dev` prints it on start as
-  // "Network: http://<ip>:<port>".
-  allowedDevOrigins: ["192.168.1.168"],
   turbopack: {
     root: import.meta.dirname,
+  },
+  // Nothing is gained by advertising the framework and its version.
+  poweredByHeader: false,
+  // Applied to every response, so there is no route that answers without them.
+  async headers() {
+    return [{ source: "/:path*", headers: securityHeaders() }];
   },
   // /programs was a placeholder; its content lives on What We Do.
   async redirects() {
