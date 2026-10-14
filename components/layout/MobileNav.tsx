@@ -12,7 +12,6 @@ import Image from "next/image";
 import { Container } from "./Container";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Logo } from "./Logo";
-import { SHOW_EVENTS_PAGE } from "@/lib/features";
 
 const MOBILE_SHORT = {
   "funders-development-partners": { en: "Funders", fr: "Financeurs" },
@@ -31,7 +30,7 @@ const navLinkStyles = clsx(
   "block py-3 transition-colors",
 );
 
-export function MobileNav() {
+export function MobileNav({ showEvents }: { showEvents: boolean }) {
   const t = useTranslations("nav");
   const locale = useLocale() as "en" | "fr";
   const pathname = usePathname();
@@ -55,7 +54,7 @@ export function MobileNav() {
     { href: "/", label: t("links.home") },
     { href: "/about", label: t("links.about") },
     { href: "/what-we-do", label: t("links.whatWeDo") },
-    ...(SHOW_EVENTS_PAGE ? [{ href: "/events", label: t("links.events") }] : []),
+    ...(showEvents ? [{ href: "/events", label: t("links.events") }] : []),
     { href: "/blog", label: t("links.blog") },
     { href: "/impact", label: t("links.impact") },
   ] as const;

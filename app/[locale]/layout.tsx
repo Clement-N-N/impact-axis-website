@@ -7,6 +7,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { Footer } from "@/components/layout/Footer";
 import { client, sanityFetchOptions } from "@/sanity/client";
+import { getSiteSettings } from "@/sanity/settings";
 import { SOCIAL_LINKS_QUERY } from "@/sanity/queries";
 import type { SocialLinks } from "@/sanity/types";
 import { Analytics } from "@vercel/analytics/next";
@@ -91,14 +92,14 @@ export default async function RootLayout({
   setRequestLocale(locale);
 
   const messages = await getMessages();
-  const socialLinks = await getSocialLinks();
+  const [socialLinks, siteSettings] = await Promise.all([getSocialLinks(), getSiteSettings()]);
 
   return (
     <html lang={locale} className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <Navbar socialLinks={socialLinks} />
-          <MobileNav />
+          <Navbar socialLinks={socialLinks} showEvents={siteSettings.showEventsPage} />
+          <MobileNav showEvents={siteSettings.showEventsPage} />
           <main>{children}</main>
           <Footer socialLinks={socialLinks} />
           <SiteJsonLd locale={locale as Locale} socialLinks={socialLinks} />

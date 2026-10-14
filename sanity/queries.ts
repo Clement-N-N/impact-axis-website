@@ -4,6 +4,10 @@ export const HOME_SETTINGS_QUERY = defineQuery(
   `*[_type == "homeSettings"][0]{ heroVariant }`,
 );
 
+export const SITE_SETTINGS_QUERY = defineQuery(
+  `*[_id == "siteSettings"][0]{ showEventsPage }`,
+);
+
 export const SOCIAL_LINKS_QUERY = defineQuery(
   `*[_type == "socialLinks"][0]{ facebook, instagram, x, linkedin, youtube }`,
 );
