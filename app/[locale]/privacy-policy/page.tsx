@@ -21,6 +21,7 @@ export default async function PrivacyPolicyPage({ params }: Props) {
     title: t("title"),
     lastUpdatedLabel: t("lastUpdatedLabel"),
     lastUpdated: t("lastUpdated"),
+    contentsLabel: t("contentsLabel"),
     intro: t.raw("intro"),
     sections: t.raw("sections"),
   };
