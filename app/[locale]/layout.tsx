@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing, type Locale } from "@/i18n/routing";
 import { Navbar } from "@/components/layout/Navbar";
+import { SkipLink } from "@/components/layout/SkipLink";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { Footer } from "@/components/layout/Footer";
 import { client, sanityFetchOptions } from "@/sanity/client";
@@ -100,9 +101,12 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <ConsentProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
+            <SkipLink />
             <Navbar socialLinks={socialLinks} showEvents={siteSettings.showEventsPage} />
             <MobileNav showEvents={siteSettings.showEventsPage} />
-            <main>{children}</main>
+            <main id="main" tabIndex={-1}>
+              {children}
+            </main>
             <Footer socialLinks={socialLinks} />
             <SiteJsonLd locale={locale as Locale} socialLinks={socialLinks} />
             <BreadcrumbJsonLd />
