@@ -6,6 +6,8 @@ import { eventsHeroContent } from "@/components/sections/events-hero/data";
 import { EventsPageContent } from "@/components/sections/events-list";
 import { getEventDetails, getEvents, getHomeImpactStat } from "@/sanity/events";
 import type { Locale } from "@/i18n/routing";
+import { redirect } from "@/i18n/navigation";
+import { SHOW_EVENTS_PAGE } from "@/lib/features";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -23,6 +25,9 @@ export default async function EventsPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+
+  // Hidden for now: send visitors (and old links) to the home page.
+  if (!SHOW_EVENTS_PAGE) redirect({ href: "/", locale });
 
   const [events, eventDetails, impactStat] = await Promise.all([
     getEvents(),

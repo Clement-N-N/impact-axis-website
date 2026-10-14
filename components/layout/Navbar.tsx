@@ -14,6 +14,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Logo } from "./Logo";
 import { MegaMenu } from "./MegaMenu";
 import { MegaMenuBackdrop } from "./MegaMenuBackdrop";
+import { SHOW_EVENTS_PAGE } from "@/lib/features";
 
 const MEGA_MENU_ID = "work-with-us-menu";
 
@@ -110,7 +111,7 @@ export function Navbar({ socialLinks }: { socialLinks: SocialLinks }) {
     { href: "/what-we-do", label: t("links.whatWeDo") },
   ] as const;
   const NAV_LINKS_AFTER = [
-    { href: "/events", label: t("links.events") },
+    ...(SHOW_EVENTS_PAGE ? [{ href: "/events", label: t("links.events") }] : []),
     { href: "/blog", label: t("links.blog") },
     { href: "/impact", label: t("links.impact") },
   ] as const;
