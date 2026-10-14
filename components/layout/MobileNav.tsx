@@ -30,7 +30,7 @@ const navLinkStyles = clsx(
   "block py-3 transition-colors",
 );
 
-export function MobileNav() {
+export function MobileNav({ showEvents }: { showEvents: boolean }) {
   const t = useTranslations("nav");
   const locale = useLocale() as "en" | "fr";
   const pathname = usePathname();
@@ -54,7 +54,7 @@ export function MobileNav() {
     { href: "/", label: t("links.home") },
     { href: "/about", label: t("links.about") },
     { href: "/what-we-do", label: t("links.whatWeDo") },
-    { href: "/events", label: t("links.events") },
+    ...(showEvents ? [{ href: "/events", label: t("links.events") }] : []),
     { href: "/blog", label: t("links.blog") },
     { href: "/impact", label: t("links.impact") },
   ] as const;

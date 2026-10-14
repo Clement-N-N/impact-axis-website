@@ -4,6 +4,7 @@ import { homeFaq } from "./homeFaq";
 import { homeTestimonials } from "./homeTestimonials";
 import { homeImpact } from "./homeImpact";
 import { socialLinks } from "./socialLinks";
+import { siteSettings } from "./siteSettings";
 import { testimonial } from "./testimonial";
 import { blogAuthor } from "./blogAuthor";
 import { blogCategory } from "./blogCategory";
@@ -31,6 +32,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   homeTestimonials,
   homeImpact,
   socialLinks,
+  siteSettings,
   testimonial,
   blogAuthor,
   blogCategory,

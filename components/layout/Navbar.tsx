@@ -96,7 +96,7 @@ function NavLinkText({
   );
 }
 
-export function Navbar({ socialLinks }: { socialLinks: SocialLinks }) {
+export function Navbar({ socialLinks, showEvents }: { socialLinks: SocialLinks; showEvents: boolean }) {
   const t = useTranslations("nav");
   const locale = useLocale();
   const pathname = usePathname();
@@ -110,7 +110,7 @@ export function Navbar({ socialLinks }: { socialLinks: SocialLinks }) {
     { href: "/what-we-do", label: t("links.whatWeDo") },
   ] as const;
   const NAV_LINKS_AFTER = [
-    { href: "/events", label: t("links.events") },
+    ...(showEvents ? [{ href: "/events", label: t("links.events") }] : []),
     { href: "/blog", label: t("links.blog") },
     { href: "/impact", label: t("links.impact") },
   ] as const;

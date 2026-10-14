@@ -7,10 +7,18 @@ import Script from "next/script";
  * e.g. "AW-123456789" for Google Ads or "AW-123456789,G-ABC123DEF4" for Ads
  * and Analytics together, then redeploy. Nothing loads while it is unset.
  */
-const TAG_IDS = (process.env.NEXT_PUBLIC_GOOGLE_TAG_IDS ?? "")
-  .split(",")
-  .map((id) => id.trim())
-  .filter((id) => /^(AW|G|GT|DC)-[A-Z0-9]+$/i.test(id));
+// Pick the IDs out of whatever was pasted: a bare ID, a comma-separated
+// list, a quoted value, a conversion value like "AW-123/AbC" or even Google's
+// whole install snippet all work. Duplicates are dropped.
+const TAG_IDS = [
+  ...new Set(
+    (process.env.NEXT_PUBLIC_GOOGLE_TAG_IDS ?? "").toUpperCase().match(/\b(?:AW|G|GT|DC)-[A-Z0-9]{4,}\b/g) ?? [],
+  ),
+];
+
+if (process.env.NEXT_PUBLIC_GOOGLE_TAG_IDS && TAG_IDS.length === 0) {
+  console.warn("NEXT_PUBLIC_GOOGLE_TAG_IDS is set but contains no Google tag ID (AW-…, G-…, GT-…).");
+}
 
 export function GoogleTag() {
   if (TAG_IDS.length === 0) return null;

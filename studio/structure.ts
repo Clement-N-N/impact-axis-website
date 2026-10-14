@@ -7,6 +7,7 @@ import { HOME_FAQ_ID, HOME_FAQ_TYPE } from "./schemaTypes/homeFaq";
 import { HOME_TESTIMONIALS_ID, HOME_TESTIMONIALS_TYPE } from "./schemaTypes/homeTestimonials";
 import { HOME_IMPACT_ID, HOME_IMPACT_TYPE } from "./schemaTypes/homeImpact";
 import { SOCIAL_LINKS_ID, SOCIAL_LINKS_TYPE } from "./schemaTypes/socialLinks";
+import { SITE_SETTINGS_ID, SITE_SETTINGS_TYPE } from "./schemaTypes/siteSettings";
 import { TESTIMONIAL_TYPE } from "./schemaTypes/testimonial";
 import { BLOG_POST_TYPE } from "./schemaTypes/blogPost";
 import { BLOG_PAGE_ID, BLOG_PAGE_TYPE } from "./schemaTypes/blogPage";
@@ -28,6 +29,7 @@ const EXPLICITLY_PLACED_TYPES = new Set([
   HOME_TESTIMONIALS_TYPE,
   HOME_IMPACT_TYPE,
   SOCIAL_LINKS_TYPE,
+  SITE_SETTINGS_TYPE,
   TESTIMONIAL_TYPE,
   BLOG_POST_TYPE,
   BLOG_PAGE_TYPE,
@@ -173,6 +175,10 @@ export const structure: StructureResolver = (S) =>
         ),
 
       // ── Global / Site Settings ──
+      S.listItem()
+        .id(SITE_SETTINGS_ID)
+        .title("Site Settings (show or hide pages)")
+        .child(S.document().schemaType(SITE_SETTINGS_TYPE).documentId(SITE_SETTINGS_ID)),
       S.listItem()
         .id(SOCIAL_LINKS_ID)
         .title("Social Links")
