@@ -22,6 +22,7 @@ import {
 } from "@/lib/seo";
 import { SiteJsonLd } from "@/components/seo/JsonLd";
 import { GoogleTag } from "@/components/seo/GoogleTag";
+import { ConsentProvider, CookieBanner } from "@/components/consent";
 import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import "../globals.css";
 import "@/styles/_fonts.scss";
@@ -97,22 +98,26 @@ export default async function RootLayout({
   return (
     <html lang={locale} className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <Navbar socialLinks={socialLinks} showEvents={siteSettings.showEventsPage} />
-          <MobileNav showEvents={siteSettings.showEventsPage} />
-          <main>{children}</main>
-          <Footer socialLinks={socialLinks} />
-          <SiteJsonLd locale={locale as Locale} socialLinks={socialLinks} />
-          <BreadcrumbJsonLd />
-          {process.env.NODE_ENV === "development" && (
-            <>
-              <LocalizationDebuggerLoader />
-              <DesignGridOverlayLoader />
-            </>
-          )}
-        </NextIntlClientProvider>
-        <Analytics />
-        <GoogleTag />
+        <ConsentProvider>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <Navbar socialLinks={socialLinks} showEvents={siteSettings.showEventsPage} />
+            <MobileNav showEvents={siteSettings.showEventsPage} />
+            <main>{children}</main>
+            <Footer socialLinks={socialLinks} />
+            <SiteJsonLd locale={locale as Locale} socialLinks={socialLinks} />
+            <BreadcrumbJsonLd />
+            {/* Inside the intl provider: the banner's copy is translated. */}
+            <CookieBanner />
+            {process.env.NODE_ENV === "development" && (
+              <>
+                <LocalizationDebuggerLoader />
+                <DesignGridOverlayLoader />
+              </>
+            )}
+          </NextIntlClientProvider>
+          <Analytics />
+          <GoogleTag />
+        </ConsentProvider>
       </body>
     </html>
   );
