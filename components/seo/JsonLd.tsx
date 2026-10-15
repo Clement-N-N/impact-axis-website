@@ -44,7 +44,7 @@ export function SiteJsonLd({ locale, socialLinks }: { locale: Locale; socialLink
             description: PAGE_DESCRIPTIONS.home[locale],
             foundingDate: "2021",
             email: "info@impact-axis.org",
-            telephone: "+237680816656",
+            telephone: "+237681338594",
             address: {
               "@type": "PostalAddress",
               streetAddress: "Rond-point Express, Biyem-Assi",
