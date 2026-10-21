@@ -78,6 +78,11 @@ export type LearningEarningHeroContent = {
     /** Mirror the photo so its subject sits clear of the headline. */
     flip?: boolean;
   }[];
+  /**
+   * One fixed photo for the whole hero. When set, it replaces the per-word
+   * photos (the words still roll; the background stays put).
+   */
+  background?: { image: string; position?: string };
   description: LocalizedText;
   paths: [HeroPath, HeroPath];
   proof: { value: string; label: LocalizedText }[];

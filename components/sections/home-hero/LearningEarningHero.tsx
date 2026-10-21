@@ -86,36 +86,59 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
       aria-labelledby="hero-title"
       className="bg-impact-blue relative isolate w-full overflow-hidden lg:min-h-[max(40rem,calc(100svh-var(--header-height)))]"
     >
-      {/* Photos: one per word, crossfading, with a slow push-in. */}
-      <div aria-hidden="true" className="absolute inset-0 -z-20">
-        {data.words.map((w, i) => (
-          <div
-            key={w.image}
-            className={clsx(
-              "absolute inset-0 transition-opacity duration-[1200ms] ease-out",
-              w.flip && "-scale-x-100",
-              i === index ? "opacity-100" : "opacity-0",
-            )}
-          >
-            <Image
-              src={w.image}
-              alt=""
-              fill
-              priority={i === 0}
-              sizes="100vw"
-              style={{ objectPosition: w.position ?? "center" }}
+      {data.background ? (
+        // One fixed photo; it already carries its own navy backdrop on the
+        // left, so the wash below only needs to steady the text. On phones
+        // it would sit behind the text, so it moves into the flow instead
+        // (below the description).
+        <div aria-hidden="true" className="absolute inset-0 -z-20 hidden lg:block">
+          <Image
+            src={data.background.image}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            style={{ objectPosition: data.background.position ?? "center" }}
+            className="object-cover"
+          />
+        </div>
+      ) : (
+        /* Photos: one per word, crossfading, with a slow push-in. */
+        <div aria-hidden="true" className="absolute inset-0 -z-20">
+          {data.words.map((w, i) => (
+            <div
+              key={w.image}
               className={clsx(
-                "object-cover transition-transform ease-out motion-reduce:transition-none",
-                i === index ? "scale-[1.08] duration-[9000ms]" : "scale-100 duration-[1200ms]",
+                "absolute inset-0 transition-opacity duration-[1200ms] ease-out",
+                w.flip && "-scale-x-100",
+                i === index ? "opacity-100" : "opacity-0",
               )}
-            />
-          </div>
-        ))}
-      </div>
+            >
+              <Image
+                src={w.image}
+                alt=""
+                fill
+                priority={i === 0}
+                sizes="100vw"
+                style={{ objectPosition: w.position ?? "center" }}
+                className={clsx(
+                  "object-cover transition-transform ease-out motion-reduce:transition-none",
+                  i === index ? "scale-[1.08] duration-[9000ms]" : "scale-100 duration-[1200ms]",
+                )}
+              />
+            </div>
+          ))}
+        </div>
+      )}
       {/* Navy wash: solid behind the text, opening up towards the photo. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(11_18_70/0.6)_0%,rgb(11_18_70/0.82)_50%,rgb(11_18_70/0.95)_100%)] lg:bg-[linear-gradient(90deg,rgb(11_18_70/0.93)_0%,rgb(11_18_70/0.72)_45%,rgb(11_18_70/0.18)_100%)]"
+        className={clsx(
+          "absolute inset-0 -z-10",
+          data.background
+            ? "bg-[linear-gradient(180deg,rgb(11_18_70/0.55)_0%,rgb(11_18_70/0.8)_50%,rgb(11_18_70/0.95)_100%)] lg:bg-[linear-gradient(90deg,rgb(11_18_70/0.75)_0%,rgb(11_18_70/0.35)_40%,rgb(11_18_70/0)_62%)]"
+            : "bg-[linear-gradient(180deg,rgb(11_18_70/0.6)_0%,rgb(11_18_70/0.82)_50%,rgb(11_18_70/0.95)_100%)] lg:bg-[linear-gradient(90deg,rgb(11_18_70/0.93)_0%,rgb(11_18_70/0.72)_45%,rgb(11_18_70/0.18)_100%)]",
+        )}
       />
 
       <Container className="flex h-full flex-col justify-between gap-10 pt-[clamp(3rem,8vw,6rem)] pb-8 lg:min-h-[inherit] lg:gap-12 lg:pt-[clamp(3.5rem,8vh,6rem)] lg:pb-12">
@@ -149,10 +172,13 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
                       key={w.image}
                       data-word={i}
                       className={clsx(
-                        "block w-max whitespace-nowrap transition-[translate,opacity] ease-[cubic-bezier(0.22,1,0.36,1)] [transition-duration:700ms,350ms]",
+                        "block w-max whitespace-nowrap transition-[translate,opacity] [transition-duration:700ms,350ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
                         i === index
                           ? "relative translate-y-0 opacity-100"
-                          : clsx("absolute top-0 left-0 opacity-0", i < index ? "-translate-y-[115%]" : "translate-y-[115%]"),
+                          : clsx(
+                              "absolute top-0 left-0 opacity-0",
+                              i < index ? "-translate-y-[115%]" : "translate-y-[115%]",
+                            ),
                       )}
                     >
                       {t(w.text)}
@@ -169,6 +195,23 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
           >
             {t(data.description)}
           </p>
+
+          {data.background && (
+            <div
+              data-rise
+              className="relative mt-8 aspect-[5/4] overflow-hidden rounded-[20px] sm:aspect-[16/10] lg:hidden"
+            >
+              <Image
+                src={data.background.image}
+                alt=""
+                fill
+                priority
+                sizes="(min-width: 1024px) 1px, 100vw"
+                style={{ objectPosition: "100% 50%" }}
+                className="object-cover"
+              />
+            </div>
+          )}
         </div>
 
         <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-[1fr_1fr_1.1fr] xl:gap-3.5">
@@ -179,9 +222,7 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
                 className="group flex h-full flex-col gap-1 rounded-[20px] border border-white/20 bg-white/10 px-[22px] py-5 text-white backdrop-blur-md transition-[background-color,translate] duration-300 hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
               >
                 <span className="text-[13px] text-white/70">{t(path.kicker)}</span>
-                <span className="text-[1.375rem] leading-tight font-semibold tracking-[-0.01em]">
-                  {t(path.title)}
-                </span>
+                <span className="text-[1.375rem] leading-tight font-semibold tracking-[-0.01em]">{t(path.title)}</span>
                 <span className="text-impact-yellow mt-2 inline-flex items-center gap-1.5 font-bold">
                   {t(path.label)}
                   <ArrowRightIcon
@@ -193,7 +234,14 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
             </li>
           ))}
           <li data-rise className="md:col-span-2 xl:col-span-1">
-            <dl className="border-impact-yellow/25 bg-impact-yellow/12 grid h-full grid-cols-3 content-center items-start gap-4 rounded-[20px] border px-[22px] py-5 backdrop-blur-md">
+            <dl
+              className={clsx(
+                "border-impact-yellow/25 grid h-full grid-cols-3 content-center items-start gap-4 rounded-[20px] border px-[22px] py-5 backdrop-blur-md",
+                // Over the fixed photo the card can sit on the orange shape,
+                // so it gets a navy base to keep the figures readable.
+                data.background ? "bg-impact-blue/70" : "bg-impact-yellow/12",
+              )}
+            >
               {data.proof.map((p) => (
                 <div key={p.value} className="flex flex-col-reverse justify-end gap-1">
                   <dt className="text-xs leading-snug text-white/75">{t(p.label)}</dt>
