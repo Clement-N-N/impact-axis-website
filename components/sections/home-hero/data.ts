@@ -33,7 +33,7 @@ export const heroConfig: HeroConfig = {
           position: "65% 30%",
         },
       ],
-      background: { image: "/images/hero-team.jpg", position: "78% 50%" },
+      background: { image: "/images/hero-team-hd.jpg", position: "78% 50%" },
       description: {
         en: "We give young Cameroonians the skills, experience and mentors employers look for.",
         fr: "Nous donnons aux jeunes Camerounais les compétences, l'expérience et les mentors que recherchent les employeurs.",

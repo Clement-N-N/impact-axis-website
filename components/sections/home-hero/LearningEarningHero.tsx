@@ -98,6 +98,7 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
             fill
             priority
             sizes="100vw"
+            quality={90}
             style={{ objectPosition: data.background.position ?? "center" }}
             className="object-cover"
           />
@@ -207,6 +208,7 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
                 fill
                 priority
                 sizes="(min-width: 1024px) 1px, 100vw"
+                quality={90}
                 style={{ objectPosition: "100% 50%" }}
                 className="object-cover"
               />
