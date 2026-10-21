@@ -199,7 +199,7 @@ export function LearningEarningHero({ data, locale }: HeroVariantProps<LearningE
           {data.background && (
             <div
               data-rise
-              className="relative mt-8 aspect-[5/4] overflow-hidden rounded-[20px] sm:aspect-[16/10] lg:hidden"
+              className="relative mt-7 aspect-[3/2] overflow-hidden rounded-[20px] sm:aspect-[2/1] lg:hidden"
             >
               <Image
                 src={data.background.image}
